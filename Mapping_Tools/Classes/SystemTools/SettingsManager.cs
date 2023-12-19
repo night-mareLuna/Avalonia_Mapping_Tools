@@ -1,10 +1,12 @@
 ﻿using Microsoft.Win32;
+using MsBox.Avalonia;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace Mapping_Tools.Classes.SystemTools {
@@ -18,19 +20,18 @@ namespace Mapping_Tools.Classes.SystemTools {
         public static readonly Settings Settings = new();
         public static bool InstanceComplete;
 
-        public static void LoadConfig() {
+        public static async void LoadConfig() {
             JsonPath = "config.json";
-            InstanceComplete = File.Exists(JsonPath) ? LoadFromJson() : CreateJson();
+            InstanceComplete = File.Exists(JsonPath) ? await LoadFromJson() : await CreateJson();
 
             try {
                 DefaultPaths();
             } catch (Exception e) {
-                //e.Show();
-				Console.WriteLine(e.Message);
+                await e.Show();
             }
         }
 
-        private static bool LoadFromJson() {
+        private static async Task<bool> LoadFromJson() {
             try {
                 using( StreamReader sr = new StreamReader(JsonPath)) {
                     using (JsonReader reader = new JsonTextReader(sr)) {
@@ -43,15 +44,15 @@ namespace Mapping_Tools.Classes.SystemTools {
                 Console.WriteLine(ex.StackTrace);
                 Console.WriteLine(ex.Message);
 
-                //MessageBox.Show("User-specific configuration could not be loaded!");
-				Console.WriteLine("User-specific configuration could not be loaded!");
-                //ex.Show();
+				var box = MessageBoxManager.GetMessageBoxStandard("","User-specific configuration could not be loaded!");
+                await box.ShowAsync();
+                await ex.Show();
                 return false;
             }
             return true;
         }
 
-        private static bool CreateJson() {
+        private static async Task<bool> CreateJson() {
             try {
                 using( StreamWriter sw = new StreamWriter(JsonPath)) {
                     using (JsonWriter writer = new JsonTextWriter(sw)) {
@@ -63,15 +64,15 @@ namespace Mapping_Tools.Classes.SystemTools {
                 Console.WriteLine(ex.StackTrace);
                 Console.WriteLine(ex.Message);
 
-                //MessageBox.Show("User-specific configuration could not be loaded!");
-				Console.WriteLine("User-specific configuration could not be loaded!");
-                //ex.Show();
+				var box = MessageBoxManager.GetMessageBoxStandard("","User-specific configuration could not be loaded!");
+				await box.ShowAsync();
+                await ex.Show();
                 return false;
             }
             return true;
         }
 
-        public static bool WriteToJson(bool doLoading=false) {
+        public static async Task<bool> WriteToJson(bool doLoading=false) {
             try {
                 using( StreamWriter sw = new StreamWriter(JsonPath)) {
                     using (JsonWriter writer = new JsonTextWriter(sw)) {
@@ -83,14 +84,14 @@ namespace Mapping_Tools.Classes.SystemTools {
                 Console.WriteLine(ex.StackTrace);
                 Console.WriteLine(ex.Message);
 
-                //MessageBox.Show("User-specific configuration could not be saved!");
-				Console.WriteLine("User-specific configuration could not be saved!");
-                //ex.Show();
+				var box = MessageBoxManager.GetMessageBoxStandard("","User-specific configuration could not be saved!");
+				await box.ShowAsync();
+				await ex.Show();
                 return false;
             }
 
             if( doLoading ) {
-                LoadFromJson();
+                await LoadFromJson();
             }
 
             return true;
