@@ -1,4 +1,4 @@
-﻿using System.Windows.Media;
+﻿using System.Drawing;
 using Mapping_Tools.Classes.SystemTools;
 using static Mapping_Tools.Classes.BeatmapHelper.FileFormatHelper;
 
@@ -32,7 +32,7 @@ namespace Mapping_Tools.Classes.BeatmapHelper {
 
         /// <inheritdoc />
         public ComboColour(byte r, byte g, byte b) {
-            Color = Color.FromRgb(r, g, b);
+            Color = Color.FromArgb(r, g, b);
         }
 
         /// <inheritdoc />
@@ -55,7 +55,7 @@ namespace Mapping_Tools.Classes.BeatmapHelper {
                 Color = Color.FromArgb((byte)a, (byte)r, (byte)g, (byte)b);
                 hasAlpha = true;
             } else {
-                Color = Color.FromRgb((byte)r, (byte)g, (byte)b);
+                Color = Color.FromArgb((byte)r, (byte)g, (byte)b);
             }
         }
 

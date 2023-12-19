@@ -19,13 +19,14 @@ namespace Mapping_Tools.Classes.SystemTools {
         public static bool InstanceComplete;
 
         public static void LoadConfig() {
-            JsonPath = Path.Combine(MainWindow.AppDataPath, "config.json");
+            JsonPath = "config.json";
             InstanceComplete = File.Exists(JsonPath) ? LoadFromJson() : CreateJson();
 
             try {
                 DefaultPaths();
             } catch (Exception e) {
-                e.Show();
+                //e.Show();
+				Console.WriteLine(e.Message);
             }
         }
 
@@ -42,8 +43,9 @@ namespace Mapping_Tools.Classes.SystemTools {
                 Console.WriteLine(ex.StackTrace);
                 Console.WriteLine(ex.Message);
 
-                MessageBox.Show("User-specific configuration could not be loaded!");
-                ex.Show();
+                //MessageBox.Show("User-specific configuration could not be loaded!");
+				Console.WriteLine("User-specific configuration could not be loaded!");
+                //ex.Show();
                 return false;
             }
             return true;
@@ -61,8 +63,9 @@ namespace Mapping_Tools.Classes.SystemTools {
                 Console.WriteLine(ex.StackTrace);
                 Console.WriteLine(ex.Message);
 
-                MessageBox.Show("User-specific configuration could not be loaded!");
-                ex.Show();
+                //MessageBox.Show("User-specific configuration could not be loaded!");
+				Console.WriteLine("User-specific configuration could not be loaded!");
+                //ex.Show();
                 return false;
             }
             return true;
@@ -80,8 +83,9 @@ namespace Mapping_Tools.Classes.SystemTools {
                 Console.WriteLine(ex.StackTrace);
                 Console.WriteLine(ex.Message);
 
-                MessageBox.Show("User-specific configuration could not be saved!");
-                ex.Show();
+                //MessageBox.Show("User-specific configuration could not be saved!");
+				Console.WriteLine("User-specific configuration could not be saved!");
+                //ex.Show();
                 return false;
             }
 
@@ -107,20 +111,20 @@ namespace Mapping_Tools.Classes.SystemTools {
         }
 
         public static void DefaultPaths() {
-            if (string.IsNullOrWhiteSpace(Settings.OsuPath)) {
-                try {
-                    var regKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall");
-                    Settings.OsuPath = FindByDisplayName(regKey, "osu!");
-                } catch (KeyNotFoundException) {
-                    try {
-                        var regKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall");
-                        Settings.OsuPath = FindByDisplayName(regKey, "osu!");
-                    } catch (KeyNotFoundException) {
-                        Settings.OsuPath = Path.Combine(MainWindow.AppCommon, "osu!");
-                        MessageBox.Show("Could not automatically find osu! install directory. Please set the correct paths in the Preferences.");
-                    }
-                }
-            }
+            // if (string.IsNullOrWhiteSpace(Settings.OsuPath)) {
+            //     try {
+            //         var regKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall");
+            //         Settings.OsuPath = FindByDisplayName(regKey, "osu!");
+            //     } catch (KeyNotFoundException) {
+            //         try {
+            //             var regKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall");
+            //             Settings.OsuPath = FindByDisplayName(regKey, "osu!");
+            //         } catch (KeyNotFoundException) {
+            //             Settings.OsuPath = Path.Combine(MainWindow.AppCommon, "osu!");
+            //             MessageBox.Show("Could not automatically find osu! install directory. Please set the correct paths in the Preferences.");
+            //         }
+            //     }
+            // }
 
             if (string.IsNullOrWhiteSpace(Settings.OsuConfigPath)) {
                 Settings.OsuConfigPath = Path.Combine(Settings.OsuPath, $"osu!.{Environment.UserName}.cfg");
@@ -132,7 +136,7 @@ namespace Mapping_Tools.Classes.SystemTools {
             }
 
             if (string.IsNullOrWhiteSpace(Settings.BackupsPath)) {
-                Settings.BackupsPath = Path.Combine(MainWindow.AppDataPath, "Backups");
+                Settings.BackupsPath = "Backups";
             }
             Directory.CreateDirectory(Settings.BackupsPath);
         }
@@ -196,18 +200,18 @@ namespace Mapping_Tools.Classes.SystemTools {
             return Settings.MakeBackups;
         }
 
-        internal static void UpdateSettings() {
-            Settings.MainWindowMaximized = MainWindow.AppWindow.WindowState == WindowState.Maximized;
-            if (MainWindow.AppWindow.WindowState == WindowState.Maximized) {
-                Settings.MainWindowRestoreBounds = MainWindow.AppWindow.RestoreBounds;
-            } else{
-                Settings.MainWindowRestoreBounds = new Rect(new Point(
-                    MainWindow.AppWindow.Left,
-                    MainWindow.AppWindow.Top
-                    ), new Vector(
-                    MainWindow.AppWindow.Width,
-                    MainWindow.AppWindow.Height));
-            }
-        }
+        // internal static void UpdateSettings() {
+        //     Settings.MainWindowMaximized = MainWindow.AppWindow.WindowState == WindowState.Maximized;
+        //     if (MainWindow.AppWindow.WindowState == WindowState.Maximized) {
+        //         Settings.MainWindowRestoreBounds = MainWindow.AppWindow.RestoreBounds;
+        //     } else{
+        //         Settings.MainWindowRestoreBounds = new Rect(new Point(
+        //             MainWindow.AppWindow.Left,
+        //             MainWindow.AppWindow.Top
+        //             ), new Vector(
+        //             MainWindow.AppWindow.Width,
+        //             MainWindow.AppWindow.Height));
+        //     }
+        // }
     }
 }

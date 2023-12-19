@@ -48,7 +48,7 @@ namespace Mapping_Tools.Classes.BeatmapHelper {
         }
 
         private static void GenerateBetterSaveMd5(List<string> lines) {
-            var tempPath = System.IO.Path.Combine(MainWindow.AppDataPath, "temp.osu");
+            var tempPath = "temp.osu";
 
             if (!File.Exists(tempPath))
             {
@@ -56,7 +56,7 @@ namespace Mapping_Tools.Classes.BeatmapHelper {
             }
             File.WriteAllLines(tempPath, lines);
 
-            EditorReaderStuff.DontCoolSaveWhenMd5EqualsThisString = EditorReaderStuff.GetMd5FromPath(tempPath);
+            //EditorReaderStuff.DontCoolSaveWhenMd5EqualsThisString = EditorReaderStuff.GetMd5FromPath(tempPath);
         }
     }
 }

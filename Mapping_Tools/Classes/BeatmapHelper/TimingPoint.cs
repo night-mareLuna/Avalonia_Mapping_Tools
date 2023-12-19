@@ -121,7 +121,7 @@ namespace Mapping_Tools.Classes.BeatmapHelper {
         /// Creates a new Timing Point from the <see cref="Editor_Reader.ControlPoint"/>.
         /// </summary>
         /// <param name="cp">The control point value from <see cref="Editor_Reader"/></param>
-        public TimingPoint(Editor_Reader.ControlPoint cp) {
+        /*public TimingPoint(Editor_Reader.ControlPoint cp) {
             MpB = cp.BeatLength;
             Offset = cp.Offset;
             SampleIndex = cp.CustomSamples;
@@ -131,16 +131,16 @@ namespace Mapping_Tools.Classes.BeatmapHelper {
             Kiai = (cp.EffectFlags & 1) > 0;
             OmitFirstBarLine = (cp.EffectFlags & 8) > 0;
             Uninherited = cp.TimingChange;
-        }
+        }*/
 
         /// <summary>
         /// Creates a new Timing Point from the <see cref="Editor_Reader.ControlPoint"/>
         /// </summary>
         /// <param name="cp">A <see cref="Editor_Reader.ControlPoint"/> from the <see cref="Beatmap"/>.</param>
         /// <returns></returns>
-        public static explicit operator TimingPoint(Editor_Reader.ControlPoint cp) {
+        /*public static explicit operator TimingPoint(Editor_Reader.ControlPoint cp) {
             return new TimingPoint(cp);
-        }
+        }*/
 
         /// <summary>
         /// Creates a new Timing Point from the string line of the .osu file.
