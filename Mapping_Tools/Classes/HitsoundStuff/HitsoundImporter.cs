@@ -156,17 +156,15 @@ namespace Mapping_Tools.Classes.HitsoundStuff {
         //                 Path.GetDirectoryName(samplePath) ?? throw new InvalidOperationException(),
         //                 Path.GetFileNameWithoutExtension(samplePath));
 
-        //             // Get the first occurence of this sound to not get duplicated
-        //             if (firstSamples.Keys.Contains(fullPathExtLess)) {
-        //                 samplePath = firstSamples[fullPathExtLess];
-        //             } else {
-        //                 // Sample doesn't exist
-        //                 if (!isFilename) {
-        //                     samplePath = Path.Combine(
-        //                         Path.GetDirectoryName(samplePath) ?? throw new InvalidOperationException(),
-        //                         $"{sampleSet.ToString().ToLower()}-hit{hitsound.ToString().ToLower()}-1.wav");
-        //                 }
-        //             }
+                    // Get the first occurence of this sound to not get duplicated
+                    // if (firstSamples.Keys.Contains(fullPathExtLess)) {
+                    //     samplePath = firstSamples[fullPathExtLess];
+                    // } else {
+                    //     // Sample doesn't exist
+                    //     if (!isFilename) {
+                    //         samplePath = string.Empty;
+                    //     }
+                    // }
                     
         //             string extLessFilename = Path.GetFileNameWithoutExtension(samplePath);
         //             var importArgs = new LayerImportArgs(ImportType.Hitsounds) { Path = path, SamplePath = samplePath,
