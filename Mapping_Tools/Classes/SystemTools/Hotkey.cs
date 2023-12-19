@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Text;
-using System.Windows.Input;
+using Avalonia.Input;
 
 namespace Mapping_Tools.Classes.SystemTools {
     public class Hotkey : ICloneable, IEquatable<Hotkey> {
         public Key Key { get; set; }
 
-        public ModifierKeys Modifiers { get; set; }
+        public KeyModifiers Modifiers { get; set; }
 
-        public Hotkey(Key key, ModifierKeys modifiers) {
+        public Hotkey(Key key, KeyModifiers modifiers) {
             Key = key;
             Modifiers = modifiers;
         }
@@ -16,13 +16,13 @@ namespace Mapping_Tools.Classes.SystemTools {
         public override string ToString() {
             var str = new StringBuilder();
 
-            if (Modifiers.HasFlag(ModifierKeys.Control))
+            if (Modifiers.HasFlag(KeyModifiers.Control))
                 str.Append("Ctrl + ");
-            if (Modifiers.HasFlag(ModifierKeys.Shift))
+            if (Modifiers.HasFlag(KeyModifiers.Shift))
                 str.Append("Shift + ");
-            if (Modifiers.HasFlag(ModifierKeys.Alt))
+            if (Modifiers.HasFlag(KeyModifiers.Alt))
                 str.Append("Alt + ");
-            if (Modifiers.HasFlag(ModifierKeys.Windows))
+            if (Modifiers.HasFlag(KeyModifiers.Meta))
                 str.Append("Win + ");
 
             str.Append(Key);

@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Windows.Media;
-using Mapping_Tools.Annotations;
+using System.Drawing;
 
 namespace Mapping_Tools.Classes.BeatmapHelper {
 
@@ -12,7 +11,6 @@ namespace Mapping_Tools.Classes.BeatmapHelper {
             set => Set(ref name, value);
         }
 
-        [UsedImplicitly]
         public SpecialColour() { }
 
         public SpecialColour(Color color) : base(color) {

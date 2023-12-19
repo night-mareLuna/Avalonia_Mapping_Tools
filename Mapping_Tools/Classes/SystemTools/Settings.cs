@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
-using Mapping_Tools.Annotations;
+using Avalonia;
 
 namespace Mapping_Tools.Classes.SystemTools {
     public class Settings : BindableBase {
@@ -124,8 +124,7 @@ namespace Mapping_Tools.Classes.SystemTools {
             set => Set(ref quickUndoHotkey, value);
         }
 
-        [CanBeNull] private Version skipVersion;
-        [CanBeNull]
+        private Version skipVersion;
         public Version SkipVersion {
             get => skipVersion;
             set => Set(ref skipVersion, value);

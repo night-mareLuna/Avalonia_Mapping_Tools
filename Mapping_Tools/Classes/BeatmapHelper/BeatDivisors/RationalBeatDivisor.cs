@@ -1,5 +1,5 @@
 ﻿
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Mapping_Tools.Classes.BeatmapHelper.BeatDivisors {
     public class RationalBeatDivisor : IBeatDivisor {

@@ -1,0 +1,75 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Avalonia_Mapping_Tools.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+        x:Class="Avalonia_Mapping_Tools.Views.MapCleanerView"
+        x:DataType="vm:MapCleanerViewModel">
+
+	<StackPanel Margin="5 5">
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+			<TextBlock Margin="10 10"
+				FontSize="32"
+				FontWeight="Bold"
+				Text="Map Cleaner"/>
+
+			<Button Margin="5 5"
+				Width="32" 
+				Height="32"
+				Background="Transparent"
+				ToolTip.Tip="Click Me!"
+				Cursor="Help">
+				<materialIcons:MaterialIcon
+					Kind="HelpCircle"
+					Width="30"
+					Height="30"/>
+				<Button.Flyout>
+					<Flyout>
+						<TextBlock TextWrapping="Wrap"
+							Padding="5"
+							MaxWidth="400">
+							It cleans the current map of useless greenlines and it also lets you do some other stuff regarding the whole map.
+							<LineBreak/>
+							<LineBreak/>
+							Map cleaner cleans useless greenline stuff by storing all the influences of the timingpoints and then removing all the timingpoints and then rebuilding all the timingpoints in a good way. This means the greenlines automatically get resnapped to the objects that use them.
+						</TextBlock>
+					</Flyout>
+				</Button.Flyout>
+			</Button>
+		</StackPanel>
+
+		<CheckBox Cursor="Hand" Margin="5 -5">Analyze samples</CheckBox>
+		<CheckBox Cursor="Hand" Margin="5 -5">Resnap objects</CheckBox>
+		<CheckBox Cursor="Hand" Margin="5 -5">Resnap bookmarks</CheckBox>
+		<CheckBox Cursor="Hand" Margin="5 -5">Remove hitsounds</CheckBox>
+		<CheckBox Cursor="Hand" Margin="5 -5">Remove unused samples</CheckBox>
+		<CheckBox Cursor="Hand" Margin="5 -5">Remove muting</CheckBox>
+		<CheckBox Cursor="Hand" Margin="5 -5">Mute Unclickable Hitsounds</CheckBox>
+
+		<TextBlock Margin="5 20 0 0">Map info</TextBlock>
+		<CheckBox Cursor="Hand" Margin="5 -5">Map uses volume changes in sliders</CheckBox>
+		<CheckBox Cursor="Hand" Margin="5 -5">Map uses sampleset changes in sliders</CheckBox>
+		<CheckBox Cursor="Hand" Margin="5 -5">Map uses volume changes in spinners</CheckBox>
+
+		<TextBlock Margin="5 20 0 0">Signatures</TextBlock>
+		<TextBox Margin="5"
+			MinWidth="150"
+			HorizontalAlignment="Left"
+			Watermark="1/12, 1/16"/>
+
+		<Button Margin="10 10"
+			Width="98"
+			Height="98"
+			Background="Transparent"
+			HorizontalAlignment="Right"
+			VerticalAlignment="Bottom"
+			ToolTip.Tip="Run Map Cleaner">
+			<materialIcons:MaterialIcon
+				Kind="PlayCircle"
+				Width="100"
+				Height="100"/>
+		</Button>
+	</StackPanel>
+
+</UserControl>

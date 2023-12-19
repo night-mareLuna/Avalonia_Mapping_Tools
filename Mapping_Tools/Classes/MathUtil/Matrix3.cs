@@ -857,7 +857,7 @@ namespace Mapping_Tools.Classes.MathUtil {
         /// </summary>
         /// <param name="obj">The object to compare to.</param>
         /// <returns>True if the instances are equal; false otherwise.</returns>
-        public override bool Equals(object obj) {
+        public override bool Equals(object? obj) {
             if( !( obj is Matrix3 ) ) {
                 return false;
             }

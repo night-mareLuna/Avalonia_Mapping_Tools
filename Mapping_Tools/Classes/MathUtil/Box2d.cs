@@ -170,7 +170,7 @@ namespace Mapping_Tools.Classes.MathUtil {
         /// <summary>
         /// Implements Object.Equals.
         /// </summary>
-        public override bool Equals(object obj) {
+        public override bool Equals(object? obj) {
             return obj is Box2d && Equals((Box2d) obj);
         }
 

@@ -80,6 +80,13 @@ namespace Mapping_Tools.Classes.HitsoundStuff {
             }
         }
 
+		public enum Visibility
+		{
+			Visible = 0,
+			Hidden = 1,
+			Collapsed = 2
+		}
+
         /// <summary>
         /// 
         /// </summary>

@@ -1,4 +1,4 @@
-﻿using System.Windows.Media;
+﻿using System.Drawing;
 using Mapping_Tools.Classes.SystemTools;
 using static Mapping_Tools.Classes.BeatmapHelper.FileFormatHelper;
 
@@ -30,7 +30,7 @@ namespace Mapping_Tools.Classes.BeatmapHelper {
 
         /// <inheritdoc />
         public ComboColour(byte r, byte g, byte b) {
-            Color = Color.FromRgb(r, g, b);
+            Color = Color.FromArgb(r, g, b);
         }
 
         /// <inheritdoc />
@@ -47,7 +47,7 @@ namespace Mapping_Tools.Classes.BeatmapHelper {
             if (!TryParseInt(commaSplit[2], out int b))
                 throw new BeatmapParsingException("Failed to parse blue component of colour.", line);
 
-            Color = Color.FromRgb((byte)r, (byte)g, (byte)b);
+            Color = Color.FromArgb((byte)r, (byte)g, (byte)b);
         }
 
         public ComboColour Copy() {

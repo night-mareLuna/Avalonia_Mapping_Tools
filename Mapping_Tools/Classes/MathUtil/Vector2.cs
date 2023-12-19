@@ -21,6 +21,7 @@ SOFTWARE.
  */
 
 using System;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
@@ -67,7 +68,7 @@ namespace Mapping_Tools.Classes.MathUtil {
         /// </summary>
         /// <param name="x">The x coordinate of the net Vector2.</param>
         /// <param name="y">The y coordinate of the net Vector2.</param>
-        public Vector2(System.Windows.Point p) {
+        public Vector2(Point p) {
             X = p.X;
             Y = p.Y;
         }
@@ -1037,7 +1038,7 @@ namespace Mapping_Tools.Classes.MathUtil {
         /// </summary>
         /// <param name="obj">The object to compare to.</param>
         /// <returns>True if the instances are equal; false otherwise.</returns>
-        public override bool Equals(object obj) {
+        public override bool Equals(object? obj) {
             if( !( obj is Vector2 ) ) {
                 return false;
             }
