@@ -142,7 +142,7 @@ namespace Mapping_Tools.Classes.SystemTools {
             SongsPath = "";
             BackupsPath = "";
             MakeBackups = true;
-            UseEditorReader = true;
+            UseEditorReader = false;
             OverrideOsuSave = false;
             AutoReload = true;
             SmartQuickRunEnabled = true;

@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32;
-using MsBox.Avalonia;
+﻿using MsBox.Avalonia;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace Mapping_Tools.Classes.SystemTools {
     public static class SettingsManager {
@@ -158,20 +156,20 @@ namespace Mapping_Tools.Classes.SystemTools {
             return "Songs";
         }
 
-        private static string FindByDisplayName(RegistryKey parentKey, string name) {
-            var nameList = parentKey.GetSubKeyNames();
-            foreach (var t in nameList)
-            {
-                RegistryKey regKey = parentKey.OpenSubKey(t);
-                try {
-                    if (regKey != null && regKey.GetValue("DisplayName")?.ToString() == name) {
-                        return Path.GetDirectoryName(regKey.GetValue("UninstallString")?.ToString());
-                    }
-                } catch (NullReferenceException) { }
-            }
+        // private static string FindByDisplayName(RegistryKey parentKey, string name) {
+        //     var nameList = parentKey.GetSubKeyNames();
+        //     foreach (var t in nameList)
+        //     {
+        //         RegistryKey regKey = parentKey.OpenSubKey(t);
+        //         try {
+        //             if (regKey != null && regKey.GetValue("DisplayName")?.ToString() == name) {
+        //                 return Path.GetDirectoryName(regKey.GetValue("UninstallString")?.ToString());
+        //             }
+        //         } catch (NullReferenceException) { }
+        //     }
 
-            throw new KeyNotFoundException($"Could not find registry key with display name \"{name}\".");
-        }
+        //     throw new KeyNotFoundException($"Could not find registry key with display name \"{name}\".");
+        // }
 
         public static List<string[]> GetRecentMaps() {
             return Settings.RecentMaps;
