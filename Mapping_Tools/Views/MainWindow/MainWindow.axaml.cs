@@ -13,6 +13,7 @@ public partial class MainWindow : Window
 {
     public MainWindow()
     {
+		JsonWriter.CreateEmpty();
 		SetTheme();
         InitializeComponent();
 		DataContext = new MainWindowViewModel();

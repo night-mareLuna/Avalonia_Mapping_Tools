@@ -7,6 +7,23 @@ namespace Avalonia_Mapping_Tools.Models;
 
 public class JsonWriter
 {
+	public static void CreateEmpty(string name = "config.json")
+	{
+		if(Directory.Exists(Program.configPath))
+			return;
+
+		Config json = new Config
+		{
+			SelectedMaps = null,
+			SongFolder = null,
+			BackupFolder = Program.configPath + "/Backups",
+			DarkTheme = null
+		};
+
+		Console.WriteLine($"Creating folder {Program.configPath} and subfolders");
+		Directory.CreateDirectory(Program.configPath + "/Backups");
+		SaveJson(json, name);
+	}
 	public static async Task<string?> GetSong()
 	{
 		Config? json = await ReadJson();
@@ -19,10 +36,10 @@ public class JsonWriter
 		return json!.BackupFolder;
 	}
 
-	public static async Task<string?> GetCurrentMap()
+	public static async Task<string[]?> GetCurrentMap()
 	{
 		Config? json = await ReadJson();
-		return json!.SelectedMap;
+		return json!.SelectedMaps;
 	}
 
 	public static async void SetBackup(string folder)
@@ -53,15 +70,15 @@ public class JsonWriter
 		SaveJson(json);
 	}
 
-	public static async void SetCurrentMap(string? file)
+	public static async void SetCurrentMaps(string[]? file)
 	{
 		Config? json = await ReadJson();
 		if(json is not null)
-			json.SelectedMap = file;
+			json.SelectedMaps = file;
 		else
 			json = new Config
 			{
-				SelectedMap = file
+				SelectedMaps = file
 			};
 
 		SaveJson(json);
@@ -89,7 +106,7 @@ public class JsonWriter
 
 	private static async Task<Config?> ReadJson(string name = "config.json")
 	{
-		string fileName = name;
+		string fileName = Program.configPath + '/' + name;
 		try
 		{
 			using FileStream openStream = File.OpenRead(fileName);
@@ -106,7 +123,7 @@ public class JsonWriter
 
 	private static async void SaveJson(Config json, string name = "config.json")
 	{
-		string fileName = name;
+		string fileName = Program.configPath + '/' + name;
 		try
 		{
 			using FileStream createStream = File.Create(fileName);
@@ -122,7 +139,7 @@ public class JsonWriter
 
 public class Config
 {
-	public string? SelectedMap { get; set; }
+	public string[]? SelectedMaps { get; set; }
 	public string? SongFolder { get; set; }
 	public string? BackupFolder { get; set; }
 	public bool? DarkTheme { get; set; }
