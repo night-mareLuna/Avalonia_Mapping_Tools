@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using Avalonia_Mapping_Tools.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -8,42 +7,62 @@ namespace Avalonia_Mapping_Tools.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
-	[ObservableProperty] private int _CurrentItem;
+	[ObservableProperty] private int _CurrentItem = 0;
 	[ObservableProperty] private ViewModelBase _CurrentView;
 	[ObservableProperty] private ObservableCollection<string> _ToolsList;
 	[ObservableProperty] private bool _OpenPanel = true;
-	[ObservableProperty] private string? _CurrentMap;
+	[ObservableProperty] private string _DisplayCurrentMaps = "No Beatmap Selected!";
+	[ObservableProperty] private string _DisplayCurrentMapsTooltip = "No Beatmap Selected!";
+	[ObservableProperty] private string _TotalSelectedMaps = "(0) maps total";
+	private static string[]? CurrentMaps;
 	private static MainWindowViewModel? Me;
 
 	private enum Tools
 	{
-		MapCleaner = 0,
-		Preferences = 1
+		Preferences = 0,
+		MapCleaner = 1
 	}
 
 	public MainWindowViewModel()
 	{
 		Me = this;
-		GetCurrentMap();
-		CurrentView = new MapCleanerViewModel();
-		ToolsList = new ObservableCollection<string>(["Map Cleaner", "Preferences"]);
+		DisplayCurrentMap();
+		CurrentView = new PreferencesViewModel();
+		ToolsList = new ObservableCollection<string>(["Preferences", "Map Cleaner"]);
 	}
 
-	private async void GetCurrentMap()
+	private async void DisplayCurrentMap()
 	{
-		string? fromJson = null;
 		try
 		{
-			fromJson = await JsonWriter.GetCurrentMap();
+			string[]? fromJson = await JsonWriter.GetCurrentMap();
+			SetCurrentMaps(fromJson);
 		}
 		catch(Exception e)
 		{
 			Console.WriteLine(e.Message);
 		}
-		CurrentMap = fromJson!=null ? fromJson.Split('/')[^1] : "No beatmap selected!";
 	}
 
-	public static void SetCurrentmap(string map) =>	Me!.CurrentMap = map;
+	public static void SetCurrentMaps(string[]? maps)
+	{
+		if(maps is not null)
+		{
+			Me!.DisplayCurrentMaps = "";
+			for(int i = 0; i < maps.Length; i++)
+			{
+				if(i != 0)	Me!.DisplayCurrentMaps += " | ";
+				Me!.DisplayCurrentMaps += maps[i].Split('/')[^1];
+			}
+			Me!.TotalSelectedMaps = maps.Length == 1 ?
+				$"({maps.Length}) map total" : $"({maps.Length}) maps total";
+		}
+		CurrentMaps = maps;
+	}
+	public static string[]? GetCurrentMaps()
+	{
+		return CurrentMaps;
+	}
 
 	public void PanelView() => OpenPanel = !OpenPanel;
 
@@ -64,4 +83,9 @@ public partial class MainWindowViewModel : ViewModelBase
 	{
 		UpdateView(newValue);
 	}
+
+    partial void OnDisplayCurrentMapsChanged(string value)
+    {
+        DisplayCurrentMapsTooltip = DisplayCurrentMaps.Replace(" | ", Environment.NewLine);
+    }
 }

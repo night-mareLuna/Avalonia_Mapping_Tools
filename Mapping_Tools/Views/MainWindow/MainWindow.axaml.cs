@@ -33,7 +33,6 @@ public partial class MainWindow : Window
 		{
 			Console.WriteLine(e.Message);
 		}
-
 	}
 
 	private async void OpenBeatmap(object obj, RoutedEventArgs args)
@@ -46,16 +45,18 @@ public partial class MainWindow : Window
 		var file = await storage.OpenFilePickerAsync(new FilePickerOpenOptions
 		{
 			Title = "Select osu! beatmap",
-			AllowMultiple = false,
+			AllowMultiple = true,
 			FileTypeFilter = new[] { OsuFile },
 			SuggestedStartLocation = songFolder
 		});
 
 		if(file.Count > 0)
 		{
-			string map = file[0].Name;
-			MainWindowViewModel.SetCurrentmap(map);
-			JsonWriter.SetCurrentMap(await file[0].SaveBookmarkAsync());
+			string?[] maps = new string[file.Count];
+			for(int i = 0; i < file.Count; i++)
+				maps[i] = await file[i].SaveBookmarkAsync();
+			MainWindowViewModel.SetCurrentMaps(maps!);
+			JsonWriter.SetCurrentMaps(maps!);
 		}
 	}
 

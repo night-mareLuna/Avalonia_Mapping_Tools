@@ -15,7 +15,7 @@
 
 		<!-- TOP BAR -->
 
-		<Grid ColumnDefinitions="32,Auto,*">
+		<Grid ColumnDefinitions="32,Auto,*,150">
 			<Button Grid.Column="0"
 				Background="Transparent"
 				Width="32"
@@ -60,9 +60,21 @@
 			</Menu>
 
 			<TextBlock Grid.Column="2"
+				Margin="10"
+				FontStyle="Italic"
 				VerticalAlignment="Center"
 				HorizontalAlignment="Center"
-				Text="{Binding CurrentMap}"/>
+				ToolTip.Tip="{Binding DisplayCurrentMapsTooltip}"
+				Text="{Binding DisplayCurrentMaps}"/>
+
+			<TextBlock Grid.Column="3"
+				Margin="5"
+				FontStyle="Italic"
+				FontWeight="Bold"
+				VerticalAlignment="Center" 
+				HorizontalAlignment="Center" 
+				ToolTip.Tip="{Binding TotalSelectedMaps}"
+				Text="{Binding TotalSelectedMaps}"/>
 		</Grid>
 
 		<!-- CONTENT -->
