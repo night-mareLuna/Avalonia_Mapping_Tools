@@ -7,18 +7,22 @@ using Mapping_Tools.Classes.BeatmapHelper;
 using Mapping_Tools.Classes.Exceptions;
 using Mapping_Tools.Classes.ToolHelpers;
 using Mapping_Tools.Classes.Tools;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Enums;
 
 namespace Mapping_Tools.Classes.SystemTools {
     public static class BackupManager {
-        public static bool SaveMapBackup(string fileToCopy, bool forced = false, string filename = null, string backupCode = "") {
+        public static async Task<bool> SaveMapBackup(string fileToCopy, bool forced = false, string? filename = null, string backupCode = "") {
             if (!File.Exists(fileToCopy)) {
-                MessageBox.Show("Selected beatmap file does not exist! Check if you have the correct file selected in the current beatmap field, or try re-selecting the beatmap file.", "Error");
-                return false;
+                var box = MessageBoxManager.GetMessageBoxStandard("Error", "Selected beatmap file does not exist! Check if you have the correct file selected in the current beatmap field, or try re-selecting the beatmap file.");
+                await box.ShowAsync();
+				return false;
             }
 
             string destinationDirectory = SettingsManager.GetBackupsPath();
             if (!Directory.Exists(destinationDirectory)) {
-                MessageBox.Show("Backups folder does not exist! Check in the Preferences if the path to your backups folder is correct and the folder exists.", "Error");
+                var box = MessageBoxManager.GetMessageBoxStandard("Error", "Backups folder does not exist! Check in the Preferences if the path to your backups folder is correct and the folder exists.");
+				await box.ShowAsync();
                 return false;
             }
 
@@ -47,15 +51,15 @@ namespace Mapping_Tools.Classes.SystemTools {
 
                 return true;
             } catch (Exception ex) {
-                ex.Show();
+                await ex.Show();
                 return false;
             }
         }
 
-        public static bool SaveMapBackup(string[] filesToCopy, bool forced = false, string backupCode = "") {
+        public static async Task<bool> SaveMapBackup(string[] filesToCopy, bool forced = false, string backupCode = "") {
             bool result = true;
             foreach (string fileToCopy in filesToCopy) {
-                result = SaveMapBackup(fileToCopy, forced, backupCode: backupCode);
+                result = await SaveMapBackup(fileToCopy, forced, backupCode: backupCode);
                 if (!result)
                     break;
             }
@@ -82,7 +86,7 @@ namespace Mapping_Tools.Classes.SystemTools {
             File.Copy(backupPath, destination, true);
         }
 
-        public static void QuickUndo() {
+        public static async void QuickUndo() {
             try {
                 var path = IOHelper.GetCurrentBeatmap();
                 var backupFile = new DirectoryInfo(SettingsManager.GetBackupsPath()).GetFiles().OrderByDescending(x => x.CreationTime).FirstOrDefault();
@@ -90,23 +94,26 @@ namespace Mapping_Tools.Classes.SystemTools {
                     try {
                         LoadMapBackup(backupFile.FullName, path, false);
                     } catch (BeatmapIncompatibleException ex) {
-                        ex.Show();
-                        var result = MessageBox.Show("Do you want to load the backup anyways?", "Load backup",
-                            MessageBoxButton.YesNo);
-                        if (result == MessageBoxResult.Yes) {
+                        await ex.Show();
+						var backupBox = MessageBoxManager.GetMessageBoxStandard("Load backup", "Do you want to load the backup anyways?",
+							ButtonEnum.YesNo);
+						var result = await backupBox.ShowAsync();
+                        if (result == ButtonResult.Yes) {
                             LoadMapBackup(backupFile.FullName, path, true);
                         } else {
                             return;
                         }
                     }
-                    Task.Factory.StartNew(() => MainWindow.MessageQueue.Enqueue("Backup successfully loaded!"));
+                    //Task.Factory.StartNew(() => MainWindow.MessageQueue.Enqueue("Backup successfully loaded!"));
+					var box = MessageBoxManager.GetMessageBoxStandard("","Backup successfully loaded!");
+					await box.ShowAsync();
 
-                    if (SettingsManager.Settings.AutoReload) {
-                        ListenerManager.ForceReloadEditor();
-                    }
+                    // if (SettingsManager.Settings.AutoReload) {
+                    //     ListenerManager.ForceReloadEditor();
+                    // }
                 }
             } catch (Exception ex) {
-                ex.Show();
+                await ex.Show();
             }
         }
 
@@ -116,14 +123,15 @@ namespace Mapping_Tools.Classes.SystemTools {
         /// <param name="mapPath"></param>
         /// <returns></returns>
         private static string GetNewestVersionPath(string mapPath) {
-            var editor = EditorReaderStuff.GetNewestVersionOrNot(mapPath);
+			throw new NotImplementedException("Editor Reador is only in the original Mapping Tools (exclusive to Windows)!");
+            // var editor = EditorReaderStuff.GetNewestVersionOrNot(mapPath);
 
-            // Save temp version
-            var tempPath = Path.Combine(MainWindow.AppDataPath, "temp.osu");
+            // // Save temp version
+            // var tempPath = Path.Combine(MainWindow.AppDataPath, "temp.osu");
 
-            Editor.SaveFile(tempPath, editor.Beatmap.GetLines());
+            // Editor.SaveFile(tempPath, editor.Beatmap.GetLines());
 
-            return tempPath;
+            // return tempPath;
         }
     }
 }
