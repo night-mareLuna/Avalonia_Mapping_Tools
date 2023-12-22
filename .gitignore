@@ -334,3 +334,6 @@ ASALocalRun/
 # Packages
 packages
 packages/
+
+# VSCode Generated Folder
+.vscode
