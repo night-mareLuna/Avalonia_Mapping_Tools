@@ -1,4 +1,4 @@
-﻿using System.Windows;
+﻿using Mapping_Tools.Classes.BeatmapHelper.Enums;
 
 namespace Mapping_Tools.Components.Domain
 {

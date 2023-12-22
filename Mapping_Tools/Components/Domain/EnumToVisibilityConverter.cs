@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Globalization;
-using System.Windows;
-using System.Windows.Data;
+using Avalonia.Data;
+using Avalonia.Data.Converters;
+using Mapping_Tools.Classes.BeatmapHelper.Enums;
 
 namespace Mapping_Tools.Components.Domain{
     /// <summary>
@@ -9,13 +10,13 @@ namespace Mapping_Tools.Components.Domain{
     /// </summary>
     public class EnumToVisibilityConverter : IValueConverter {
         /// <inheritdoc />
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+        public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) {
             return value != null && value.Equals(parameter) ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <inheritdoc />
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
-            return value != null && value.Equals(Visibility.Visible) ? parameter : Binding.DoNothing;
+        public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) {
+            return value != null && value.Equals(Visibility.Visible) ? parameter! : BindingOperations.DoNothing;
         }
     }
 }

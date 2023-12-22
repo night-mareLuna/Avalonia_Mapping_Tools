@@ -1,13 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
-using System.Windows.Data;
-using System.Windows;
+using Avalonia.Data.Converters;
+using Mapping_Tools.Classes.BeatmapHelper.Enums;
 
 namespace Mapping_Tools.Components.Domain
 {
     public class BooleanOrToVisibilityConverter : IMultiValueConverter
     {
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
         {
             foreach (object value in values) {
                 if ((value is bool) && (bool)value == false) {

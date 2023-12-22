@@ -14,10 +14,10 @@
     <Folder Include="Models/" />
     <AvaloniaResource Include="Data\**" />
 
-	<Content Remove="Components\**" />
-	<Compile Remove="Components\**" />
-	<EmbeddedResource Remove="Components\**" />
-	<None Remove="Components\**" />
+	<Content Remove="Components/ToFix/**" />
+	<Compile Remove="Components/ToFix/**" />
+	<EmbeddedResource Remove="Components/ToFix/**" />
+	<None Remove="Components/ToFix/**" />
 
 	<Content Remove="Classes/ToFix/**" />
 	<Compile Remove="Classes/ToFix/**" />
