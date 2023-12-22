@@ -1,27 +1,28 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
-using System.Windows.Controls;
-using System.Windows.Data;
+using Avalonia.Data;
+using Avalonia.Data.Converters;
 using Mapping_Tools.Classes.SystemTools;
 
 namespace Mapping_Tools.Components.Domain {
     internal class DoubleToStringConverter : IValueConverter {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+        public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) {
             if (value != null) {
                 if ((double) value == 727) {
                     return "727 WYSI";
                 }
                 return ((double) value).ToString(CultureInfo.InvariantCulture);
             }
-            return parameter != null ? parameter.ToString() : "";
+            return parameter != null ? parameter.ToString()! : "";
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
+        public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) {
             if (value == null) {
                 if (parameter != null) {
-                    return double.Parse(parameter.ToString());
+                    return double.Parse(parameter.ToString()!);
                 }
-                return new ValidationResult(false, "Cannot convert back null.");
+                return new ValidationResult("Cannot convert back null.");
             }
 
             if (value.ToString() == "727 WYSI") {
@@ -29,14 +30,18 @@ namespace Mapping_Tools.Components.Domain {
             }
 
             if (parameter == null) {
-                if (TypeConverters.TryParseDouble(value.ToString(), out double result1)) {
+                if (TypeConverters.TryParseDouble(value.ToString()!, out double result1)) {
                     return result1;
                 }
 
-                return new ValidationResult(false, "Double format error.");
+                return new BindingNotification(new ValidationException("Double format error."),
+					BindingErrorType.DataValidationError);
             }
-            TypeConverters.TryParseDouble(value.ToString(), out double result2, double.Parse(parameter.ToString()));
-            return result2;
+            if(TypeConverters.TryParseDouble(value.ToString()!, out double result2, double.Parse(parameter.ToString()!)))
+				return result2;
+
+			return new BindingNotification(new ValidationException("Something went wrong"),
+				BindingErrorType.Error);
         }
     }
 }

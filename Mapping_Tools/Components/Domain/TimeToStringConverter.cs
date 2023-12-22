@@ -1,13 +1,14 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
-using System.Windows.Controls;
-using System.Windows.Data;
+using Avalonia.Data;
+using Avalonia.Data.Converters;
 using Mapping_Tools.Classes.BeatmapHelper;
 using Mapping_Tools.Classes.SystemTools;
 
 namespace Mapping_Tools.Components.Domain {
     public class TimeToStringConverter : IValueConverter {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+        public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) {
             if (!(value is double timeValue)) {
                 return "";
             }
@@ -25,7 +26,7 @@ namespace Mapping_Tools.Components.Domain {
             }
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) {
             if (!(value is string str)) {
                 return null;
             }
@@ -44,7 +45,8 @@ namespace Mapping_Tools.Components.Domain {
                 return result3;
             }
 
-            return new ValidationResult(false, "Time format error.");
+            return new BindingNotification(new ValidationException("Time format error."),
+				BindingErrorType.DataValidationError);
         }
     }
 }

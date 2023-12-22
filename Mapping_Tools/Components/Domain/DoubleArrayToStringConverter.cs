@@ -1,14 +1,15 @@
-﻿using Mapping_Tools.Classes.BeatmapHelper;
+﻿using Avalonia.Data;
+using Avalonia.Data.Converters;
+using Mapping_Tools.Classes.BeatmapHelper;
 using Mapping_Tools.Classes.SystemTools;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Text;
-using System.Windows.Controls;
-using System.Windows.Data;
 
 namespace Mapping_Tools.Components.Domain {
     internal class DoubleArrayToStringConverter : IValueConverter {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+        public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) {
             if (!(value is double[] beatDivisors)) return string.Empty;
 
             var builder = new StringBuilder();
@@ -26,7 +27,7 @@ namespace Mapping_Tools.Components.Domain {
             return builder.ToString();
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
+        public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) {
             if (!(value is string str)) return new double[0];
             if (string.IsNullOrWhiteSpace(str)) return new double[0];
 
@@ -40,7 +41,8 @@ namespace Mapping_Tools.Components.Domain {
                 if (valid) {
                     beatDivisors[i] = doubleValue;
                 } else {
-                    return new ValidationResult(false, "Double format error.");
+                    return new BindingNotification(new ValidationException("Double format error."),
+						BindingErrorType.DataValidationError);
                 }
             }
 

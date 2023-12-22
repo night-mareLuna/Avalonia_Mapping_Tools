@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Windows.Data;
+using Avalonia.Data.Converters;
 
 namespace Mapping_Tools.Components.Domain {
     public class BooleanConverter<T> : IValueConverter, IMultiValueConverter {
@@ -13,15 +13,15 @@ namespace Mapping_Tools.Components.Domain {
         public T True { get; set; }
         public T False { get; set; }
 
-        public virtual object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+        public virtual object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) {
             return value is bool && ((bool)value) ? True : False;
         }
 
-        public virtual object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
+        public virtual object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) {
             return value is T && EqualityComparer<T>.Default.Equals((T)value, True);
         }
 
-        public virtual object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        public virtual object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
         {
             return values[0] is bool && ((bool)values[0]) ? True : False;
         }

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Globalization;
-using System.Windows.Data;
-using System.Windows.Media;
+using Avalonia.Data;
+using Avalonia.Data.Converters;
+using Avalonia.Media;
 
 namespace Mapping_Tools.Components.Domain
 {
@@ -18,13 +19,13 @@ namespace Mapping_Tools.Components.Domain
         /// <param name="parameter"></param>
         /// <param name="culture"></param>
         /// <returns></returns>
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             if (value is Color color)
             {
                 return new SolidColorBrush(color);
             }
-            return Binding.DoNothing;
+            return BindingOperations.DoNothing;
         }
 
         /// <summary>
@@ -35,7 +36,7 @@ namespace Mapping_Tools.Components.Domain
         /// <param name="parameter"></param>
         /// <param name="culture"></param>
         /// <returns></returns>
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             if (value is SolidColorBrush brush)
             {
