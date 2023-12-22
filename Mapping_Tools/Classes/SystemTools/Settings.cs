@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows;
 using Avalonia;
 
 namespace Mapping_Tools.Classes.SystemTools {
@@ -130,6 +129,13 @@ namespace Mapping_Tools.Classes.SystemTools {
             set => Set(ref skipVersion, value);
         }
 
+		private bool darkTheme;
+		public bool DarkTheme
+		{
+			get => darkTheme;
+			set => Set(ref darkTheme, value);
+		}
+
         /// <summary>
         /// Makes a new Settings objects and initializes default settings.
         /// </summary>
@@ -144,8 +150,8 @@ namespace Mapping_Tools.Classes.SystemTools {
             MakeBackups = true;
             UseEditorReader = false;
             OverrideOsuSave = false;
-            AutoReload = true;
-            SmartQuickRunEnabled = true;
+            AutoReload = false;
+            SmartQuickRunEnabled = false;
             NoneQuickRunTool = "<Current Tool>";
             SingleQuickRunTool = "<Current Tool>";
             MultipleQuickRunTool = "<Current Tool>";
@@ -154,6 +160,7 @@ namespace Mapping_Tools.Classes.SystemTools {
             PeriodicBackupInterval = TimeSpan.FromMinutes(10);
             CurrentBeatmapDefaultFolder = true;
             SkipVersion = null;
+			DarkTheme = true;
         }
 
         public void CopyTo(Settings other) {

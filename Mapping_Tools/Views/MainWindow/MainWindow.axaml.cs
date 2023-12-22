@@ -1,11 +1,13 @@
 using System;
+using System.IO;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using Avalonia.Styling;
-using Avalonia_Mapping_Tools.Models;
 using Avalonia_Mapping_Tools.ViewModels;
+using Mapping_Tools.Classes;
+using Mapping_Tools.Classes.SystemTools;
 
 namespace Avalonia_Mapping_Tools.Views;
 
@@ -13,34 +15,46 @@ public partial class MainWindow : Window
 {
     public MainWindow()
     {
-		JsonWriter.CreateEmpty();
-		SetTheme();
+		Setup();
         InitializeComponent();
 		DataContext = new MainWindowViewModel();
     }
 
-	private static async void SetTheme()
+	private static void Setup()
+	{
+		try
+		{
+			Directory.CreateDirectory(Program.configPath + "/Backups");
+			Directory.CreateDirectory(Program.configPath + "/Exports");
+			SettingsManager.LoadConfig();
+		}
+		catch (Exception e)
+		{
+			e.Show();
+		}
+		SetTheme();
+	}
+
+	private static void SetTheme()
 	{
 		bool? theme;
 		try
 		{
-			theme = await JsonWriter.GetTheme();
+			theme = SettingsManager.GetTheme();
 			if(theme is null) return;
 			Application.Current!.RequestedThemeVariant = (bool)theme ?
 				ThemeVariant.Dark : ThemeVariant.Light;
 		}
 		catch(Exception e)
 		{
-			Console.WriteLine(e.Message);
+			e.Show();
 		}
 	}
 
 	private async void OpenBeatmap(object obj, RoutedEventArgs args)
 	{
 		var storage = StorageProvider;
-		string? strSongFolder = await JsonWriter.GetSong();
-		IStorageFolder? songFolder = strSongFolder!=null ?
-			await storage.TryGetFolderFromPathAsync(new Uri(strSongFolder)) : null;
+		IStorageFolder? songFolder = await storage.TryGetFolderFromPathAsync(SettingsManager.GetSongsPath());
 
 		var file = await storage.OpenFilePickerAsync(new FilePickerOpenOptions
 		{
@@ -52,15 +66,21 @@ public partial class MainWindow : Window
 
 		if(file.Count > 0)
 		{
-			string?[] maps = new string[file.Count];
+			string[] maps = new string[file.Count];
 			for(int i = 0; i < file.Count; i++)
-				maps[i] = await file[i].SaveBookmarkAsync();
+				maps[i] = (await file[i].SaveBookmarkAsync())!;
 			MainWindowViewModel.SetCurrentMaps(maps!);
-			JsonWriter.SetCurrentMaps(maps!);
+			SettingsManager.AddRecentMap(maps, DateTime.Now);
 		}
 	}
 
-	private static FilePickerFileType OsuFile { get; } = new("osu! beatmap file")
+    protected override async void OnClosing(WindowClosingEventArgs e)
+    {
+		await SettingsManager.WriteToJson();
+        base.OnClosing(e);
+    }
+
+    private static FilePickerFileType OsuFile { get; } = new("osu! beatmap file")
 	{
 		Patterns = new[] { "*.osu" }
 	};

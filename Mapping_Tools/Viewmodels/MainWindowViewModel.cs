@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using Avalonia_Mapping_Tools.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Mapping_Tools.Classes.SystemTools;
 
 namespace Avalonia_Mapping_Tools.ViewModels;
 
@@ -31,11 +31,11 @@ public partial class MainWindowViewModel : ViewModelBase
 		ToolsList = new ObservableCollection<string>(["Preferences", "Map Cleaner"]);
 	}
 
-	private async void DisplayCurrentMap()
+	private static void DisplayCurrentMap()
 	{
 		try
 		{
-			string[]? fromJson = await JsonWriter.GetCurrentMap();
+			string[] fromJson = SettingsManager.GetLatestCurrentMaps();
 			SetCurrentMaps(fromJson);
 		}
 		catch(Exception e)
@@ -44,9 +44,9 @@ public partial class MainWindowViewModel : ViewModelBase
 		}
 	}
 
-	public static void SetCurrentMaps(string[]? maps)
+	public static void SetCurrentMaps(string[] maps)
 	{
-		if(maps is not null)
+		if(!string.IsNullOrWhiteSpace(maps[0]))
 		{
 			Me!.DisplayCurrentMaps = "";
 			for(int i = 0; i < maps.Length; i++)

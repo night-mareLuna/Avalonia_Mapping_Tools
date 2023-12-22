@@ -1,17 +1,28 @@
 using System;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
-using Avalonia_Mapping_Tools.Models;
-using Avalonia_Mapping_Tools.ViewModels;
+using Avalonia.Styling;
+using Mapping_Tools.Classes.SystemTools;
 
 namespace Avalonia_Mapping_Tools.Views;
 public partial class PreferencesView : UserControl
 {
 	public PreferencesView()
 	{
-		DataContext = new PreferencesViewModel();
+		DataContext = SettingsManager.Settings;
 		InitializeComponent();
+	}
+
+	private void SetTheme(object obj, RoutedEventArgs args)
+	{
+		bool? darkTheme = (obj as ToggleSwitch)!.IsChecked;
+		if(darkTheme is null)
+			Application.Current!.RequestedThemeVariant = ThemeVariant.Default;
+		else
+			Application.Current!.RequestedThemeVariant = (bool)darkTheme ?
+				ThemeVariant.Dark : ThemeVariant.Light;
 	}
 
 	public async void SelectFolder(object obj, RoutedEventArgs args)
@@ -25,11 +36,11 @@ public partial class PreferencesView : UserControl
 		switch(button)
 		{
 			case 0:
-				strLastFolder = await JsonWriter.GetSong();
+				strLastFolder = SettingsManager.GetSongsPath();
 				pickerTitle = "Select osu! song folder";
 				break;
 			case 1:
-				strLastFolder = await JsonWriter.GetBackup();
+				strLastFolder = SettingsManager.GetBackupsPath();
 				pickerTitle = "Select Mapping Tools backups folder";
 				break;
 			default:
@@ -38,19 +49,28 @@ public partial class PreferencesView : UserControl
 				break;
 		}
 		IStorageFolder? lastFolder = strLastFolder != null ?
-			await storage.TryGetFolderFromPathAsync(new Uri(strLastFolder)) : null;
+			await storage.TryGetFolderFromPathAsync(strLastFolder) : null;
 		
 		var path = await storage.OpenFolderPickerAsync(new FolderPickerOpenOptions
 		{
-		
 			Title = pickerTitle,
 			AllowMultiple = false,
-			SuggestedStartLocation = lastFolder
+			SuggestedStartLocation = lastFolder // PLEASE TELL ME THIS IS BUGGED BECAUSE I CANNOT RN :(
 		});
 
 		if(path.Count > 0)
-#pragma warning disable CS8604 // Possible null reference argument.
-			PreferencesViewModel.SetFolder(button, await path[0].SaveBookmarkAsync());
-#pragma warning restore CS8604 // Possible null reference argument.
+		{
+			switch(button)
+			{
+				case 0:
+					SettingsManager.Settings.SongsPath = (await path[0].SaveBookmarkAsync())!;
+					break;
+				case 1:
+					SettingsManager.Settings.BackupsPath = (await path[0].SaveBookmarkAsync())!;
+					break;
+				default:
+					break;
+			}
+		}
 	}
 }

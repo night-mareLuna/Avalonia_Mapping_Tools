@@ -1,7 +1,9 @@
-﻿using MsBox.Avalonia;
+﻿using Avalonia_Mapping_Tools;
+using MsBox.Avalonia;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -16,10 +18,11 @@ namespace Mapping_Tools.Classes.SystemTools {
         };
 
         public static readonly Settings Settings = new();
+		private static readonly string ConfigFolder = Program.configPath;
         public static bool InstanceComplete;
 
         public static async void LoadConfig() {
-            JsonPath = "config.json";
+            JsonPath = ConfigFolder + "/config.json";
             InstanceComplete = File.Exists(JsonPath) ? await LoadFromJson() : await CreateJson();
 
             try {
@@ -33,7 +36,7 @@ namespace Mapping_Tools.Classes.SystemTools {
             try {
                 using( StreamReader sr = new StreamReader(JsonPath)) {
                     using (JsonReader reader = new JsonTextReader(sr)) {
-                        Settings newSettings = serializer.Deserialize<Settings>(reader);
+                        Settings newSettings = serializer.Deserialize<Settings>(reader)!;
                         newSettings.CopyTo(Settings);
                     }
                 }
@@ -110,20 +113,27 @@ namespace Mapping_Tools.Classes.SystemTools {
         }
 
         public static void DefaultPaths() {
-            // if (string.IsNullOrWhiteSpace(Settings.OsuPath)) {
-            //     try {
-            //         var regKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall");
-            //         Settings.OsuPath = FindByDisplayName(regKey, "osu!");
-            //     } catch (KeyNotFoundException) {
-            //         try {
-            //             var regKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall");
-            //             Settings.OsuPath = FindByDisplayName(regKey, "osu!");
-            //         } catch (KeyNotFoundException) {
-            //             Settings.OsuPath = Path.Combine(MainWindow.AppCommon, "osu!");
-            //             MessageBox.Show("Could not automatically find osu! install directory. Please set the correct paths in the Preferences.");
-            //         }
-            //     }
-            // }
+            if (string.IsNullOrWhiteSpace(Settings.OsuPath)) {
+             //try {
+             //    var regKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall");
+             //    Settings.OsuPath = FindByDisplayName(regKey, "osu!");
+             //} catch (KeyNotFoundException) {
+             //    try {
+             //        var regKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall");
+             //        Settings.OsuPath = FindByDisplayName(regKey, "osu!");
+             //    } catch (KeyNotFoundException) {
+             //        Settings.OsuPath = Path.Combine(AppComm, "osu!");
+             //        MessageBox.Show("Could not automatically find osu! install directory. Please set the correct paths in the Preferences.");
+             //    }
+             //}
+				Settings.OsuPath = FindOsuPath();
+				if(Settings.OsuPath == string.Empty)
+				{
+					var box = MessageBoxManager.GetMessageBoxStandard("Error!",
+						"Could not automatically find osu! install directory. Please set the correct paths in the Preferences.");
+					box.ShowAsync();
+				}
+            }
 
             if (string.IsNullOrWhiteSpace(Settings.OsuConfigPath)) {
                 Settings.OsuConfigPath = Path.Combine(Settings.OsuPath, $"osu!.{Environment.UserName}.cfg");
@@ -135,9 +145,9 @@ namespace Mapping_Tools.Classes.SystemTools {
             }
 
             if (string.IsNullOrWhiteSpace(Settings.BackupsPath)) {
-                Settings.BackupsPath = "Backups";
+                Settings.BackupsPath = ConfigFolder + "/Backups";
             }
-            Directory.CreateDirectory(Settings.BackupsPath);
+            //Directory.CreateDirectory(Settings.BackupsPath);
         }
 
         private static string GetBeatmapDirectory(string configPath) {
@@ -198,6 +208,55 @@ namespace Mapping_Tools.Classes.SystemTools {
         public static bool GetMakeBackups() {
             return Settings.MakeBackups;
         }
+
+		public static bool GetTheme() {
+			return Settings.DarkTheme;
+		}
+
+		private static string FindOsuPath()
+		{
+			string path = string.Empty;
+			
+			string result = BashCommand("osu-wine --info");
+			foreach(string line in result.Split(Environment.NewLine))
+			{
+				if(line.Contains("osu! folder:"))
+					return line.Split(":")[^1].Trim()[1..^1] + '/';
+			}
+
+			return path;
+		}
+
+		private static string BashCommand(string command)
+		{
+			if(string.IsNullOrWhiteSpace(command))
+				return string.Empty;
+
+			string commandOutput = string.Empty;
+			try
+			{
+				var process = new Process()
+				{
+					StartInfo = new ProcessStartInfo
+					{
+						FileName = "/bin/bash",
+						Arguments = "-c \"command\"",
+						RedirectStandardOutput = true,
+						UseShellExecute = false,
+						CreateNoWindow = true
+					}
+				};
+				process.Start();
+				commandOutput = process.StandardOutput.ReadToEnd();
+				process.WaitForExit();
+			}
+			catch(Exception e)
+			{
+                Console.WriteLine(e.Message);
+            }
+
+			return commandOutput;
+		}
 
         // internal static void UpdateSettings() {
         //     Settings.MainWindowMaximized = MainWindow.AppWindow.WindowState == WindowState.Maximized;
