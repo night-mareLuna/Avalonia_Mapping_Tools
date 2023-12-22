@@ -33,12 +33,12 @@ namespace Mapping_Tools.Classes {
         // }
 
 		public static async Task<ButtonResult> Show(this Exception exception) {
-            var box = MessageBoxManager.GetMessageBoxStandard(exception.MessageStackTrace(), "Error", ButtonEnum.OkCancel);
+            var box = MessageBoxManager.GetMessageBoxStandard("Error", exception.MessageStackTrace(), ButtonEnum.OkCancel);
 			var result = await box.ShowAsync();
             if (result == ButtonResult.Cancel) return result;
             var ex = exception.InnerException;
             while (ex != null) {
-                box = MessageBoxManager.GetMessageBoxStandard(ex.MessageStackTrace(), "Inner exception", ButtonEnum.OkCancel);
+                box = MessageBoxManager.GetMessageBoxStandard("Inner exception", ex.MessageStackTrace(), ButtonEnum.OkCancel);
 				result = await box.ShowAsync();
                 ex = result == ButtonResult.Ok ? ex.InnerException : null;
             }
