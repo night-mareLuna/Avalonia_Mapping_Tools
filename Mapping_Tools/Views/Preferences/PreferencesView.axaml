@@ -1,11 +1,11 @@
 <UserControl xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:Avalonia_Mapping_Tools.ViewModels"
+        xmlns:vm="using:Mapping_Tools.Classes.SystemTools"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
         x:Class="Avalonia_Mapping_Tools.Views.PreferencesView"
-        x:DataType="vm:PreferencesViewModel">
+        x:DataType="vm:Settings">
 
 	<StackPanel Margin="5 5">
 		<TextBlock Margin="10 10"
@@ -25,7 +25,7 @@
 				Height="32"
 				MinWidth="435"
 				Watermark="osu! songs folder"
-				Text="{Binding OsuSongsFolder, Mode=TwoWay}"/>
+				Text="{Binding SongsPath, Mode=TwoWay}"/>
 			<Button	Name="osuSongsFolder"
 				Background="Transparent"
 				Width="32"
@@ -46,7 +46,7 @@
 				Height="32"
 				MinWidth="435"
 				Watermark="backups folder"
-				Text="{Binding BackupsFolder, Mode=TwoWay}"/>
+				Text="{Binding BackupsPath, Mode=TwoWay}"/>
 			<Button Name="backupsFolder"
 				Background="Transparent"
 				Width="32"
@@ -66,8 +66,7 @@
 				Content="Theme"
 				OffContent="Light" 
 				OnContent="Dark"
-				Command="{Binding SetTheme}"
-				CommandParameter="{Binding #ThemeSwitch.IsChecked}"/>
+				Click="SetTheme"/>
 		</StackPanel>
 
 	</StackPanel>

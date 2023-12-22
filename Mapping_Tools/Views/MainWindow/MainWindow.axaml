@@ -60,10 +60,10 @@
 			</Menu>
 
 			<TextBlock Grid.Column="2"
-				Margin="10"
+				Margin="5"
 				FontStyle="Italic"
-				VerticalAlignment="Center"
 				HorizontalAlignment="Center"
+				TextWrapping="Wrap"
 				ToolTip.Tip="{Binding DisplayCurrentMapsTooltip}"
 				Text="{Binding DisplayCurrentMaps}"/>
 
@@ -71,8 +71,8 @@
 				Margin="5"
 				FontStyle="Italic"
 				FontWeight="Bold"
-				VerticalAlignment="Center" 
-				HorizontalAlignment="Center" 
+				VerticalAlignment="Center"
+				HorizontalAlignment="Right" 
 				ToolTip.Tip="{Binding TotalSelectedMaps}"
 				Text="{Binding TotalSelectedMaps}"/>
 		</Grid>
