@@ -14,7 +14,7 @@ public partial class MainWindowViewModel : ViewModelBase
 	[ObservableProperty] private string _DisplayCurrentMaps = "No Beatmap Selected!";
 	[ObservableProperty] private string _DisplayCurrentMapsTooltip = "No Beatmap Selected!";
 	[ObservableProperty] private string _TotalSelectedMaps = "(0) maps total";
-	private static string[]? CurrentMaps;
+	private static string[] CurrentMaps = [];
 	private static MainWindowViewModel? Me;
 
 	private enum Tools
@@ -59,7 +59,7 @@ public partial class MainWindowViewModel : ViewModelBase
 		}
 		CurrentMaps = maps;
 	}
-	public static string[]? GetCurrentMaps()
+	public static string[] GetCurrentMaps()
 	{
 		return CurrentMaps;
 	}
