@@ -240,7 +240,7 @@ namespace Mapping_Tools.Classes.SystemTools {
 					StartInfo = new ProcessStartInfo
 					{
 						FileName = "/bin/bash",
-						Arguments = "-c \"command\"",
+						Arguments = $"-c \"{command}\"",
 						RedirectStandardOutput = true,
 						UseShellExecute = false,
 						CreateNoWindow = true
