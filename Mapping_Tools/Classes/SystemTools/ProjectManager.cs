@@ -2,8 +2,10 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Windows;
 using Mapping_Tools.Classes.JsonConverters;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Enums;
+using System.Threading.Tasks;
 
 namespace Mapping_Tools.Classes.SystemTools {
     public enum ErrorType
@@ -60,9 +62,9 @@ namespace Mapping_Tools.Classes.SystemTools {
             }
         }
 
-        public static void SaveProjectDialog<T>(ISavable<T> view) {
+        public static async void SaveProjectDialog<T>(ISavable<T> view) {
             Directory.CreateDirectory(view.DefaultSaveFolder);
-            string path = IOHelper.SaveProjectDialog(view.DefaultSaveFolder);
+            string path = await IOHelper.SaveProjectDialog(view.DefaultSaveFolder);
             SaveProject(view, path);
         }
 
@@ -75,15 +77,18 @@ namespace Mapping_Tools.Classes.SystemTools {
                 Console.WriteLine(ex.StackTrace);
                 Console.WriteLine(ex.Message);
 
-                zMessageBox.Show("Project could not be saved!");
+				var box = MessageBoxManager.GetMessageBoxStandard("Error!",
+					"Project could not be saved!",
+					ButtonEnum.Ok);
+				box.ShowAsync();
                 ex.Show();
             }
         }
 
-        public static void LoadProject<T>(ISavable<T> view, bool dialog=false, bool message=true) {
+        public static async void LoadProject<T>(ISavable<T> view, bool dialog=false, bool message=true) {
             if (dialog)
                 Directory.CreateDirectory(view.DefaultSaveFolder);
-            string path = dialog ? IOHelper.LoadProjectDialog(view.DefaultSaveFolder) : view.AutoSavePath;
+            string path = dialog ? await IOHelper.LoadProjectDialog(view.DefaultSaveFolder) : view.AutoSavePath;
 
             // If the file name is not an empty string open it for saving.  
             if (path == "") return;
@@ -100,16 +105,22 @@ namespace Mapping_Tools.Classes.SystemTools {
                 Console.WriteLine(ex.Message);
 
                 if (message) {
-                    MessageBox.Show("Project could not be loaded!");
+					var box = MessageBoxManager.GetMessageBoxStandard("Error!",
+						"Project could not be loaded!",
+						ButtonEnum.Ok);
+                    box.ShowAsync();
                     ex.Show();
                 }
             }
         }
 
-        public static void NewProject<T>(ISavable<T> view, bool dialog = false, bool message = true) {
+        public static async void NewProject<T>(ISavable<T> view, bool dialog = false, bool message = true) {
             if (dialog) {
-                var messageBoxResult = MessageBox.Show("Are you sure you want to start a new project? All unsaved progress will be lost.", "Confirm new project", MessageBoxButton.YesNo);
-                if (messageBoxResult != MessageBoxResult.Yes) return;
+				var messageBox = MessageBoxManager.GetMessageBoxStandard("Confirm new project",
+					"Are you sure you want to start a new project? All unsaved progress will be lost.",
+					ButtonEnum.YesNo);
+				var messageBoxResult = await messageBox.ShowAsync();
+                if (messageBoxResult != ButtonResult.Yes) return;
             }
 
             try {
@@ -120,7 +131,10 @@ namespace Mapping_Tools.Classes.SystemTools {
                 Console.WriteLine(ex.Message);
 
                 if (message) {
-                    MessageBox.Show("New project could not be initialized!");
+					var box = MessageBoxManager.GetMessageBoxStandard("Error!",
+						"New project could not be initialized!",
+						ButtonEnum.Ok);
+					box.ShowAsync();
                     ex.Show();
                 }
             }
@@ -134,26 +148,26 @@ namespace Mapping_Tools.Classes.SystemTools {
         /// <param name="view">The tool to get the project from</param>
         /// <param name="dialog">Whether to use a dialog</param>
         /// <returns></returns>
-        public static T GetProject<T>(ISavable<T> view, bool dialog=false) {
+        public static async Task<T> GetProjectAsync<T>(ISavable<T> view, bool dialog=false) {
             if (dialog)
                 Directory.CreateDirectory(view.DefaultSaveFolder);
-            string path = dialog ? IOHelper.LoadProjectDialog(view.DefaultSaveFolder) : view.AutoSavePath;
+            string path = dialog ? await IOHelper.LoadProjectDialog(view.DefaultSaveFolder) : view.AutoSavePath;
 
             return LoadJson<T>(path);
         }
 
-        public static void SaveToolFile<T, T2>(ISavable<T> view, T2 obj, bool dialog = false) {
+        public static async void SaveToolFile<T, T2>(ISavable<T> view, T2 obj, bool dialog = false) {
             if (dialog)
                 Directory.CreateDirectory(view.DefaultSaveFolder);
-            string path = dialog ? IOHelper.SaveProjectDialog(view.DefaultSaveFolder) : view.AutoSavePath;
+            string path = dialog ? await IOHelper.SaveProjectDialog(view.DefaultSaveFolder) : view.AutoSavePath;
 
             SaveJson(path, obj);
         }
 
-        public static T2 LoadToolFile<T, T2>(ISavable<T> view, bool dialog = false) {
+        public static async Task<T2> LoadToolFile<T, T2>(ISavable<T> view, bool dialog = false) {
             if (dialog)
                 Directory.CreateDirectory(view.DefaultSaveFolder);
-            string path = dialog ? IOHelper.LoadProjectDialog(view.DefaultSaveFolder) : view.AutoSavePath;
+            string path = dialog ? await IOHelper.LoadProjectDialog(view.DefaultSaveFolder) : view.AutoSavePath;
 
             return LoadJson<T2>(path);
         }
