@@ -4,14 +4,16 @@ using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
 using Avalonia_Mapping_Tools.ViewModels;
 using System.Collections.Generic;
+using Avalonia_Mapping_Tools.Views;
 
 namespace Mapping_Tools.Classes.SystemTools {
     public class IOHelper {
         //private static readonly StructuredOsuMemoryReader pioStructuredReader = StructuredOsuMemoryReader.Instance;
         //private static readonly OsuBaseAddresses osuBaseAddresses = new();
         //private static readonly object pioReaderLock = new();
+		private static readonly IStorageProvider storage = MainWindow.Storage();
 
-		public static async Task<string> FolderDialog(IStorageProvider storage, string initialDirectory = "")
+		public static async Task<string> FolderDialog(string initialDirectory = "")
 		{
 			string? folderPath = null;
             var folder = await storage.OpenFolderPickerAsync(new FolderPickerOpenOptions
@@ -40,7 +42,7 @@ namespace Mapping_Tools.Classes.SystemTools {
         //     return saveFileDialog1.FileName;
         // }
 
-		public static async Task<string> SaveProjectDialog(IStorageProvider storage, string initialDirectory = "")
+		public static async Task<string> SaveProjectDialog(string initialDirectory = "")
 		{
 			var filePicker = await storage.SaveFilePickerAsync(new FilePickerSaveOptions
 			{
@@ -52,7 +54,7 @@ namespace Mapping_Tools.Classes.SystemTools {
 			return await ReturnFiles(filePicker);
         }
 
-        public static async Task<string> LoadProjectDialog(IStorageProvider storage, string initialDirectory = "")
+        public static async Task<string> LoadProjectDialog(string initialDirectory = "")
 		{
 			var filePicker = await storage.OpenFilePickerAsync(new FilePickerOpenOptions
 			{
@@ -65,7 +67,7 @@ namespace Mapping_Tools.Classes.SystemTools {
 			return await ReturnFiles(filePicker);
         }
 
-        public static async Task<string> ZipFileDialog(IStorageProvider storage)
+        public static async Task<string> ZipFileDialog()
 		{
 			var filePicker = await storage.SaveFilePickerAsync(new FilePickerSaveOptions
 			{
@@ -75,7 +77,7 @@ namespace Mapping_Tools.Classes.SystemTools {
 			return await ReturnFiles(filePicker);
         }
 
-        public static async Task<string> FileDialog(IStorageProvider storage)
+        public static async Task<string> FileDialog()
 		{
 			var filePicker = await storage.OpenFilePickerAsync(new FilePickerOpenOptions
 			{
@@ -85,7 +87,7 @@ namespace Mapping_Tools.Classes.SystemTools {
 			return await ReturnFiles(filePicker);
         }
 
-        public static async Task<string> ConfigFileDialog(IStorageProvider storage, string initialDirectory = "")
+        public static async Task<string> ConfigFileDialog(string initialDirectory = "")
 		{
 			var filePicker = await storage.OpenFilePickerAsync(new FilePickerOpenOptions
 			{
@@ -97,7 +99,7 @@ namespace Mapping_Tools.Classes.SystemTools {
 			return await ReturnFiles(filePicker);
         }
 
-        public static async Task<string> MidiFileDialog(IStorageProvider storage)
+        public static async Task<string> MidiFileDialog()
 		{
 			var filePicker = await storage.OpenFilePickerAsync(new FilePickerOpenOptions
 			{
@@ -108,7 +110,7 @@ namespace Mapping_Tools.Classes.SystemTools {
 			return await ReturnFiles(filePicker);
         }
 
-        public static async Task<string> SampleFileDialog(IStorageProvider storage)
+        public static async Task<string> SampleFileDialog()
 		{
 			var filePicker = await storage.OpenFilePickerAsync(new FilePickerOpenOptions
 			{
@@ -119,7 +121,7 @@ namespace Mapping_Tools.Classes.SystemTools {
 			return await ReturnFiles(filePicker);
         }
 
-        public static async Task<string[]> AudioFileDialog(IStorageProvider storage, bool multiselect = false)
+        public static async Task<string[]> AudioFileDialog(bool multiselect = false)
 		{
 			var filePicker = await storage.OpenFilePickerAsync(new FilePickerOpenOptions
 			{
@@ -130,7 +132,7 @@ namespace Mapping_Tools.Classes.SystemTools {
 			return await ReturnFiles(filePicker, multiselect);
         }
 
-        public static async Task<string[]> BeatmapFileDialog(IStorageProvider storage, bool multiselect = false, bool restore = false)
+        public static async Task<string[]> BeatmapFileDialog(bool multiselect = false, bool restore = false)
 		{
 			string[]? currentMaps = MainWindowViewModel.GetCurrentMaps();
 			string path = string.Empty;
@@ -147,7 +149,7 @@ namespace Mapping_Tools.Classes.SystemTools {
 			return await ReturnFiles(filePicker, multiselect);
         }
 
-        public static async Task<string[]> BeatmapFileDialog(IStorageProvider storage, string initialDirectory, bool multiselect = false)
+        public static async Task<string[]> BeatmapFileDialog(string initialDirectory, bool multiselect = false)
 		{
 			var filePicker = await storage.OpenFilePickerAsync(new FilePickerOpenOptions
 			{
