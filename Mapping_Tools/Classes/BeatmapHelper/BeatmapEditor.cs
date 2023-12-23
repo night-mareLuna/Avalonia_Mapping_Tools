@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Mapping_Tools.Classes.ToolHelpers;
+using Avalonia_Mapping_Tools;
 
 namespace Mapping_Tools.Classes.BeatmapHelper {
     public class BeatmapEditor : Editor
@@ -48,7 +49,7 @@ namespace Mapping_Tools.Classes.BeatmapHelper {
         }
 
         private static void GenerateBetterSaveMd5(List<string> lines) {
-            var tempPath = "temp.osu";
+            var tempPath = Program.configPath + "/temp.osu";
 
             if (!File.Exists(tempPath))
             {
