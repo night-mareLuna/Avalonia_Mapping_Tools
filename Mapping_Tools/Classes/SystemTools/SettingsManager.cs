@@ -217,7 +217,7 @@ namespace Mapping_Tools.Classes.SystemTools {
 		{
 			string path = string.Empty;
 			
-			string result = BashCommand("osu-wine --info");
+			string result = BashCommand($"/home/{Environment.UserName}/.local/bin/osu-wine --info");
 			foreach(string line in result.Split(Environment.NewLine))
 			{
 				if(line.Contains("osu! folder:"))
@@ -239,11 +239,12 @@ namespace Mapping_Tools.Classes.SystemTools {
 				{
 					StartInfo = new ProcessStartInfo
 					{
-						FileName = "/bin/bash",
+						FileName = "bash",
 						Arguments = $"-c \"{command}\"",
 						RedirectStandardOutput = true,
 						UseShellExecute = false,
-						CreateNoWindow = true
+						CreateNoWindow = true,
+						WorkingDirectory = Path.GetDirectoryName("/usr/bin")
 					}
 				};
 				process.Start();
