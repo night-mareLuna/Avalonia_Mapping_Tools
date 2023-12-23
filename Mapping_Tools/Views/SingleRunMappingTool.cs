@@ -1,11 +1,10 @@
 using Mapping_Tools.Classes;
 using System.ComponentModel;
-using Avalonia.Controls;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 
 namespace Mapping_Tools.Views {
-    public class SingleRunMappingTool : UserControl {
+    public class SingleRunMappingTool : MappingTool {
         protected readonly BackgroundWorker BackgroundWorker;
         public int Progress { get; set; }
         public bool Verbose { get; set; }
