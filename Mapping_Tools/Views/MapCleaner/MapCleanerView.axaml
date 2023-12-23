@@ -5,10 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
         x:Class="Avalonia_Mapping_Tools.Views.MapCleanerView"
+		xmlns:domain="clr-namespace:Mapping_Tools.Components.Domain"
         x:DataType="vm:MapCleanerViewModel">
 
-	<StackPanel Margin="5 5">
-		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+		<UserControl.Resources>
+			<domain:BeatDivisorArrayToStringConverter x:Key="BeatDivisorArrayToStringConverter"/>
+		</UserControl.Resources>
+
+	<Grid RowDefinitions="Auto,*,20" Margin="5 5">
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="0">
 			<TextBlock Margin="10 10"
 				FontSize="32"
 				FontWeight="Bold"
@@ -19,7 +24,7 @@
 				Height="32"
 				Background="Transparent"
 				ToolTip.Tip="Click Me!"
-				Cursor="Help">
+				Cursor="Hand">
 				<materialIcons:MaterialIcon
 					Kind="HelpCircle"
 					Width="30"
@@ -39,37 +44,65 @@
 			</Button>
 		</StackPanel>
 
-		<CheckBox Cursor="Hand" Margin="5 -5">Analyze samples</CheckBox>
-		<CheckBox Cursor="Hand" Margin="5 -5">Resnap objects</CheckBox>
-		<CheckBox Cursor="Hand" Margin="5 -5">Resnap bookmarks</CheckBox>
-		<CheckBox Cursor="Hand" Margin="5 -5">Remove hitsounds</CheckBox>
-		<CheckBox Cursor="Hand" Margin="5 -5">Remove unused samples</CheckBox>
-		<CheckBox Cursor="Hand" Margin="5 -5">Remove muting</CheckBox>
-		<CheckBox Cursor="Hand" Margin="5 -5">Mute Unclickable Hitsounds</CheckBox>
+		<StackPanel Grid.Row="1">
+			<CheckBox Cursor="Hand" Margin="5 -5" IsChecked="{Binding MapCleanerArgs.AnalyzeSamples}">
+				Analyze samples</CheckBox>
+			<CheckBox Cursor="Hand" Margin="5 -5" IsChecked="{Binding MapCleanerArgs.ResnapObjects}">
+				Resnap objects</CheckBox>
+			<CheckBox Cursor="Hand" Margin="5 -5" IsChecked="{Binding MapCleanerArgs.ResnapBookmarks}">
+				Resnap bookmarks</CheckBox>
+			<CheckBox Cursor="Hand" Margin="5 -5" IsChecked="{Binding MapCleanerArgs.RemoveHitsounds}">
+				Remove hitsounds</CheckBox>
+			<CheckBox Cursor="Hand" Margin="5 -5" IsChecked="{Binding MapCleanerArgs.RemoveUnusedSamples}">
+				Remove unused samples</CheckBox>
+			<CheckBox Cursor="Hand" Margin="5 -5" IsChecked="{Binding MapCleanerArgs.RemoveMuting}">
+				Remove muting</CheckBox>
+			<CheckBox Cursor="Hand" Margin="5 -5" IsChecked="{Binding MapCleanerArgs.RemoveUnclickableHitsounds}">
+				Mute Unclickable Hitsounds</CheckBox>
 
-		<TextBlock Margin="5 20 0 0">Map info</TextBlock>
-		<CheckBox Cursor="Hand" Margin="5 -5">Map uses volume changes in sliders</CheckBox>
-		<CheckBox Cursor="Hand" Margin="5 -5">Map uses sampleset changes in sliders</CheckBox>
-		<CheckBox Cursor="Hand" Margin="5 -5">Map uses volume changes in spinners</CheckBox>
+			<TextBlock Margin="5 20 0 0">Map info</TextBlock>
+			<CheckBox Cursor="Hand" Margin="5 -5" IsChecked="{Binding MapCleanerArgs.VolumeSliders}">
+				Map uses volume changes in sliders</CheckBox>
+			<CheckBox Cursor="Hand" Margin="5 -5" IsChecked="{Binding MapCleanerArgs.SampleSetSliders}">
+				Map uses sampleset changes in sliders</CheckBox>
+			<CheckBox Cursor="Hand" Margin="5 -5" IsChecked="{Binding MapCleanerArgs.VolumeSpinners}">
+				Map uses volume changes in spinners</CheckBox>
 
-		<TextBlock Margin="5 20 0 0">Signatures</TextBlock>
-		<TextBox Margin="5"
-			MinWidth="150"
-			HorizontalAlignment="Left"
-			Watermark="1/12, 1/16"/>
+			<TextBlock Margin="5 20 0 0">Signatures</TextBlock>
+			<TextBox Margin="5"
+				Name="BeatDivisors"
+				Text="{Binding MapCleanerArgs.BeatDivisors, Converter={StaticResource BeatDivisorArrayToStringConverter}}"
+				MinWidth="150"
+				MaxWidth="800"
+				HorizontalAlignment="Left"
+				Watermark="1/12, 1/16"/>
 
-		<Button Margin="10 10"
-			Width="98"
-			Height="98"
-			Background="Transparent"
-			HorizontalAlignment="Right"
-			VerticalAlignment="Bottom"
-			ToolTip.Tip="Run Map Cleaner">
-			<materialIcons:MaterialIcon
-				Kind="PlayCircle"
-				Width="100"
-				Height="100"/>
-		</Button>
-	</StackPanel>
+			<Button Margin="10 10"
+				Width="98"
+				Height="98"
+				Background="Transparent"
+				HorizontalAlignment="Right"
+				VerticalAlignment="Bottom"
+				ToolTip.Tip="Run Map Cleaner"
+				Click="Start_Click">
+				<materialIcons:MaterialIcon
+					Kind="PlayCircle"
+					Width="100"
+					Height="100"/>
+			</Button>
+		</StackPanel>
+
+		<Grid ColumnDefinitions="Auto,*" Grid.Row="2">
+			<TextBlock Grid.Column="0"
+				Text="Made by OliBomby"
+				FontWeight="Bold" 
+				Opacity="0.58"/>
+			<ProgressBar Grid.Column="1"
+				Background="Transparent"
+				Margin="20 0 20 0"
+				Height="20"
+				Value="{Binding Progress}"/>
+		</Grid>
+	</Grid>
 
 </UserControl>
