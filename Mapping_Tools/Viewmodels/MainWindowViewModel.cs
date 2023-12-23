@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Mapping_Tools.Classes.SystemTools;
@@ -35,8 +36,11 @@ public partial class MainWindowViewModel : ViewModelBase
 	{
 		try
 		{
-			string[] fromJson = SettingsManager.GetLatestCurrentMaps();
-			SetCurrentMaps(fromJson);
+			List<string[]> fromJson = SettingsManager.GetRecentMaps();
+			string[] maps = new string[fromJson.Count];
+			for(int i = 0; i < maps.Length; i++)
+				maps[i] = fromJson[i][0];
+			SetCurrentMaps(maps);
 		}
 		catch(Exception e)
 		{
