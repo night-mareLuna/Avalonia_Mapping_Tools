@@ -2,45 +2,31 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia_Mapping_Tools.ViewModels;
-using Mapping_Tools.Classes;
 using Mapping_Tools.Classes.BeatmapHelper;
 using Mapping_Tools.Classes.MathUtil;
 using Mapping_Tools.Classes.SystemTools;
 using Mapping_Tools.Classes.SystemTools.QuickRun;
 using Mapping_Tools.Classes.Tools.MapCleanerStuff;
-using MsBox.Avalonia;
-using MsBox.Avalonia.Enums;
+using Mapping_Tools.Views;
 
 namespace Avalonia_Mapping_Tools.Views;
 
 [SmartQuickRunUsage(SmartQuickRunTargets.Always)]
-public partial class MapCleanerView : UserControl, IQuickRun, ISavable<MapCleanerViewModel>
+public partial class MapCleanerView : SingleRunMappingTool, IQuickRun, ISavable<MapCleanerViewModel>
 {
 	private List<double>? timingpointsRemoved;
     private List<double>? timingpointsAdded;
     private List<double>? timingpointsChanged;
     private double endTimeMonitor;
-	protected readonly BackgroundWorker Worker1;
-	private int Progress;
-	private bool Verbose;
 	public event EventHandler? RunFinished;
 
 	public MapCleanerView()
 	{
-        Worker1 = new()
-        {
-            WorkerReportsProgress = true
-        };
-		Worker1.DoWork += Worker1_DoWork;
-		Worker1.RunWorkerCompleted += Worker1_RunWorkerCompleted;
-		Worker1.ProgressChanged += Worker1_ProgressChanged;
-
-
-        Verbose = true;
 		DataContext = new MapCleanerViewModel();
+		ProjectManager.LoadProject(this, message: false);
+        Verbose = true;
 		InitializeComponent();
 	}
 
@@ -53,42 +39,26 @@ public partial class MapCleanerView : UserControl, IQuickRun, ISavable<MapCleane
 
 	private async void RunTool(string[] paths, bool quick = false)
 	{
-		if(Worker1.IsBusy) return;
+		if(BackgroundWorker.IsBusy) return;
 
 		await BackupManager.SaveMapBackup(paths);
 
 		ViewModel.Paths = paths;
 		ViewModel.Quick = quick;
 
-		Worker1.RunWorkerAsync(ViewModel);
+		BackgroundWorker.RunWorkerAsync(ViewModel);
 	}
 
-	protected void Worker1_DoWork(object? sender, DoWorkEventArgs e)
+	protected override void BackgroundWorker_DoWork(object? sender, DoWorkEventArgs e)
 	{
 		var bgw = sender as BackgroundWorker;
 		e.Result = Run_Program((MapCleanerViewModel)e.Argument!,  bgw, e);
 	}
 
-	protected virtual void Worker1_ProgressChanged(object? sender, ProgressChangedEventArgs e)
+	protected override void BackgroundWorker_ProgressChanged(object? sender, ProgressChangedEventArgs e)
 	{
         Progress = e.ProgressPercentage;
 		MapCleanerViewModel.SetProgress(Progress);
-    }
-	
-	protected void Worker1_RunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e)
-	{
-        if (e.Error != null) {
-            e.Error.Show();
-        } else if (!string.IsNullOrEmpty(e.Result as string)) {
-            if (Verbose) {
-				var box = MessageBoxManager.GetMessageBoxStandard("", e.Result.ToString(), ButtonEnum.Ok);
-				box.ShowAsync();
-            // } else {
-            //     Task.Factory.StartNew(() => MainWindow.MessageQueue.Enqueue(e.Result.ToString(), true));
-            }
-        }
-
-        Progress = 0;
     }
 
 	private string Run_Program(MapCleanerViewModel args, BackgroundWorker? worker, DoWorkEventArgs _)
