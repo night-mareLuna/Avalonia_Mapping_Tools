@@ -13,8 +13,10 @@ namespace Avalonia_Mapping_Tools.Views;
 
 public partial class MainWindow : Window
 {
+	private static MainWindow? Me;
     public MainWindow()
     {
+		Me = this;
 		Setup();
         InitializeComponent();
 		DataContext = new MainWindowViewModel();
@@ -79,6 +81,11 @@ public partial class MainWindow : Window
 		await SettingsManager.WriteToJson();
         base.OnClosing(e);
     }
+
+	public static IStorageProvider Storage()
+	{
+		return Me!.StorageProvider;
+	}
 
     private static FilePickerFileType OsuFile { get; } = new("osu! beatmap file")
 	{
