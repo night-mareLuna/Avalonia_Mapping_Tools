@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using Avalonia.Interactivity;
 using Avalonia_Mapping_Tools.ViewModels;
@@ -25,7 +26,12 @@ public partial class MapCleanerView : SingleRunMappingTool, IQuickRun, ISavable<
 	public MapCleanerView()
 	{
 		DataContext = new MapCleanerViewModel();
-		ProjectManager.LoadProject(this, message: false);
+
+		if(File.Exists(AutoSavePath))
+			ProjectManager.LoadProject(this, message: false);
+		else
+			ProjectManager.SaveProject(this, AutoSavePath);
+
         Verbose = true;
 		InitializeComponent();
 	}
@@ -41,6 +47,7 @@ public partial class MapCleanerView : SingleRunMappingTool, IQuickRun, ISavable<
 	{
 		if(BackgroundWorker.IsBusy) return;
 
+		ProjectManager.SaveProject(this, AutoSavePath);
 		await BackupManager.SaveMapBackup(paths);
 
 		ViewModel.Paths = paths;
@@ -49,7 +56,13 @@ public partial class MapCleanerView : SingleRunMappingTool, IQuickRun, ISavable<
 		BackgroundWorker.RunWorkerAsync(ViewModel);
 	}
 
-	protected override void BackgroundWorker_DoWork(object? sender, DoWorkEventArgs e)
+    protected override void OnUnloaded(RoutedEventArgs e)
+    {
+		ProjectManager.SaveProject(this, AutoSavePath);
+        base.OnUnloaded(e);
+    }
+
+    protected override void BackgroundWorker_DoWork(object? sender, DoWorkEventArgs e)
 	{
 		var bgw = sender as BackgroundWorker;
 		e.Result = Run_Program((MapCleanerViewModel)e.Argument!,  bgw, e);
