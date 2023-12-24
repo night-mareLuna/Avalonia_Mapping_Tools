@@ -34,12 +34,14 @@
 							<materialIcons:MaterialIcon Kind="Folder"/>
 						</MenuItem.Icon>
 					</MenuItem>
-					<MenuItem Header="_Generate Backup">
+					<MenuItem Header="_Generate Backup"
+						Click="SaveBackup">
 						<MenuItem.Icon>
 							<materialIcons:MaterialIcon Kind="CloudUpload"/>
 						</MenuItem.Icon>
 					</MenuItem>
-					<MenuItem Header="_Load Backup">
+					<MenuItem Header="_Load Backup"
+						Click="LoadBackup">
 						<MenuItem.Icon>
 							<materialIcons:MaterialIcon Kind="BackupRestore"/>
 						</MenuItem.Icon>

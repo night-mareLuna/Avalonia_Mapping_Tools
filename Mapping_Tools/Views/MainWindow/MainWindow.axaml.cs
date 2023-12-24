@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -7,7 +8,10 @@ using Avalonia.Platform.Storage;
 using Avalonia.Styling;
 using Avalonia_Mapping_Tools.ViewModels;
 using Mapping_Tools.Classes;
+using Mapping_Tools.Classes.Exceptions;
 using Mapping_Tools.Classes.SystemTools;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Enums;
 
 namespace Avalonia_Mapping_Tools.Views;
 
@@ -75,6 +79,67 @@ public partial class MainWindow : Window
 			SettingsManager.AddRecentMap(maps, DateTime.Now);
 		}
 	}
+
+	private async void SaveBackup(object obj, RoutedEventArgs args)
+	{
+		try
+		{
+			var paths = MainWindowViewModel.GetCurrentMaps();
+			var result = await Task.Run(() => BackupManager.SaveMapBackup(paths, true, "UB"));
+			if(result)
+			{
+				var box = MessageBoxManager.GetMessageBoxStandard("Backup Success!",
+					$"Beatmap{( paths.Length == 1 ? "" : "s" )} successfully copied!",
+					ButtonEnum.Ok);
+				box.ShowAsync();
+			}
+		}
+		catch(Exception ex)
+		{
+			ex.Show();
+		}
+	}
+
+	private async void LoadBackup(object sender, RoutedEventArgs e)
+	{
+        try {
+            var paths = MainWindowViewModel.GetCurrentMaps();
+            if (paths.Length > 1) {
+                throw new Exception($"Can't load backup into multiple beatmaps. You currently have {paths.Length} beatmaps selected.");
+            }
+            var backupPaths = await IOHelper.BeatmapFileDialog(SettingsManager.GetBackupsPath(), false);
+			if(backupPaths[0] == string.Empty) return;
+			
+            if (backupPaths.Length == 1) {
+                try {
+                    await Task.Run(() => BackupManager.LoadMapBackup(backupPaths[0], paths[0], false));
+                } catch (BeatmapIncompatibleException ex) {
+                    var exResult = await ex.Show();
+                    if (exResult == ButtonResult.Cancel) {
+                        return;
+                    }
+
+					var resultBox = MessageBoxManager.GetMessageBoxStandard("Load Backup",
+						"Do you want to load the backup anyways?",
+						ButtonEnum.YesNo);
+					var result = await resultBox.ShowAsync();
+					
+
+                    if (result == ButtonResult.Yes) {
+                        await Task.Run(() => BackupManager.LoadMapBackup(backupPaths[0], paths[0], true));
+                    } else {
+                        return;
+                    }
+                }
+                var box = MessageBoxManager.GetMessageBoxStandard("Restore success",
+					"Backup successfully loaded!",
+					ButtonEnum.Ok);
+				box.ShowAsync();
+            }
+        } catch (Exception ex) {
+            ex.Show();
+        }
+    }
 
     protected override async void OnClosing(WindowClosingEventArgs e)
     {
