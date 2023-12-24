@@ -55,7 +55,7 @@ public partial class PreferencesView : UserControl
 		{
 			Title = pickerTitle,
 			AllowMultiple = false,
-			SuggestedStartLocation = lastFolder // PLEASE TELL ME THIS IS BUGGED BECAUSE I CANNOT RN :(
+			SuggestedStartLocation = lastFolder
 		});
 
 		if(path.Count > 0)

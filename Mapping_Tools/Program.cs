@@ -22,5 +22,10 @@ public class Program
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .WithInterFont()
-            .LogToTrace();
+            .LogToTrace()
+			.With(new X11PlatformOptions
+			{
+				UseDBusFilePicker = false // to disable FreeDesktop file picker
+			});
+
 }
