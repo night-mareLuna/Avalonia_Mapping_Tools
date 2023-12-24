@@ -141,12 +141,6 @@ public partial class MainWindow : Window
         }
     }
 
-    protected override async void OnClosing(WindowClosingEventArgs e)
-    {
-		await SettingsManager.WriteToJson();
-        base.OnClosing(e);
-    }
-
 	public static IStorageProvider Storage()
 	{
 		return Me!.StorageProvider;
