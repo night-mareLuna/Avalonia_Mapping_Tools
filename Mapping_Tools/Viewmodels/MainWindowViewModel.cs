@@ -36,11 +36,8 @@ public partial class MainWindowViewModel : ViewModelBase
 	{
 		try
 		{
-			List<string[]> fromJson = SettingsManager.GetRecentMaps();
-			string[] maps = new string[fromJson.Count];
-			for(int i = 0; i < maps.Length; i++)
-				maps[i] = fromJson[i][0];
-			SetCurrentMaps(maps);
+			string[] fromJson = SettingsManager.GetLatestCurrentMaps();
+			SetCurrentMaps(fromJson);
 		}
 		catch(Exception e)
 		{
