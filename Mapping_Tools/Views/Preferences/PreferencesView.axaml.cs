@@ -1,4 +1,3 @@
-using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -73,4 +72,10 @@ public partial class PreferencesView : UserControl
 			}
 		}
 	}
+
+	protected override async void OnUnloaded(RoutedEventArgs e)
+    {
+		await SettingsManager.WriteToJson();
+        base.OnUnloaded(e);
+    }
 }
