@@ -215,7 +215,15 @@ namespace Mapping_Tools.Classes.SystemTools {
 
 		private static string FindOsuPath()
 		{
-			string path = string.Empty;
+			string? path;
+			path = TryOsuWinello();
+
+			return path ?? "";
+		}
+
+		private static string? TryOsuWinello()
+		{
+			string? path = null;
 			
 			string result = BashCommand($"/home/{Environment.UserName}/.local/bin/osu-wine --info");
 			foreach(string line in result.Split(Environment.NewLine))
@@ -225,6 +233,11 @@ namespace Mapping_Tools.Classes.SystemTools {
 			}
 
 			return path;
+		}
+
+		private static string? TryLutris()
+		{
+			throw new NotImplementedException();
 		}
 
 		private static string BashCommand(string command)
