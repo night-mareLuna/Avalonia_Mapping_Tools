@@ -10,7 +10,6 @@
 
 		<UserControl.Resources>
 			<domain:IntToStringConverter x:Key="IntToStringConverter"/>
-			<domain:TimeToStringConverter x:Key="TimeToStringConverter"/>
 		</UserControl.Resources>
 
 	<StackPanel Margin="5 5">
@@ -129,6 +128,7 @@
 				IsChecked="{Binding MakePeriodicBackups, Mode=TwoWay}"/>
 
 			<TimePicker Margin="5"
+				IsVisible="{Binding MakePeriodicBackups}"
 				ClockIdentifier="24HourClock"              
 				MinuteIncrement="5"
 				SelectedTime="{Binding PeriodicBackupInterval, Mode=TwoWay}"/>
