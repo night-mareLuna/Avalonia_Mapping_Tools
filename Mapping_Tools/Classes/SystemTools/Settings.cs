@@ -102,13 +102,21 @@ namespace Mapping_Tools.Classes.SystemTools {
         private bool makePeriodicBackups;
         public bool MakePeriodicBackups {
             get => makePeriodicBackups;
-            set => Set(ref makePeriodicBackups, value);
+            set
+			{
+				Set(ref makePeriodicBackups, value);
+                OnMakePeriodicBackupsChanged(value);
+			}
         }
 
         private TimeSpan periodicBackupInterval;
         public TimeSpan PeriodicBackupInterval {
             get => periodicBackupInterval;
-            set => Set(ref periodicBackupInterval, value);
+            set
+			{
+				Set(ref periodicBackupInterval, value);
+				OnPeriodicBackupIntervalChanged(value);
+			}
         }
 
         private bool currentBeatmapDefaultFolder;
@@ -123,8 +131,8 @@ namespace Mapping_Tools.Classes.SystemTools {
             set => Set(ref quickUndoHotkey, value);
         }
 
-        private Version skipVersion;
-        public Version SkipVersion {
+        private Version? skipVersion;
+        public Version? SkipVersion {
             get => skipVersion;
             set => Set(ref skipVersion, value);
         }
@@ -162,6 +170,12 @@ namespace Mapping_Tools.Classes.SystemTools {
             SkipVersion = null;
 			DarkTheme = true;
         }
+
+		private static void OnMakePeriodicBackupsChanged(bool newValue) =>
+			ListenerManager.ContinuePeriodicBackups(newValue);
+
+		private static void OnPeriodicBackupIntervalChanged(TimeSpan newValue) =>
+			ListenerManager.PeriodicBackupTimerChange(newValue);
 
         public void CopyTo(Settings other) {
             foreach (var prop in typeof(Settings).GetProperties()) {

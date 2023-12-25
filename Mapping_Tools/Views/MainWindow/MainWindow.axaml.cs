@@ -18,6 +18,8 @@ namespace Avalonia_Mapping_Tools.Views;
 public partial class MainWindow : Window
 {
 	private static MainWindow? Me;
+	public ListenerManager? ListenerManager;
+
     public MainWindow()
     {
 		Me = this;
@@ -26,13 +28,14 @@ public partial class MainWindow : Window
 		DataContext = new MainWindowViewModel();
     }
 
-	private static void Setup()
+	private void Setup()
 	{
 		try
 		{
 			Directory.CreateDirectory(Program.configPath + "/Backups");
 			Directory.CreateDirectory(Program.configPath + "/Exports");
 			SettingsManager.LoadConfig();
+			ListenerManager = new ListenerManager();
 		}
 		catch (Exception e)
 		{
@@ -85,7 +88,7 @@ public partial class MainWindow : Window
 		try
 		{
 			var paths = MainWindowViewModel.GetCurrentMaps();
-			var result = await Task.Run(() => BackupManager.SaveMapBackup(paths, true, "UB"));
+			var result = await BackupManager.SaveMapBackup(paths, true, "UB");
 			if(result)
 			{
 				var box = MessageBoxManager.GetMessageBoxStandard("Backup Success!",
