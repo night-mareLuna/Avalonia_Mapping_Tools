@@ -6,7 +6,7 @@ namespace Avalonia_Mapping_Tools;
 public class Program
 {
 	public static readonly string configPath = AppDomain.CurrentDomain.BaseDirectory + "MappingTools";
-	//public static readonly string configPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Mapping_Tools";
+	//public static readonly string configPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Mapping Tools";
 
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
