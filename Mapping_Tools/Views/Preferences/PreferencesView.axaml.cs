@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -26,27 +27,45 @@ public partial class PreferencesView : UserControl
 
 	public async void SelectFolder(object obj, RoutedEventArgs args)
 	{
-		var storage = TopLevel.GetTopLevel(this)!.StorageProvider;
 		string buttonName = (obj as Control)!.Name!;
-		int button = buttonName == "osuSongsFolder" ? 0 : 1;
 
 		string? strLastFolder;
 		string pickerTitle;
-		switch(button)
+		string? folder;
+		switch (buttonName)
 		{
-			case 0:
-				strLastFolder = SettingsManager.GetSongsPath();
-				pickerTitle = "Select osu! song folder";
+			case "osuFolder":
+				strLastFolder = SettingsManager.GetOsuPath();
+				pickerTitle = "Select osu! folder";
+				folder = await SelectFolder(strLastFolder, pickerTitle);
+				SettingsManager.Settings.OsuPath = folder ?? "";
 				break;
-			case 1:
+			case "osuSongsFolder":
+				strLastFolder = SettingsManager.GetSongsPath();
+				pickerTitle = "Select osu! songs folder";
+				folder = await SelectFolder(strLastFolder, pickerTitle);
+				SettingsManager.Settings.SongsPath = folder ?? "";
+				break;
+			case "osuConfigFile":
+				strLastFolder = SettingsManager.GetOsuPath();
+				pickerTitle = "Select osu! user config file";
+				folder = await SelectFile(strLastFolder, pickerTitle);
+				SettingsManager.Settings.OsuConfigPath = folder ?? "";
+				break;
+			case "backupsFolder":
 				strLastFolder = SettingsManager.GetBackupsPath();
 				pickerTitle = "Select Mapping Tools backups folder";
+				folder = await SelectFolder(strLastFolder, pickerTitle);
+				SettingsManager.Settings.BackupsPath = folder ?? "";
 				break;
 			default:
-				strLastFolder = null;
-				pickerTitle = "";
 				break;
 		}
+	}
+
+	private async Task<string?> SelectFolder(string strLastFolder, string pickerTitle)
+	{
+		var storage = TopLevel.GetTopLevel(this)!.StorageProvider;
 		IStorageFolder? lastFolder = strLastFolder != null ?
 			await storage.TryGetFolderFromPathAsync(strLastFolder) : null;
 		
@@ -58,19 +77,26 @@ public partial class PreferencesView : UserControl
 		});
 
 		if(path.Count > 0)
+			return await path[0].SaveBookmarkAsync();
+		return null;
+	}
+
+	private async Task<string?> SelectFile(string strLastFolder, string pickerTitle)
+	{
+		var storage = TopLevel.GetTopLevel(this)!.StorageProvider;
+		IStorageFolder? lastFolder = strLastFolder != null ?
+			await storage.TryGetFolderFromPathAsync(strLastFolder) : null;
+
+		var file = await storage.OpenFilePickerAsync(new FilePickerOpenOptions
 		{
-			switch(button)
-			{
-				case 0:
-					SettingsManager.Settings.SongsPath = (await path[0].SaveBookmarkAsync())!;
-					break;
-				case 1:
-					SettingsManager.Settings.BackupsPath = (await path[0].SaveBookmarkAsync())!;
-					break;
-				default:
-					break;
-			}
-		}
+			Title = pickerTitle,
+			AllowMultiple = false,
+			SuggestedStartLocation = lastFolder
+		});
+
+		if(file.Count > 0)
+			return await file[0].SaveBookmarkAsync();
+		return null;
 	}
 
 	protected override async void OnUnloaded(RoutedEventArgs e)

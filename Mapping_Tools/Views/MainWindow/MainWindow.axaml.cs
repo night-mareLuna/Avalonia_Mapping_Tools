@@ -63,8 +63,16 @@ public partial class MainWindow : Window
 	private async void OpenBeatmap(object obj, RoutedEventArgs args)
 	{
 		var storage = StorageProvider;
-		IStorageFolder? songFolder = await storage.TryGetFolderFromPathAsync(SettingsManager.GetSongsPath());
+		IStorageFolder? songFolder = null;
+		if(SettingsManager.Settings.CurrentBeatmapDefaultFolder)
+		{
+			string beatmapFolder = SettingsManager.GetLatestCurrentMaps()[0];
+			if(!string.IsNullOrWhiteSpace(beatmapFolder))
+				beatmapFolder = beatmapFolder.Remove(beatmapFolder.IndexOf(beatmapFolder.Split('/')[^1]));
+			songFolder = await storage.TryGetFolderFromPathAsync(new Uri(beatmapFolder));
+		}
 
+		songFolder ??= await storage.TryGetFolderFromPathAsync(SettingsManager.GetSongsPath());
 		var file = await storage.OpenFilePickerAsync(new FilePickerOpenOptions
 		{
 			Title = "Select osu! beatmap",
