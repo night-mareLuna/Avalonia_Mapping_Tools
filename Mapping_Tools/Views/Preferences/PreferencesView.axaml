@@ -5,7 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
         x:Class="Avalonia_Mapping_Tools.Views.PreferencesView"
+		xmlns:domain="clr-namespace:Mapping_Tools.Components.Domain"
         x:DataType="vm:Settings">
+
+		<UserControl.Resources>
+			<domain:IntToStringConverter x:Key="IntToStringConverter"/>
+			<domain:TimeToStringConverter x:Key="TimeToStringConverter"/>
+		</UserControl.Resources>
 
 	<StackPanel Margin="5 5">
 		<TextBlock Margin="10 10"
@@ -18,7 +24,28 @@
 
 		<TextBlock Margin="5"
 			FontSize="12" 
-			Text="osu! songs folder"/>
+			Text="osu! folder"/>
+
+		<StackPanel Orientation="Horizontal">
+			<TextBox Margin="5"
+				Height="32"
+				MinWidth="435"
+				Watermark="osu! folder"
+				Text="{Binding OsuPath, Mode=TwoWay}"/>
+			<Button	Name="osuFolder"
+				Background="Transparent"
+				Width="32"
+				Height="32"
+				Click="SelectFolder">
+				<materialIcons:MaterialIcon Kind="Folder"
+					Width="30"
+					Height="30"/>
+			</Button>
+		</StackPanel>
+
+		<TextBlock Margin="5"
+			FontSize="12" 
+			Text="Songs folder"/>
 
 		<StackPanel Orientation="Horizontal">
 			<TextBox Margin="5"
@@ -39,7 +66,28 @@
 
 		<TextBlock Margin="5"
 			FontSize="12" 
-			Text="backups folder"/>
+			Text="osu! user config file"/>
+
+		<StackPanel Orientation="Horizontal">
+			<TextBox Margin="5"
+				Height="32"
+				MinWidth="435"
+				Watermark="osu! user config file"
+				Text="{Binding OsuConfigPath, Mode=TwoWay}"/>
+			<Button	Name="osuConfigFile"
+				Background="Transparent"
+				Width="32"
+				Height="32"
+				Click="SelectFolder">
+				<materialIcons:MaterialIcon Kind="Folder"
+					Width="30"
+					Height="30"/>
+			</Button>
+		</StackPanel>
+
+		<TextBlock Margin="5"
+			FontSize="12" 
+			Text="Backups folder"/>
 
 		<StackPanel Orientation="Horizontal">
 			<TextBox Margin="5"
@@ -57,6 +105,39 @@
 					Height="30"/>
 			</Button>
 		</StackPanel>
+
+		<!-- Backup Settings -->
+
+		<TextBlock Margin="5 15 5 5"
+			FontSize="12" 
+			Text="Max backup files"/>
+
+		<TextBox Margin="5"
+			MaxWidth="150"
+			HorizontalAlignment="Left"
+			Text="{Binding MaxBackupFiles, Mode=TwoWay, Converter={StaticResource IntToStringConverter}}"/>
+
+		<CheckBox Margin="5 5 0 0"
+			HorizontalAlignment="Left"
+			Content="Make automatic backups"
+			IsChecked="{Binding MakeBackups, Mode=TwoWay}"/>
+
+		<StackPanel Orientation="Horizontal">
+            <CheckBox Margin="5"
+				HorizontalAlignment="Left"
+				Content="Make periodic backups"
+				IsChecked="{Binding MakePeriodicBackups, Mode=TwoWay}"/>
+
+			<TimePicker Margin="5"
+				ClockIdentifier="24HourClock"              
+				MinuteIncrement="1"
+				SelectedTime="{Binding PeriodicBackupInterval, Mode=TwoWay}"/>
+		</StackPanel>
+
+		<CheckBox Margin="5"
+			HorizontalAlignment="Left"
+			Content="Current beatmap default folder in all tools"
+			IsChecked="{Binding CurrentBeatmapDefaultFolder, Mode=TwoWay}"/>
 
 		<!-- THEME -->
 
