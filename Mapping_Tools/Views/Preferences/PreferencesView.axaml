@@ -130,7 +130,7 @@
 
 			<TimePicker Margin="5"
 				ClockIdentifier="24HourClock"              
-				MinuteIncrement="1"
+				MinuteIncrement="5"
 				SelectedTime="{Binding PeriodicBackupInterval, Mode=TwoWay}"/>
 		</StackPanel>
 
