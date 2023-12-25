@@ -58,6 +58,7 @@ public partial class MapCleanerView : SingleRunMappingTool, IQuickRun, ISavable<
 
     protected override void OnUnloaded(RoutedEventArgs e)
     {
+		MapCleanerViewModel.SetProgress(0);
 		ProjectManager.SaveProject(this, AutoSavePath);
         base.OnUnloaded(e);
     }
@@ -70,11 +71,11 @@ public partial class MapCleanerView : SingleRunMappingTool, IQuickRun, ISavable<
 
 	protected override void BackgroundWorker_ProgressChanged(object? sender, ProgressChangedEventArgs e)
 	{
-        Progress = e.ProgressPercentage;
+		base.BackgroundWorker_ProgressChanged(sender, e);
 		MapCleanerViewModel.SetProgress(Progress);
     }
 
-	private string Run_Program(MapCleanerViewModel args, BackgroundWorker? worker, DoWorkEventArgs _)
+    private string Run_Program(MapCleanerViewModel args, BackgroundWorker? worker, DoWorkEventArgs _)
 	{
 		var result = new MapCleanerResult();
 
