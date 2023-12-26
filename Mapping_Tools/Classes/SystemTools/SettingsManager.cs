@@ -1,5 +1,6 @@
-using Avalonia_Mapping_Tools;
+﻿using Avalonia_Mapping_Tools;
 using MsBox.Avalonia;
+using MsBox.Avalonia.Enums;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -112,7 +113,7 @@ namespace Mapping_Tools.Classes.SystemTools {
             }
         }
 
-        public static void DefaultPaths() {
+        public static async void DefaultPaths() {
             if (string.IsNullOrWhiteSpace(Settings.OsuPath)) {
              //try {
              //    var regKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall");
@@ -126,7 +127,7 @@ namespace Mapping_Tools.Classes.SystemTools {
              //        MessageBox.Show("Could not automatically find osu! install directory. Please set the correct paths in the Preferences.");
              //    }
              //}
-				Settings.OsuPath = FindOsuPath();
+				Settings.OsuPath = await FindOsuPath();
 				if(Settings.OsuPath == string.Empty)
 				{
 					var box = MessageBoxManager.GetMessageBoxStandard("Error!",
@@ -213,10 +214,12 @@ namespace Mapping_Tools.Classes.SystemTools {
 			return Settings.DarkTheme;
 		}
 
-		private static string FindOsuPath()
+		private static async Task<string> FindOsuPath()
 		{
-			string? path;
+			string? path = null;
 			path = TryOsuWinello();
+			//path ??= TryLutris();
+			path ??= await SelectOsuFolder();
 
 			return path ?? "";
 		}
@@ -238,6 +241,23 @@ namespace Mapping_Tools.Classes.SystemTools {
 		private static string? TryLutris()
 		{
 			throw new NotImplementedException();
+		}
+
+		private static async Task<string?> SelectOsuFolder()
+		{
+			string? folder;
+
+			do
+			{
+				var box = MessageBoxManager.GetMessageBoxStandard("",
+					"Please select your osu! folder",
+					ButtonEnum.Ok);
+				await box.ShowAsync();
+				folder = await IOHelper.FolderDialog("");
+			}
+			while(string.IsNullOrEmpty(folder));
+
+			return folder;
 		}
 
 		private static string BashCommand(string command)
