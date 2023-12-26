@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Mapping_Tools.Classes.SystemTools;
@@ -21,7 +20,8 @@ public partial class MainWindowViewModel : ViewModelBase
 	private enum Tools
 	{
 		Preferences = 0,
-		MapCleaner = 1
+		MapCleaner = 1,
+		HitsoundCopier = 2
 	}
 
 	public MainWindowViewModel()
@@ -29,7 +29,10 @@ public partial class MainWindowViewModel : ViewModelBase
 		Me = this;
 		DisplayCurrentMap();
 		CurrentView = new PreferencesViewModel();
-		ToolsList = new ObservableCollection<string>(["Preferences", "Map Cleaner"]);
+		ToolsList = new ObservableCollection<string>(
+			["Preferences",
+			"Map Cleaner",
+			"Hitsound Copier"]);
 	}
 
 	private static void DisplayCurrentMap()
@@ -76,6 +79,9 @@ public partial class MainWindowViewModel : ViewModelBase
 				break;
 			case (int)Tools.Preferences:
 				CurrentView = new PreferencesViewModel();
+				break;
+			case (int)Tools.HitsoundCopier:
+				CurrentView = new HitsoundCopierViewModel();
 				break;
 		}
 	}
