@@ -67,7 +67,8 @@ public partial class MainWindow : Window
 	{
 		var storage = StorageProvider;
 		IStorageFolder? songFolder = null;
-		if(SettingsManager.Settings.CurrentBeatmapDefaultFolder)
+		if(SettingsManager.Settings.CurrentBeatmapDefaultFolder
+			&& SettingsManager.GetRecentMaps().Count != 0)
 		{
 			string beatmapFolder = SettingsManager.GetLatestCurrentMaps()[0];
 			if(!string.IsNullOrWhiteSpace(beatmapFolder))
