@@ -16,10 +16,13 @@ namespace Mapping_Tools.Classes.SystemTools {
 		public static async Task<string> FolderDialog(string initialDirectory = "")
 		{
 			string? folderPath = null;
+			IStorageFolder? startLocation = string.IsNullOrWhiteSpace(initialDirectory) ?
+					null : await storage.TryGetFolderFromPathAsync(new Uri(initialDirectory));
+
             var folder = await storage.OpenFolderPickerAsync(new FolderPickerOpenOptions
 			{
 				AllowMultiple = false,
-				SuggestedStartLocation = await storage.TryGetFolderFromPathAsync(new Uri(initialDirectory))
+				SuggestedStartLocation = startLocation
 			});
 
 			if(folder.Count > 0)
