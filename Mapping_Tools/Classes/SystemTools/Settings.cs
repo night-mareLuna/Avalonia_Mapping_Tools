@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Avalonia;
 
@@ -174,8 +174,15 @@ namespace Mapping_Tools.Classes.SystemTools {
 		private static void OnMakePeriodicBackupsChanged(bool newValue) =>
 			ListenerManager.ContinuePeriodicBackups(newValue);
 
-		private static void OnPeriodicBackupIntervalChanged(TimeSpan newValue) =>
+		private void OnPeriodicBackupIntervalChanged(TimeSpan newValue)
+		{
+			if(newValue.TotalSeconds == 0)
+			{
+				PeriodicBackupInterval = new TimeSpan(0,5,0);
+				return;
+			}
 			ListenerManager.PeriodicBackupTimerChange(newValue);
+		}
 
         public void CopyTo(Settings other) {
             foreach (var prop in typeof(Settings).GetProperties()) {
