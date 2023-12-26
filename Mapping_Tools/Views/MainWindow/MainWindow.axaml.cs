@@ -44,23 +44,15 @@ public partial class MainWindow : Window
 		{
 			e.Show();
 		}
-		SetTheme();
 	}
 
 	private static void SetTheme()
 	{
 		bool? theme;
-		try
-		{
-			theme = SettingsManager.GetTheme();
-			if(theme is null) return;
-			Application.Current!.RequestedThemeVariant = (bool)theme ?
-				ThemeVariant.Dark : ThemeVariant.Light;
-		}
-		catch(Exception e)
-		{
-			e.Show();
-		}
+		theme = SettingsManager.GetTheme();
+		if(theme is null) return;
+		Application.Current!.RequestedThemeVariant = (bool)theme ?
+			ThemeVariant.Dark : ThemeVariant.Light;
 	}
 
 	private async void OpenBeatmap(object obj, RoutedEventArgs args)
