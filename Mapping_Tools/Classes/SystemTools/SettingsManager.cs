@@ -1,4 +1,4 @@
-﻿using Avalonia_Mapping_Tools;
+using Avalonia_Mapping_Tools;
 using MsBox.Avalonia;
 using Newtonsoft.Json;
 using System;
@@ -21,7 +21,7 @@ namespace Mapping_Tools.Classes.SystemTools {
 		private static readonly string ConfigFolder = Program.configPath;
         public static bool InstanceComplete;
 
-        public static async void LoadConfig() {
+        public static async Task LoadConfig() {
             JsonPath = ConfigFolder + "/config.json";
             InstanceComplete = File.Exists(JsonPath) ? await LoadFromJson() : await CreateJson();
 
