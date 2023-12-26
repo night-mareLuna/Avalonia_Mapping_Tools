@@ -13,6 +13,9 @@
 		</UserControl.Resources>
 
 	<Grid RowDefinitions="Auto,*,20" Margin="5 5">
+
+		<!-- Title -->
+
 		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="0">
 			<TextBlock Margin="10 10"
 				FontSize="32"
@@ -43,6 +46,8 @@
 				</Button.Flyout>
 			</Button>
 		</StackPanel>
+
+		<!-- Map Cleaner Options -->
 
 		<StackPanel Grid.Row="1">
 			<CheckBox Cursor="Hand" Margin="5 -5" IsChecked="{Binding MapCleanerArgs.AnalyzeSamples}">
@@ -77,6 +82,8 @@
 				HorizontalAlignment="Left"
 				Watermark="1/12, 1/16"/>
 
+			<!-- Run -->
+
 			<Button Margin="10 10"
 				Width="98"
 				Height="98"
@@ -91,6 +98,8 @@
 					Height="100"/>
 			</Button>
 		</StackPanel>
+
+		<!-- Credit and progress -->
 
 		<Grid ColumnDefinitions="Auto,*" Grid.Row="2">
 			<TextBlock Grid.Column="0"
