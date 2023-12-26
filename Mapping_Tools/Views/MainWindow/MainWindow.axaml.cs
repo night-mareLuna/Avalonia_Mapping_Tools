@@ -23,18 +23,21 @@ public partial class MainWindow : Window
     public MainWindow()
     {
 		Me = this;
-		Setup();
         InitializeComponent();
+		Setup();
 		DataContext = new MainWindowViewModel();
     }
 
-	private void Setup()
+	private async void Setup()
 	{
 		try
 		{
 			Directory.CreateDirectory(Program.configPath + "/Backups");
 			Directory.CreateDirectory(Program.configPath + "/Exports");
-			SettingsManager.LoadConfig();
+			await SettingsManager.LoadConfig();
+			SetTheme();
+			Width = SettingsManager.Settings.MainWindowRestoreBounds![0];
+			Height = SettingsManager.Settings.MainWindowRestoreBounds![1];
 			ListenerManager = new ListenerManager();
 		}
 		catch (Exception e)
@@ -152,7 +155,19 @@ public partial class MainWindow : Window
         }
     }
 
-	public static IStorageProvider Storage()
+    protected override void OnSizeChanged(SizeChangedEventArgs e)
+    {
+		SettingsManager.Settings.MainWindowRestoreBounds = [Width, Height];
+        base.OnSizeChanged(e);
+    }
+
+    protected override async void OnClosing(WindowClosingEventArgs e)
+    {
+		await SettingsManager.WriteToJson();
+        base.OnClosing(e);
+    }
+
+    public static IStorageProvider Storage()
 	{
 		return Me!.StorageProvider;
 	}

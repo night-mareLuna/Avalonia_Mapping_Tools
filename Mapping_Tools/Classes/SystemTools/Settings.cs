@@ -1,12 +1,11 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using Avalonia;
 
 namespace Mapping_Tools.Classes.SystemTools {
     public class Settings : BindableBase {
         public List<string[]> RecentMaps { get; set; }
         public List<string> FavoriteTools { get; set; }
-        public Rect? MainWindowRestoreBounds { get; set; }
+        public double[] MainWindowRestoreBounds { get; set; }
         public bool MainWindowMaximized { get; set; }
 
         private string osuPath;
@@ -150,7 +149,7 @@ namespace Mapping_Tools.Classes.SystemTools {
         public Settings() {
             RecentMaps = new List<string[]>();
             FavoriteTools = new List<string>();
-            MainWindowRestoreBounds = null;
+            MainWindowRestoreBounds = [1280, 720];
             MainWindowMaximized = false;
             OsuPath = "";
             SongsPath = "";
