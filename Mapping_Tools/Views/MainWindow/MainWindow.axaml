@@ -11,7 +11,7 @@
         Icon="/Data/mt_icon.ico"
         Title="Avalonia Mapping Tools">
 
-    <Grid Name="MainGrid" RowDefinitions="32,*,32">
+    <Grid Name="MainGrid" RowDefinitions="32,*">
 
 		<!-- TOP BAR -->
 
