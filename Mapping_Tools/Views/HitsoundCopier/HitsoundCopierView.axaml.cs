@@ -32,7 +32,9 @@ public partial class HitsoundCopierView : SingleRunMappingTool, ISavable<Hitsoun
 
 	private async void Start_Click(object? obj, RoutedEventArgs args)
 	{
-		if(string.IsNullOrWhiteSpace(BeatmapToBox.Text) || BackgroundWorker.IsBusy) return;
+		if(string.IsNullOrWhiteSpace(BeatmapToBox.Text) ||
+			string.IsNullOrWhiteSpace(BeatmapFromBox.Text) ||
+			BackgroundWorker.IsBusy) return;
 		foreach (string fileToCopy in BeatmapToBox.Text.Split('|'))
             await BackupManager.SaveMapBackup(fileToCopy);
 
