@@ -21,6 +21,10 @@ public partial class HitsoundCopierView : SingleRunMappingTool, ISavable<Hitsoun
 	{
 		DataContext = new HitsoundCopierViewModel();
 		InitializeComponent();
+		if(File.Exists(AutoSavePath))
+			ProjectManager.LoadProject(this, message: false);
+		else
+			ProjectManager.SaveProject(this, AutoSavePath);
 		MaxWidth = MainWindow.GetScreenSize()[0] - 10;
 	}
 
@@ -575,6 +579,7 @@ public partial class HitsoundCopierView : SingleRunMappingTool, ISavable<Hitsoun
     protected override void OnUnloaded(RoutedEventArgs e)
     {
 		HitsoundCopierViewModel.SetProgress(0);
+		ProjectManager.SaveProject(this, AutoSavePath);
         base.OnUnloaded(e);
     }
 }
