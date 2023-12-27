@@ -73,14 +73,14 @@ namespace Mapping_Tools.Classes.HitsoundStuff {
             return (from kvp 
                 in this 
                 where kvp.Value.SequenceEqual(samples)
-                select kvp.Key).FirstOrDefault();
+                select kvp.Key).FirstOrDefault()!;
         }
 
         public string FindFilename(List<SampleGeneratingArgs> samples, string regexPattern) {
             return (from kvp
                     in this
                 where kvp.Value.SequenceEqual(samples) && Regex.IsMatch(kvp.Key, regexPattern)
-                select kvp.Key).FirstOrDefault();
+                select kvp.Key).FirstOrDefault()!;
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace Mapping_Tools.Classes.HitsoundStuff {
         /// Only maps the <see cref="SampleGeneratingArgs"/> which are non-mixed.
         /// </summary>
         /// <returns></returns>
-        public Dictionary<SampleGeneratingArgs, string> GetSampleNames(SampleGeneratingArgsComparer comparer = null) {
+        public Dictionary<SampleGeneratingArgs, string> GetSampleNames(SampleGeneratingArgsComparer? comparer = null) {
             var sampleNames = new Dictionary<SampleGeneratingArgs, string>(comparer ?? new SampleGeneratingArgsComparer());
 
             foreach (var kvp in this.Where(kvp => kvp.Value.Count == 1)) {
@@ -100,7 +100,7 @@ namespace Mapping_Tools.Classes.HitsoundStuff {
             return sampleNames;
         }
 
-        public List<CustomIndex> GetCustomIndices(SampleGeneratingArgsComparer comparer = null) {
+        public List<CustomIndex> GetCustomIndices(SampleGeneratingArgsComparer? comparer = null) {
             if (comparer == null)
                 comparer = new SampleGeneratingArgsComparer();
 
