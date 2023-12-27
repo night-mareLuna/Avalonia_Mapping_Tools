@@ -62,6 +62,12 @@
 							<materialIcons:MaterialIcon Kind="FolderOpen"/>
 						</MenuItem.Icon>
 					</MenuItem>
+					<MenuItem Header="_About"
+						Click="OpenAbout">
+						<MenuItem.Icon>
+							<materialIcons:MaterialIcon Kind="Information"/>
+						</MenuItem.Icon>
+					</MenuItem>
 				</MenuItem>
 			</Menu>
 

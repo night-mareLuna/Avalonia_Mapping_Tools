@@ -171,6 +171,11 @@ public partial class MainWindow : Window
         await fileExplorer.WaitForExitAsync();
 	}
 
+	private void OpenAbout(object obj, RoutedEventArgs args)
+	{
+		
+	}
+
     protected override void OnSizeChanged(SizeChangedEventArgs e)
     {
 		SettingsManager.Settings.MainWindowRestoreBounds = [Width, Height];
