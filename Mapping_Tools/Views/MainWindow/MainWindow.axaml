@@ -48,12 +48,16 @@
 					</MenuItem>
 				</MenuItem>
 				<MenuItem Header="_About">
-					<MenuItem Header="_Open Mapping Tools Folder">
+					<MenuItem Header="_Open Mapping Tools Folder"
+						Name="MappingToolsFolder"
+						Click="OpenFolder">
 						<MenuItem.Icon>
 							<materialIcons:MaterialIcon Kind="FolderOpen"/>
 						</MenuItem.Icon>
 					</MenuItem>
-					<MenuItem Header="_Open Backups Folder">
+					<MenuItem Header="_Open Backups Folder"
+						Name="BackupsFolder"
+						Click="OpenFolder">
 						<MenuItem.Icon>
 							<materialIcons:MaterialIcon Kind="FolderOpen"/>
 						</MenuItem.Icon>
