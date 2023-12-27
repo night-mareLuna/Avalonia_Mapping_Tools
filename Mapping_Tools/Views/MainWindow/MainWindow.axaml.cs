@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using Avalonia;
@@ -147,6 +148,28 @@ public partial class MainWindow : Window
             ex.Show();
         }
     }
+
+	private async void OpenFolder(object obj, RoutedEventArgs args)
+	{
+        string folder = (obj as MenuItem)!.Name! switch
+        {
+            "MappingToolsFolder" => Program.configPath,
+            "BackupsFolder" => SettingsManager.GetBackupsPath(),
+            _ => ""
+        };
+		
+        using Process fileExplorer = new Process
+        {
+            StartInfo = new ProcessStartInfo
+            {
+                FileName = "/usr/bin/bash",
+                Arguments = $"xdg-open \"{new Uri(folder)}\"",
+                UseShellExecute = true
+            }
+        };
+        fileExplorer.Start();
+        await fileExplorer.WaitForExitAsync();
+	}
 
     protected override void OnSizeChanged(SizeChangedEventArgs e)
     {
