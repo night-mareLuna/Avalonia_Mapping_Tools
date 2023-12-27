@@ -37,9 +37,11 @@ public partial class HitsoundCopierViewModel : ViewModelBase
 
 	[JsonIgnore]
 	public IEnumerable<SampleSet> MutedSampleSets => SampleSet.GetValues(typeof(SampleSet)).Cast<SampleSet>();
+	private static HitsoundCopierViewModel? Me;
 
 	public HitsoundCopierViewModel()
 	{
+		Me = this;
 		PathFrom = string.Empty;
         PathTo = string.Empty;
         CopyMode = 0;
@@ -127,4 +129,6 @@ public partial class HitsoundCopierViewModel : ViewModelBase
 			return;
 		else StartIndexBoxVisible = value;
     }
+
+	public static void SetProgress(int prog) => Me!.Progress = prog;
 }

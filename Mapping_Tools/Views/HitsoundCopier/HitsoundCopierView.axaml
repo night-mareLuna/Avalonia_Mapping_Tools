@@ -63,6 +63,7 @@
 				<TextBox Grid.Column="0"
 					Grid.Row="1"
 					Height="32"
+					Name="BeatmapFromBox"
 					HorizontalAlignment="Stretch"
 					Watermark="Copy hitsounds from"
 					Text="{Binding PathFrom}"/>
@@ -99,6 +100,7 @@
 				<TextBox Grid.Column="0"
 					Grid.Row="3"
 					Height="32"
+					Name="BeatmapToBox"
 					HorizontalAlignment="Stretch"
 					Watermark="Copy hitsounds to"
 					Text="{Binding PathTo}"/>
@@ -277,6 +279,7 @@
 				Background="Transparent"
 				HorizontalAlignment="Right"
 				VerticalAlignment="Bottom"
+				Click="Start_Click"
 				ToolTip.Tip="Run Hitsound Copier">
 				<materialIcons:MaterialIcon
 					Kind="PlayCircle"
