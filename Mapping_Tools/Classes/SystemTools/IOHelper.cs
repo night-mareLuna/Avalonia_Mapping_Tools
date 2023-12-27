@@ -137,14 +137,21 @@ namespace Mapping_Tools.Classes.SystemTools {
 
         public static async Task<string[]> BeatmapFileDialog(bool multiselect = false, bool restore = false)
 		{
+			IStorageFolder? startLocation;
 			string[]? currentMaps = MainWindowViewModel.GetCurrentMaps();
-			string path = string.Empty;
-			if(currentMaps is not null)
-				path = currentMaps[0];
+			if(restore && currentMaps != null)
+			{
+				string? beatmapFolder = currentMaps[0];
+				if(!string.IsNullOrWhiteSpace(beatmapFolder))
+					beatmapFolder = beatmapFolder.Remove(beatmapFolder.IndexOf(beatmapFolder.Split('/')[^1]));
+				startLocation = await storage.TryGetFolderFromPathAsync(new Uri(beatmapFolder));
+			}
+			else
+				startLocation = await storage.TryGetFolderFromPathAsync(new Uri(SettingsManager.GetSongsPath()));
 
 			var filePicker = await storage.OpenFilePickerAsync(new FilePickerOpenOptions
 			{
-				SuggestedStartLocation = await storage.TryGetFolderFromPathAsync(new Uri(path)),
+				SuggestedStartLocation = startLocation,
 				FileTypeFilter = new[] { OsuFilePicker },
 				AllowMultiple = multiselect
 			});
@@ -170,7 +177,7 @@ namespace Mapping_Tools.Classes.SystemTools {
 			if(filePicker.Count > 0)
 			{
 				files = new string[filePicker.Count];
-				if(!multiselect)
+				if(multiselect)
 				{
 					for(int i = 0; i < files.Length; i++)
 					{
