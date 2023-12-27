@@ -25,13 +25,14 @@
 			FontSize="12" 
 			Text="osu! folder"/>
 
-		<StackPanel Orientation="Horizontal">
+		<Grid ColumnDefinitions="*,32">
 			<TextBox Margin="5"
+				Grid.Column="0"
 				Height="32"
-				MinWidth="435"
 				Watermark="osu! folder"
 				Text="{Binding OsuPath, Mode=TwoWay}"/>
 			<Button	Name="osuFolder"
+				Grid.Column="1"
 				Background="Transparent"
 				Width="32"
 				Height="32"
@@ -40,19 +41,20 @@
 					Width="30"
 					Height="30"/>
 			</Button>
-		</StackPanel>
+		</Grid>
 
 		<TextBlock Margin="5"
 			FontSize="12" 
 			Text="Songs folder"/>
 
-		<StackPanel Orientation="Horizontal">
+		<Grid ColumnDefinitions="*,32">
 			<TextBox Margin="5"
+				Grid.Column="0"
 				Height="32"
-				MinWidth="435"
 				Watermark="osu! songs folder"
 				Text="{Binding SongsPath, Mode=TwoWay}"/>
 			<Button	Name="osuSongsFolder"
+				Grid.Column="1"
 				Background="Transparent"
 				Width="32"
 				Height="32"
@@ -61,19 +63,20 @@
 					Width="30"
 					Height="30"/>
 			</Button>
-		</StackPanel>
+		</Grid>
 
 		<TextBlock Margin="5"
 			FontSize="12" 
 			Text="osu! user config file"/>
 
-		<StackPanel Orientation="Horizontal">
+		<Grid ColumnDefinitions="*,32">
 			<TextBox Margin="5"
+				Grid.Column="0"
 				Height="32"
-				MinWidth="435"
 				Watermark="osu! user config file"
 				Text="{Binding OsuConfigPath, Mode=TwoWay}"/>
 			<Button	Name="osuConfigFile"
+				Grid.Column="1"
 				Background="Transparent"
 				Width="32"
 				Height="32"
@@ -82,19 +85,20 @@
 					Width="30"
 					Height="30"/>
 			</Button>
-		</StackPanel>
+		</Grid>
 
 		<TextBlock Margin="5"
 			FontSize="12" 
 			Text="Backups folder"/>
 
-		<StackPanel Orientation="Horizontal">
+		<Grid ColumnDefinitions="*,32">
 			<TextBox Margin="5"
+				Grid.Column="0"
 				Height="32"
-				MinWidth="435"
 				Watermark="backups folder"
 				Text="{Binding BackupsPath, Mode=TwoWay}"/>
 			<Button Name="backupsFolder"
+				Grid.Column="1"
 				Background="Transparent"
 				Width="32"
 				Height="32"
@@ -103,11 +107,11 @@
 					Width="30"
 					Height="30"/>
 			</Button>
-		</StackPanel>
+		</Grid>
 
 		<!-- Backup Settings -->
 
-		<TextBlock Margin="5 15 5 5"
+		<TextBlock Margin="5"
 			FontSize="12" 
 			Text="Max backup files"/>
 
@@ -116,32 +120,32 @@
 			HorizontalAlignment="Left"
 			Text="{Binding MaxBackupFiles, Mode=TwoWay, Converter={StaticResource IntToStringConverter}}"/>
 
-		<CheckBox Margin="5 5 0 0"
+		<CheckBox Margin="5 5 0 -5"
 			HorizontalAlignment="Left"
 			Content="Make automatic backups"
 			IsChecked="{Binding MakeBackups, Mode=TwoWay}"/>
 
 		<StackPanel Orientation="Horizontal">
-            <CheckBox Margin="5"
+            <CheckBox Margin="5 -5"
 				HorizontalAlignment="Left"
 				Content="Make periodic backups"
 				IsChecked="{Binding MakePeriodicBackups, Mode=TwoWay}"/>
 
-			<TimePicker Margin="5"
+			<TimePicker Margin="5 -5"
 				IsVisible="{Binding MakePeriodicBackups}"
 				ClockIdentifier="24HourClock"              
 				MinuteIncrement="5"
 				SelectedTime="{Binding PeriodicBackupInterval, Mode=TwoWay}"/>
 		</StackPanel>
 
-		<CheckBox Margin="5"
+		<CheckBox Margin="5 -5 0 5"
 			HorizontalAlignment="Left"
 			Content="Current beatmap default folder in all tools"
 			IsChecked="{Binding CurrentBeatmapDefaultFolder, Mode=TwoWay}"/>
 
 		<!-- THEME -->
 
-		<StackPanel Orientation="Horizontal" Margin="5 20">
+		<StackPanel Orientation="Horizontal" Margin="5">
 			<ToggleSwitch Name="ThemeSwitch"
 				IsChecked="{Binding DarkTheme}"
 				Content="Theme"
