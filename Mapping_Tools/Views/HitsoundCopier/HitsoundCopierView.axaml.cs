@@ -9,9 +9,10 @@ public partial class HitsoundCopierView : UserControl, ISavable<HitsoundCopierVi
 	{
 		DataContext = new HitsoundCopierViewModel();
 		InitializeComponent();
+		MaxWidth = MainWindow.GetScreenSize()[0] - 10;
 	}
 
-	public HitsoundCopierViewModel ViewModel => (HitsoundCopierViewModel) DataContext;
+	public HitsoundCopierViewModel ViewModel => (HitsoundCopierViewModel) DataContext!;
 
     public HitsoundCopierViewModel GetSaveData()
     {
