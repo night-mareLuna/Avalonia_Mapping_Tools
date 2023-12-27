@@ -165,6 +165,12 @@ public partial class MainWindow : Window
 		return Me!.StorageProvider;
 	}
 
+	public static double[] GetScreenSize()
+	{
+		return [Me!.Screens.Primary!.Bounds.X,
+			Me!.Screens.Primary!.Bounds.X];
+	}
+
     private static FilePickerFileType OsuFile { get; } = new("osu! beatmap file")
 	{
 		Patterns = new[] { "*.osu" }
