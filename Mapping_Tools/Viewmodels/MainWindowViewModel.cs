@@ -26,7 +26,8 @@ public partial class MainWindowViewModel : ViewModelBase
 		CurrentView = new PreferencesViewModel();
 		string[] defaultTools = ["Preferences"];
 		string[] mappingTools = ["Map Cleaner",
-			"Hitsound Copier"];
+			"Hitsound Copier",
+			"Hitsound Preview Helper"];
 		string[] allTools = [.. defaultTools, .. mappingTools.OrderBy(d => d).ToArray()];
 		
 		ToolsList = new ObservableCollection<string>(allTools);
@@ -79,6 +80,9 @@ public partial class MainWindowViewModel : ViewModelBase
 				break;
 			case "Hitsound Copier":
 				CurrentView = new HitsoundCopierViewModel();
+				break;
+			case "Hitsound Preview Helper":
+				CurrentView = new HitsoundPreviewHelperViewModel();
 				break;
 		}
 	}
