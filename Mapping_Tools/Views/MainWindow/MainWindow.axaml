@@ -100,7 +100,7 @@
 					<ListBox Margin="5 5"
 						Name="MappingTools"
 						ItemsSource="{Binding ToolsList}"
-						SelectedIndex="{Binding CurrentItem}"
+						SelectedItem="{Binding CurrentItem}"
 						ScrollViewer.VerticalScrollBarVisibility="Auto" 
 						ScrollViewer.HorizontalScrollBarVisibility="Auto"/>
 				</StackPanel>

@@ -1,13 +1,14 @@
 using System;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Mapping_Tools.Classes;
 using Mapping_Tools.Classes.SystemTools;
 
 namespace Avalonia_Mapping_Tools.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
-	[ObservableProperty] private int _CurrentItem = 0;
+	[ObservableProperty] private object _CurrentItem = "Preferences";
 	[ObservableProperty] private ViewModelBase _CurrentView;
 	[ObservableProperty] private ObservableCollection<string> _ToolsList;
 	[ObservableProperty] private bool _OpenPanel = true;
@@ -16,13 +17,6 @@ public partial class MainWindowViewModel : ViewModelBase
 	[ObservableProperty] private string _TotalSelectedMaps = "(0) maps total";
 	private static string[] CurrentMaps = [];
 	private static MainWindowViewModel? Me;
-
-	private enum Tools
-	{
-		Preferences = 0,
-		MapCleaner = 1,
-		HitsoundCopier = 2
-	}
 
 	public MainWindowViewModel()
 	{
@@ -70,25 +64,26 @@ public partial class MainWindowViewModel : ViewModelBase
 
 	public void PanelView() => OpenPanel = !OpenPanel;
 
-	private void UpdateView(int value)
+	private void UpdateView(string value)
 	{
 		switch (value)
 		{
-			case (int)Tools.MapCleaner:
+			case "Map Cleaner":
 				CurrentView = new MapCleanerViewModel();
 				break;
-			case (int)Tools.Preferences:
+			case "Preferences":
 				CurrentView = new PreferencesViewModel();
 				break;
-			case (int)Tools.HitsoundCopier:
+			case "Hitsound Copier":
 				CurrentView = new HitsoundCopierViewModel();
 				break;
 		}
 	}
 
-	partial void OnCurrentItemChanged(int oldValue, int newValue)
+	partial void OnCurrentItemChanged(object value)
 	{
-		UpdateView(newValue);
+		string toolName = (value as string)!;
+		UpdateView(toolName);
 	}
 
     partial void OnDisplayCurrentMapsChanged(string value)
