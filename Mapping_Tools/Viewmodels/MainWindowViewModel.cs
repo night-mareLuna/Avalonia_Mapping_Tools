@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Mapping_Tools.Classes;
 using Mapping_Tools.Classes.SystemTools;
@@ -23,10 +24,12 @@ public partial class MainWindowViewModel : ViewModelBase
 		Me = this;
 		DisplayCurrentMap();
 		CurrentView = new PreferencesViewModel();
-		ToolsList = new ObservableCollection<string>(
-			["Preferences",
-			"Map Cleaner",
-			"Hitsound Copier"]);
+		string[] defaultTools = ["Preferences"];
+		string[] mappingTools = ["Map Cleaner",
+			"Hitsound Copier"];
+		string[] allTools = [.. defaultTools, .. mappingTools.OrderBy(d => d).ToArray()];
+		
+		ToolsList = new ObservableCollection<string>(allTools);
 	}
 
 	private static void DisplayCurrentMap()
