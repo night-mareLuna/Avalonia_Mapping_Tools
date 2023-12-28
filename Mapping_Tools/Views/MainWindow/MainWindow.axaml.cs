@@ -173,7 +173,8 @@ public partial class MainWindow : Window
 
 	private void OpenAbout(object obj, RoutedEventArgs args)
 	{
-		
+		var AboutDialogue = new About();
+		AboutDialogue.ShowDialog(this);
 	}
 
     protected override void OnSizeChanged(SizeChangedEventArgs e)
