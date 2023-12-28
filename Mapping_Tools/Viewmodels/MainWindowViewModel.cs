@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Mapping_Tools.Classes.SystemTools;
@@ -44,7 +44,7 @@ public partial class MainWindowViewModel : ViewModelBase
 		}
 		catch(Exception e)
 		{
-			Console.WriteLine(e.Message);
+			e.Show();
 		}
 	}
 
