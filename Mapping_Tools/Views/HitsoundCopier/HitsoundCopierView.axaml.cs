@@ -25,6 +25,8 @@ public partial class HitsoundCopierView : SingleRunMappingTool, ISavable<Hitsoun
 			ProjectManager.LoadProject(this, message: false);
 		else
 			ProjectManager.SaveProject(this, AutoSavePath);
+
+		Verbose = true;
 		MaxWidth = MainWindow.GetScreenSize()[0] - 10;
 	}
 
