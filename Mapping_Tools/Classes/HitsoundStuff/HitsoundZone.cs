@@ -2,7 +2,9 @@
 using Mapping_Tools.Classes.MathUtil;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace Mapping_Tools.Classes.HitsoundStuff {
@@ -118,6 +120,7 @@ namespace Mapping_Tools.Classes.HitsoundStuff {
                 OnPropertyChanged();
             }
         }
+		public IEnumerable<Hitsound> Hitsounds => Enum.GetValues(typeof(Hitsound)).Cast<Hitsound>();
 
         public SampleSet SampleSet {
             get => sampleSet;
@@ -127,6 +130,7 @@ namespace Mapping_Tools.Classes.HitsoundStuff {
                 OnPropertyChanged();
             }
         }
+		public IEnumerable<SampleSet> SampleSets => Enum.GetValues(typeof(SampleSet)).Cast<SampleSet>();
 
         public SampleSet AdditionsSet {
             get => additionsSet;
@@ -136,6 +140,7 @@ namespace Mapping_Tools.Classes.HitsoundStuff {
                 OnPropertyChanged();
             }
         }
+		public IEnumerable<SampleSet> AdditionsSets => Enum.GetValues(typeof(SampleSet)).Cast<SampleSet>();
 
         public int CustomIndex {
             get => customIndex;

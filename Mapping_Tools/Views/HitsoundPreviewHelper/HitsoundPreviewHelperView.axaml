@@ -8,7 +8,7 @@
 		xmlns:domain="clr-namespace:Mapping_Tools.Components.Domain"
         x:DataType="vm:HitsoundPreviewHelperViewModel">
 
-	<Grid RowDefinitions="Auto,*,Auto,20" Margin="5 5">
+	<Grid RowDefinitions="Auto,*,Auto,20" Margin="5">
 
 		<!-- Title -->
 
@@ -46,59 +46,63 @@
 		<!-- Data Grid things -->
 
 		<DataGrid Margin="5" Grid.Row="1"
-			IsReadOnly="False"
 			GridLinesVisibility="All"
 			CanUserReorderColumns="True"
 			CanUserResizeColumns="True"
-			CanUserSortColumns="False">
+			CanUserSortColumns="False"
+			ItemsSource="{Binding Items}">
 			<DataGrid.Columns>
-				<DataGridCheckBoxColumn>
-				</DataGridCheckBoxColumn>
-				<DataGridTextColumn Header="Name" />
-				<DataGridTextColumn Header="Filename" />
-				<DataGridTextColumn Header="X position" />
-				<DataGridTextColumn Header="Y position" />
+				<DataGridCheckBoxColumn Binding="{Binding IsSelected}"/>
+				<DataGridTextColumn Header="Name"  Binding="{Binding Name}"/>
+				<DataGridTextColumn Header="Filename" Binding="{Binding Filename}"/>
+				<DataGridTextColumn Header="X position" Binding="{Binding XPos}"/>
+				<DataGridTextColumn Header="Y position" Binding="{Binding YPos}"/>
 				<DataGridTemplateColumn Header="Hitsounds">
 					<DataGridTemplateColumn.CellTemplate>
-						<DataTemplate DataType="">
-							<CheckBox />
+						<DataTemplate>
+							<ComboBox SelectedItem="{Binding Hitsound}"
+								ItemsSource="{Binding Hitsounds}"
+								HorizontalAlignment="Stretch"/>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
-					<DataGridTemplateColumn.CellEditingTemplate>
-						<DataTemplate DataType="">
-							<CheckBox />
-						</DataTemplate>
-					</DataGridTemplateColumn.CellEditingTemplate>
 				</DataGridTemplateColumn>
-				<DataGridTemplateColumn Header="SampleSet">
+				<DataGridTemplateColumn Header="Sampleset">
 					<DataGridTemplateColumn.CellTemplate>
-						<DataTemplate DataType="">
-							<CheckBox />
+						<DataTemplate>
+							<ComboBox SelectedItem="{Binding SampleSet}"
+								ItemsSource="{Binding SampleSets}"
+								HorizontalAlignment="Stretch"/>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
-					<DataGridTemplateColumn.CellEditingTemplate>
-						<DataTemplate DataType="">
-							<CheckBox />
-						</DataTemplate>
-					</DataGridTemplateColumn.CellEditingTemplate>
 				</DataGridTemplateColumn>
 				<DataGridTemplateColumn Header="Additions">
 					<DataGridTemplateColumn.CellTemplate>
-						<DataTemplate DataType="">
-							<CheckBox />
+						<DataTemplate>
+							<ComboBox SelectedItem="{Binding AdditionsSet}"
+								ItemsSource="{Binding AdditionsSets}"
+								HorizontalAlignment="Stretch"/>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
-					<DataGridTemplateColumn.CellEditingTemplate>
-						<DataTemplate DataType="">
-							<CheckBox />
-						</DataTemplate>
-					</DataGridTemplateColumn.CellEditingTemplate>
 				</DataGridTemplateColumn>
-				<DataGridTextColumn Header="Custom index" />
+				<DataGridTextColumn Header="Custom index" Binding="{Binding CustomIndex}"/>
 			</DataGrid.Columns>
 		</DataGrid>
 
 		<!-- Buttons -->
+
+		<Button Margin="5" Grid.Row="2"
+			Width="50"
+			Height="50"
+			Background="Transparent"
+			VerticalAlignment="Bottom"
+			HorizontalAlignment="Left"
+			Command="{Binding DeleteAllCommand}"
+			ToolTip.Tip="Delete ALL hitsound zones">
+			<materialIcons:MaterialIcon
+				Kind="DeleteCircleOutline"
+				Width="48"
+				Height="48"/>
+		</Button>
 
 		<StackPanel Grid.Row="2"
 			Margin="5" 
@@ -123,6 +127,7 @@
 				Height="50"
 				Background="Transparent"
 				VerticalAlignment="Bottom"
+				Command="{Binding AddCommand}"
 				ToolTip.Tip="Add a hitsound zone.">
 				<materialIcons:MaterialIcon
 					Kind="Plus"
@@ -135,6 +140,7 @@
 				Height="50"
 				Background="Transparent"
 				VerticalAlignment="Bottom"
+				Command="{Binding CopyCommand}"
 				ToolTip.Tip="Copy selected hitsound zones.">
 				<materialIcons:MaterialIcon
 					Kind="ContentCopy"
@@ -147,6 +153,7 @@
 				Height="50"
 				Background="Transparent"
 				VerticalAlignment="Bottom"
+				Command="{Binding RemoveCommand}"
 				ToolTip.Tip="Remove selected hitsound zones.">
 				<materialIcons:MaterialIcon
 					Kind="TrashCan"
@@ -177,7 +184,7 @@
 				Background="Transparent"
 				Margin="20 0 20 0"
 				Height="20"
-				Value="0"/>
+				Value="{Binding Progress}"/>
 		</Grid>
 	</Grid>
 </UserControl>
