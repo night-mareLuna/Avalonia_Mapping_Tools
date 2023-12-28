@@ -8,9 +8,176 @@
 		xmlns:domain="clr-namespace:Mapping_Tools.Components.Domain"
         x:DataType="vm:HitsoundPreviewHelperViewModel">
 
-	<TextBlock HorizontalAlignment="Center"
-		VerticalAlignment="Center"
-		Text="Hitsound Preview Helper!"/>
+	<Grid RowDefinitions="Auto,*,Auto,20" Margin="5 5">
 
+		<!-- Title -->
 
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="0">
+			<TextBlock Margin="10 10"
+				FontSize="32"
+				FontWeight="Bold"
+				Text="Hitsound Preview Helper"/>
+
+			<Button Margin="5 5"
+				Width="32" 
+				Height="32"
+				Background="Transparent"
+				ToolTip.Tip="Click Me!"
+				Cursor="Hand">
+				<materialIcons:MaterialIcon
+					Kind="HelpCircle"
+					Width="30"
+					Height="30"/>
+				<Button.Flyout>
+					<Flyout>
+						<TextBlock TextWrapping="Wrap"
+							Padding="5"
+							MaxWidth="400">
+							Hitsound Preview Helper helps by placing hitsounds on all the objects of the current map based on the positions of the objects. That way you can hear the hitsounds play while you hitsound without having to assign them manually and later import them to Hitsound Studio.
+							<LineBreak/>
+							<LineBreak/>
+							This tool is meant to help a very specific hitsounding workflow. If you hitsound by placing circles on different parts on the screen and treat each position as a different layer of hitsounds. For example using a mania map and have each column represent a different sound.
+						</TextBlock>
+					</Flyout>
+				</Button.Flyout>
+			</Button>
+		</StackPanel>
+
+		<!-- Data Grid things -->
+
+		<DataGrid Margin="5" Grid.Row="1"
+			IsReadOnly="False"
+			GridLinesVisibility="All"
+			CanUserReorderColumns="True"
+			CanUserResizeColumns="True"
+			CanUserSortColumns="False">
+			<DataGrid.Columns>
+				<DataGridCheckBoxColumn>
+				</DataGridCheckBoxColumn>
+				<DataGridTextColumn Header="Name" />
+				<DataGridTextColumn Header="Filename" />
+				<DataGridTextColumn Header="X position" />
+				<DataGridTextColumn Header="Y position" />
+				<DataGridTemplateColumn Header="Hitsounds">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate DataType="">
+							<CheckBox />
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+					<DataGridTemplateColumn.CellEditingTemplate>
+						<DataTemplate DataType="">
+							<CheckBox />
+						</DataTemplate>
+					</DataGridTemplateColumn.CellEditingTemplate>
+				</DataGridTemplateColumn>
+				<DataGridTemplateColumn Header="SampleSet">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate DataType="">
+							<CheckBox />
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+					<DataGridTemplateColumn.CellEditingTemplate>
+						<DataTemplate DataType="">
+							<CheckBox />
+						</DataTemplate>
+					</DataGridTemplateColumn.CellEditingTemplate>
+				</DataGridTemplateColumn>
+				<DataGridTemplateColumn Header="Additions">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate DataType="">
+							<CheckBox />
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+					<DataGridTemplateColumn.CellEditingTemplate>
+						<DataTemplate DataType="">
+							<CheckBox />
+						</DataTemplate>
+					</DataGridTemplateColumn.CellEditingTemplate>
+				</DataGridTemplateColumn>
+				<DataGridTextColumn Header="Custom index" />
+			</DataGrid.Columns>
+		</DataGrid>
+
+		<!-- Buttons -->
+
+		<StackPanel Grid.Row="2"
+			Margin="5" 
+			Orientation="Horizontal"
+			HorizontalAlignment="Right"
+			VerticalAlignment="Bottom">
+
+			<Button Margin="5"
+				Width="50"
+				Height="50"
+				Background="Transparent"
+				VerticalAlignment="Bottom"
+				ToolTip.Tip="Generate rhythm guide.">
+				<materialIcons:MaterialIcon
+					Kind="CurrentAc"
+					Width="48"
+					Height="48"/>
+			</Button>
+
+			<Button Margin="5"
+				Width="50"
+				Height="50"
+				Background="Transparent"
+				VerticalAlignment="Bottom"
+				ToolTip.Tip="Add a hitsound zone.">
+				<materialIcons:MaterialIcon
+					Kind="Plus"
+					Width="48"
+					Height="48"/>
+			</Button>
+
+			<Button Margin="5"
+				Width="50"
+				Height="50"
+				Background="Transparent"
+				VerticalAlignment="Bottom"
+				ToolTip.Tip="Copy selected hitsound zones.">
+				<materialIcons:MaterialIcon
+					Kind="ContentCopy"
+					Width="48"
+					Height="48"/>
+			</Button>
+
+			<Button Margin="5"
+				Width="50"
+				Height="50"
+				Background="Transparent"
+				VerticalAlignment="Bottom"
+				ToolTip.Tip="Remove selected hitsound zones.">
+				<materialIcons:MaterialIcon
+					Kind="TrashCan"
+					Width="48"
+					Height="48"/>
+			</Button>
+
+			<Button Margin="10"
+				Width="98"
+				Height="98"
+				Background="Transparent"
+				ToolTip.Tip="Run Hitsound Preview Helper">
+				<materialIcons:MaterialIcon
+					Kind="PlayCircle"
+					Width="100"
+					Height="100"/>
+			</Button>
+		</StackPanel>
+
+		<!-- Credit and progress bar -->
+
+		<Grid ColumnDefinitions="Auto,*" Grid.Row="3">
+			<TextBlock Grid.Column="0"
+				Text="Made by OliBomby"
+				FontWeight="Bold" 
+				Opacity="0.58"/>
+			<ProgressBar Grid.Column="1"
+				Background="Transparent"
+				Margin="20 0 20 0"
+				Height="20"
+				Value="0"/>
+		</Grid>
+	</Grid>
 </UserControl>
