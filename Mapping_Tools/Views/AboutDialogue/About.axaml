@@ -2,11 +2,51 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:Avalonia_Mapping_Tools.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:actipro="http://schemas.actiprosoftware.com/avaloniaui"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         x:Class="Avalonia_Mapping_Tools.Views.About"
         x:DataType="vm:AboutViewModel">
 
-	<TextBlock HorizontalAlignment="Center"
-		VerticalAlignment="Center" 
-		Text="About Dialogue thingie"/>
+	<Grid RowDefinitions="*,Auto">
+		<StackPanel Grid.Row="0">
+			<actipro:HyperlinkTextBlock Margin="0 5 0 10"
+				FontSize="24"
+				Command="{Binding OpenLink}"
+				CommandParameter="{Binding URLGitHub}"
+				HorizontalAlignment="Center"
+				Text="Github"/>
+
+			<TextBlock Margin="5 5 5 0" HorizontalAlignment="Left">
+				<Run>Original </Run>
+				<InlineUIContainer>
+					<actipro:HyperlinkTextBlock
+						Command="{Binding OpenLink}"
+						CommandParameter="{Binding URLMappingTools}">Mapping Tools</actipro:HyperlinkTextBlock>
+				</InlineUIContainer>
+				<Run> by OliBomby.</Run>
+			</TextBlock>
+
+			<TextBlock Margin="5 0 5 5"
+				TextWrapping="Wrap"
+				HorizontalAlignment="Left">
+				<Run>Rewritten in</Run>
+				<InlineUIContainer>
+					<actipro:HyperlinkTextBlock
+						Command="{Binding OpenLink}"
+						CommandParameter="{Binding URLAvalonia}"> Avalonia </actipro:HyperlinkTextBlock>
+				</InlineUIContainer>
+				<Run>to be able to run on Linux systems without using WINE.</Run>
+			</TextBlock>
+
+			<TextBlock Margin="5 10" 
+				Text="Go support the original project!"/>
+
+		</StackPanel>
+
+		<TextBlock Grid.Row="1"
+			Margin="5"
+			Text="Made by night-mareLuna"
+			FontWeight="Bold" 
+			Opacity="0.58"/>
+	</Grid>
 </Window>
