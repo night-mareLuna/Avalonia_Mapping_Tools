@@ -5,18 +5,30 @@
 		xmlns:actipro="http://schemas.actiprosoftware.com/avaloniaui"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         x:Class="Avalonia_Mapping_Tools.Views.About"
-        x:DataType="vm:AboutViewModel">
+        x:DataType="vm:AboutViewModel"
+        Title="About">
 
 	<Grid RowDefinitions="*,Auto">
 		<StackPanel Grid.Row="0">
-			<actipro:HyperlinkTextBlock Margin="0 5 0 10"
+			<actipro:HyperlinkTextBlock Margin="5"
 				FontSize="24"
 				Command="{Binding OpenLink}"
 				CommandParameter="{Binding URLGitHub}"
 				HorizontalAlignment="Center"
 				Text="Github"/>
 
-			<TextBlock Margin="5 5 5 0" HorizontalAlignment="Left">
+			<StackPanel Orientation="Horizontal"
+				HorizontalAlignment="Center">
+				<TextBlock Margin="5"
+					FontSize="18" 
+					Text="Version:"/>
+				<TextBlock Margin="5"
+					FontSize="18" 
+					Text="{Binding Version}"/>
+			</StackPanel>
+
+			<TextBlock Margin="5 5 5 0"
+				HorizontalAlignment="Left">
 				<Run>Original </Run>
 				<InlineUIContainer>
 					<actipro:HyperlinkTextBlock
@@ -40,7 +52,6 @@
 
 			<TextBlock Margin="5 10" 
 				Text="Go support the original project!"/>
-
 		</StackPanel>
 
 		<TextBlock Grid.Row="1"
