@@ -41,7 +41,9 @@
 							MaxWidth="400">
 							Copies hitsounds from A to B.
 							<LineBreak/>
+							<LineBreak/>
 							There are 2 modes. First mode is overwrite everything. This will basically first remove the hitsounds from the map you're copying to and then copy the hitsounds.
+							<LineBreak/>
 							<LineBreak/>
 							Second mode is copying only the defined hitsounds. A defined hitsound is when there is something there in the map you're copying from. This mode will copy over all the hitsounds from the map you're copying from. Anything in the map you're copying to that has not been defined in the map you're copying from will not change. For instance muted sliderends will remain there.
 						</TextBlock>
