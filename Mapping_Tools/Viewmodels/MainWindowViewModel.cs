@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -10,7 +10,7 @@ namespace Avalonia_Mapping_Tools.ViewModels;
 public partial class MainWindowViewModel : ViewModelBase
 {
 	[ObservableProperty] private object _CurrentItem = "Preferences";
-	[ObservableProperty] private ViewModelBase _CurrentView;
+	[ObservableProperty] private ViewModelBase? _CurrentView;
 	[ObservableProperty] private ObservableCollection<string> _ToolsList;
 	[ObservableProperty] private bool _OpenPanel = true;
 	[ObservableProperty] private string _DisplayCurrentMaps = "No Beatmap Selected!";
@@ -23,7 +23,7 @@ public partial class MainWindowViewModel : ViewModelBase
 	{
 		Me = this;
 		DisplayCurrentMap();
-		CurrentView = new PreferencesViewModel();
+		UpdateView((CurrentItem as string)!);
 		string[] defaultTools = ["Preferences"];
 		string[] mappingTools = ["Map Cleaner",
 			"Hitsound Copier",
