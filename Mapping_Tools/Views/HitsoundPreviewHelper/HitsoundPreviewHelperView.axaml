@@ -115,6 +115,7 @@
 				Height="50"
 				Background="Transparent"
 				VerticalAlignment="Bottom"
+				IsVisible="false"
 				ToolTip.Tip="Generate rhythm guide.">
 				<materialIcons:MaterialIcon
 					Kind="CurrentAc"
