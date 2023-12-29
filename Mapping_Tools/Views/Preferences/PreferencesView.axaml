@@ -138,10 +138,15 @@
 				SelectedTime="{Binding PeriodicBackupInterval, Mode=TwoWay}"/>
 		</StackPanel>
 
-		<CheckBox Margin="5 -5 0 5"
+		<CheckBox Margin="5 -5"
 			HorizontalAlignment="Left"
 			Content="Current beatmap default folder in all tools"
 			IsChecked="{Binding CurrentBeatmapDefaultFolder, Mode=TwoWay}"/>
+
+		<CheckBox Margin="5 -5 0 5"
+			HorizontalAlignment="Left"
+			Content="Show a warning before running each tool"
+			IsChecked="{Binding ShowSaveDialog, Mode=TwoWay}"/>
 
 		<!-- THEME -->
 

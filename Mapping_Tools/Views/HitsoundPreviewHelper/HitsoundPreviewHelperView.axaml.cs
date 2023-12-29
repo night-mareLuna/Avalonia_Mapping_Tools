@@ -10,6 +10,7 @@ using Mapping_Tools.Classes.HitsoundStuff;
 using Mapping_Tools.Classes.SystemTools;
 using Mapping_Tools.Classes.ToolHelpers;
 using Mapping_Tools.Views;
+using MsBox.Avalonia.Enums;
 
 namespace Avalonia_Mapping_Tools.Views;
 public partial class HitsoundPreviewHelperView : SingleRunMappingTool, ISavable<HitsoundPreviewHelperViewModel>
@@ -27,9 +28,10 @@ public partial class HitsoundPreviewHelperView : SingleRunMappingTool, ISavable<
 		Verbose = true;
 	}
 
-	private void Start_Click(object obj, RoutedEventArgs args)
+	private async void Start_Click(object obj, RoutedEventArgs args)
 	{
-		RunTool(MainWindowViewModel.GetCurrentMaps(), false);
+		if(await MainWindow.ShowSaveDialog() == ButtonResult.Ok)
+			RunTool(MainWindowViewModel.GetCurrentMaps(), false);
 	}
 
 	private async void RunTool(string[] paths, bool quick = false)

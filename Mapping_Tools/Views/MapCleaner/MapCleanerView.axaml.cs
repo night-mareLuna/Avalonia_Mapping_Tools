@@ -11,6 +11,7 @@ using Mapping_Tools.Classes.SystemTools;
 using Mapping_Tools.Classes.SystemTools.QuickRun;
 using Mapping_Tools.Classes.Tools.MapCleanerStuff;
 using Mapping_Tools.Views;
+using MsBox.Avalonia.Enums;
 
 namespace Avalonia_Mapping_Tools.Views;
 
@@ -38,9 +39,10 @@ public partial class MapCleanerView : SingleRunMappingTool, IQuickRun, ISavable<
 
 	public MapCleanerViewModel ViewModel => (MapCleanerViewModel) DataContext!;
 
-	private void Start_Click(object obj, RoutedEventArgs args)
+	private async void Start_Click(object obj, RoutedEventArgs args)
 	{
-		RunTool(MainWindowViewModel.GetCurrentMaps(), quick: false);
+		if(await MainWindow.ShowSaveDialog() == ButtonResult.Ok)
+			RunTool(MainWindowViewModel.GetCurrentMaps(), quick: false);
 	}
 
 	private async void RunTool(string[] paths, bool quick = false)

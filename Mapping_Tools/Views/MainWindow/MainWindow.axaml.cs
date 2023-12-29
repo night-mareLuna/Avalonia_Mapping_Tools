@@ -200,6 +200,18 @@ public partial class MainWindow : Window
 			Me!.Screens.Primary!.Bounds.X];
 	}
 
+	public static async Task<ButtonResult> ShowSaveDialog()
+	{
+		if(SettingsManager.Settings.ShowSaveDialog)
+		{
+			var box = MessageBoxManager.GetMessageBoxStandard("Caution!",
+				"Make sure your beatmap(s) is saved in the editor before running this tool.",
+				ButtonEnum.OkAbort);
+			return await box.ShowAsPopupAsync(Me!);
+		}
+		return ButtonResult.Ok;
+	}
+
     private static FilePickerFileType OsuFile { get; } = new("osu! beatmap file")
 	{
 		Patterns = new[] { "*.osu" }
