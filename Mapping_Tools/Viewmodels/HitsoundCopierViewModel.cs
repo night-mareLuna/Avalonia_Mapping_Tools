@@ -33,7 +33,7 @@ public partial class HitsoundCopierViewModel : ViewModelBase
     [ObservableProperty] private double minLength;
     [ObservableProperty] private int mutedIndex;
     [ObservableProperty] private SampleSet mutedSampleSet;
-	[ObservableProperty] private int _Progress = 0;
+	[ObservableProperty] [property: JsonIgnore] private int _Progress = 0;
 
 	[JsonIgnore]
 	public IEnumerable<SampleSet> MutedSampleSets => SampleSet.GetValues(typeof(SampleSet)).Cast<SampleSet>();
