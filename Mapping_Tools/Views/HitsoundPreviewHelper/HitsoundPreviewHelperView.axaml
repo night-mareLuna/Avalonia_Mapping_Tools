@@ -166,6 +166,7 @@
 				Width="98"
 				Height="98"
 				Background="Transparent"
+				Click="Start_Click"
 				ToolTip.Tip="Run Hitsound Preview Helper">
 				<materialIcons:MaterialIcon
 					Kind="PlayCircle"

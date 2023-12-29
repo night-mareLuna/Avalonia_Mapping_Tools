@@ -13,10 +13,11 @@ namespace Avalonia_Mapping_Tools.ViewModels;
 public partial class HitsoundPreviewHelperViewModel : ViewModelBase
 {
 	[ObservableProperty] private ObservableCollection<HitsoundZone> _Items;
-	[JsonIgnore] [ObservableProperty] private int _Progress = 0;
-	[JsonIgnore] [ObservableProperty] private bool? _IsAllItemsSelected;
+	[ObservableProperty] [property: JsonIgnore] private int _Progress = 0;
+	private static HitsoundPreviewHelperViewModel? Me;
 	public HitsoundPreviewHelperViewModel()
 	{
+		Me = this;
 		Items = [];
 	}
 
@@ -69,4 +70,6 @@ public partial class HitsoundPreviewHelperViewModel : ViewModelBase
             model.IsSelected = select;
         }
     }
+
+	public static void SetProgress(int prog) => Me!.Progress = prog;
 }
