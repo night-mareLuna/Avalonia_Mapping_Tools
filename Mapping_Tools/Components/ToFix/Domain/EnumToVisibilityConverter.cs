@@ -2,7 +2,6 @@
 using System.Globalization;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
-using Mapping_Tools.Classes.BeatmapHelper.Enums;
 
 namespace Mapping_Tools.Components.Domain{
     /// <summary>
