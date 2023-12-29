@@ -13,6 +13,7 @@ using Mapping_Tools.Classes.MathUtil;
 using Mapping_Tools.Classes.SystemTools;
 using Mapping_Tools.Classes.ToolHelpers;
 using Mapping_Tools.Views;
+using MsBox.Avalonia.Enums;
 
 namespace Avalonia_Mapping_Tools.Views;
 public partial class HitsoundCopierView : SingleRunMappingTool, ISavable<HitsoundCopierViewModel>
@@ -34,7 +35,8 @@ public partial class HitsoundCopierView : SingleRunMappingTool, ISavable<Hitsoun
 
 	private async void Start_Click(object? obj, RoutedEventArgs args)
 	{
-		if(string.IsNullOrWhiteSpace(BeatmapToBox.Text) ||
+		if(await MainWindow.ShowSaveDialog() != ButtonResult.Ok ||
+			string.IsNullOrWhiteSpace(BeatmapToBox.Text) ||
 			string.IsNullOrWhiteSpace(BeatmapFromBox.Text) ||
 			BackgroundWorker.IsBusy) return;
 		foreach (string fileToCopy in BeatmapToBox.Text.Split('|'))

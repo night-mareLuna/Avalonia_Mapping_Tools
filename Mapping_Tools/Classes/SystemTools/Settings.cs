@@ -143,6 +143,13 @@ namespace Mapping_Tools.Classes.SystemTools {
 			set => Set(ref darkTheme, value);
 		}
 
+		private bool showSaveDialog;
+		public bool ShowSaveDialog
+		{
+			get => showSaveDialog;
+			set => Set(ref showSaveDialog, value);
+		}
+
         /// <summary>
         /// Makes a new Settings objects and initializes default settings.
         /// </summary>
@@ -168,6 +175,7 @@ namespace Mapping_Tools.Classes.SystemTools {
             CurrentBeatmapDefaultFolder = true;
             SkipVersion = null;
 			DarkTheme = true;
+			ShowSaveDialog = true;
         }
 
 		private static void OnMakePeriodicBackupsChanged(bool newValue) =>
