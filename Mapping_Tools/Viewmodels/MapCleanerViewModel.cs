@@ -7,7 +7,7 @@ namespace Avalonia_Mapping_Tools.ViewModels;
 public partial class MapCleanerViewModel : ViewModelBase
 {
 	[ObservableProperty] private MapCleanerArgs _MapCleanerArgs = MapCleanerArgs.BasicResnap;
-	[ObservableProperty] private int _Progress = 0;
+	[ObservableProperty] [property: JsonIgnore] private int _Progress = 0;
 	[JsonIgnore] public string[] Paths { get; set; }
 	[JsonIgnore] public bool Quick { get; set; }
 	private static MapCleanerViewModel? Me;
