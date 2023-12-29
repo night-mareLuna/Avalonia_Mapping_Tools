@@ -79,7 +79,7 @@
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
 							<ComboBox SelectedItem="{Binding AdditionsSet}"
-								ItemsSource="{Binding AdditionsSets}"
+								ItemsSource="{Binding SampleSets}"
 								HorizontalAlignment="Stretch"/>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>

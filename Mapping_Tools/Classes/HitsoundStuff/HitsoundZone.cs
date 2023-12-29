@@ -140,7 +140,6 @@ namespace Mapping_Tools.Classes.HitsoundStuff {
                 OnPropertyChanged();
             }
         }
-		public IEnumerable<SampleSet> AdditionsSets => Enum.GetValues(typeof(SampleSet)).Cast<SampleSet>();
 
         public int CustomIndex {
             get => customIndex;
