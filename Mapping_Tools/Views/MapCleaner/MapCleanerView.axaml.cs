@@ -58,7 +58,6 @@ public partial class MapCleanerView : SingleRunMappingTool, IQuickRun, ISavable<
 
     protected override void OnUnloaded(RoutedEventArgs e)
     {
-		MapCleanerViewModel.SetProgress(0);
 		ProjectManager.SaveProject(this, AutoSavePath);
         base.OnUnloaded(e);
     }

@@ -582,7 +582,6 @@ public partial class HitsoundCopierView : SingleRunMappingTool, ISavable<Hitsoun
 
     protected override void OnUnloaded(RoutedEventArgs e)
     {
-		HitsoundCopierViewModel.SetProgress(0);
 		ProjectManager.SaveProject(this, AutoSavePath);
         base.OnUnloaded(e);
     }
