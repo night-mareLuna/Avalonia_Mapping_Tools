@@ -9,6 +9,7 @@ All tool specific settings should function exactly the same as original Mapping 
 - Automatic and periodic backups
 - [Map Cleaner](https://github.com/OliBomby/Map-Cleaner) by [OliBomby](https://github.com/OliBomby)
 - Hitsound Copier by [OliBomby](https://github.com/OliBomby)
+- Hitsound Preview Helper by [OliBomby](https://github.com/OliBomby) 
 
 
 ## Requirements
