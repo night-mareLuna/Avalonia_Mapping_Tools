@@ -8,6 +8,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
 	<PublishSingleFile>true</PublishSingleFile>
+	<ApplicationIcon>Data/mt_icon.ico</ApplicationIcon>
   </PropertyGroup>
   
 
