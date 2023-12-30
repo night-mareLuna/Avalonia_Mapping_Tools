@@ -196,12 +196,6 @@ public partial class MainWindow : Window
 		return Me!.StorageProvider;
 	}
 
-	public static double[] GetScreenSize()
-	{
-		return [Me!.Screens.Primary!.Bounds.X,
-			Me!.Screens.Primary!.Bounds.X];
-	}
-
 	public static async Task<ButtonResult> ShowSaveDialog()
 	{
 		if(SettingsManager.Settings.ShowSaveDialog)
