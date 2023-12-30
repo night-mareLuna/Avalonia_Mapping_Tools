@@ -19,6 +19,8 @@ namespace Avalonia_Mapping_Tools.Views;
 public partial class MainWindow : Window
 {
 	private static MainWindow? Me;
+	public static readonly string DefaultBackupPath = Program.configPath + "/Backups";
+	public static readonly string ExportPath = Program.configPath + "/Exports";
 	public ListenerManager? ListenerManager;
 
     public MainWindow()
@@ -33,8 +35,8 @@ public partial class MainWindow : Window
 	{
 		try
 		{
-			Directory.CreateDirectory(Program.configPath + "/Backups");
-			Directory.CreateDirectory(Program.configPath + "/Exports");
+			Directory.CreateDirectory(DefaultBackupPath);
+			Directory.CreateDirectory(ExportPath);
 			await SettingsManager.LoadConfig();
 			SetTheme();
 			Width = SettingsManager.Settings.MainWindowRestoreBounds![0];
