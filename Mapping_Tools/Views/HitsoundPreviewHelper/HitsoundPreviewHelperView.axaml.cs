@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -16,8 +17,10 @@ namespace Avalonia_Mapping_Tools.Views;
 public partial class HitsoundPreviewHelperView : SingleRunMappingTool, ISavable<HitsoundPreviewHelperViewModel>
 {
 	public event EventHandler? RunFinished;
+	private static HitsoundPreviewHelperView? Me;
 	public HitsoundPreviewHelperView()
 	{
+		Me = this;
 		DataContext = new HitsoundPreviewHelperViewModel();
 		InitializeComponent();
 		if(File.Exists(AutoSavePath))
@@ -27,6 +30,12 @@ public partial class HitsoundPreviewHelperView : SingleRunMappingTool, ISavable<
 
 		Verbose = true;
 	}
+
+	public static IList GetDataGridSelectedItems()
+	{
+		return Me!.HitsoundDataGrid.SelectedItems;
+	}
+
 
 	private async void Start_Click(object obj, RoutedEventArgs args)
 	{
