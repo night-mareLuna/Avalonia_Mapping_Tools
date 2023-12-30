@@ -48,46 +48,69 @@
 			<!-- Left Panel -->
 
 			<ScrollViewer Grid.Column="0">
-				<StackPanel Margin="5" IsEnabled="false">
+				<StackPanel Name="EditPanel" Margin="5">
 
 					<!-- General -->
 
 					<TextBlock Margin="5"
+						FontWeight="Bold"
 						Text="General"/>
 
 					<TextBlock Margin="5 5 5 0"
 						FontSize="12"
 						Text="Name"/>
-					<TextBox Margin="5" 
+					<TextBox Name="SelectedNameBox" Margin="5" 
 						HorizontalAlignment="Stretch"
+						TextChanged="SelectedNameBox_TextChanged"
 						Watermark="Name"/>
 
 					<TextBlock Margin="5 5 5 0"
 						FontSize="12"
 						Text="SampleSet"/>
-					<ComboBox Margin="5"
-						HorizontalAlignment="Stretch"/>
+					<ComboBox Name="SelectedSampleSetBox" Margin="5"
+						SelectionChanged="SelectedSampleSetBox_SelectionChanged"
+						HorizontalAlignment="Stretch">
+						<ComboBoxItem Content="Normal" Cursor="Hand"/>
+						<ComboBoxItem Content="Soft" Cursor="Hand"/>
+						<ComboBoxItem Content="Drum" Cursor="Hand"/>
+					</ComboBox>
 
 					<TextBlock Margin="5 5 5 0"
 						FontSize="12"
 						Text="Hitsound"/>
-					<ComboBox Margin="5"
-						HorizontalAlignment="Stretch"/>
+					<ComboBox Name="SelectedHitsoundBox" Margin="5"
+						SelectionChanged="SelectedHitsoundBox_SelectionChanged"
+						HorizontalAlignment="Stretch">
+                        <ComboBoxItem Content="Normal" Cursor="Hand"/>
+                        <ComboBoxItem Content="Whistle" Cursor="Hand"/>
+                        <ComboBoxItem Content="Finish" Cursor="Hand"/>
+                        <ComboBoxItem Content="Clap" Cursor="Hand"/>
+					</ComboBox>
+					<CheckBox Name="ShowTimesBox" Margin="5" >Show times</CheckBox>
+					<StackPanel>
+						<TextBox Name="TimesBox" Margin="5"
+							TextWrapping="Wrap"
+							IsVisible="{Binding #ShowTimesBox.IsChecked}"
+							Text="{Binding EditTimes}">
+						</TextBox>
+					</StackPanel>
 
 					<!-- Hitsound Sample -->
 
 					<TextBlock Margin="5 10 5 5"
+						FontWeight="Bold"
 						Text="Hitsound Sample"/>
 
 					<TextBlock Margin="5 5 5 0"
 						FontSize="12"
 						Text="Path"/>
 					<Grid ColumnDefinitions="*,Auto">
-						<TextBox Margin="5" Grid.Column="0"
+						<TextBox Name="SelectedSamplePathBox" Margin="5" Grid.Column="0"
 							HorizontalAlignment="Stretch"
 							Watermark="Path"/>
 						<Button	Margin="5" Grid.Column="1"
 							Background="Transparent"
+							Click="SelectedSamplePathBrowse_Click"
 							Width="32"
 							Height="32">
 							<materialIcons:MaterialIcon Kind="Folder"
@@ -99,87 +122,216 @@
 					<TextBlock Margin="5 5 5 0"
 						FontSize="12"
 						Text="Volume %"/>
-					<TextBox Margin="5" 
+					<TextBox Name="SelectedSampleVolumeBox" Margin="5" 
+						TextChanged="SelectedSampleVolumeBox_TextChanged"
 						HorizontalAlignment="Stretch"
 						Watermark="100"/>
 
 					<TextBlock Margin="5 5 5 0"
 						FontSize="12"
 						Text="Panning"/>
-					<TextBox Margin="5" 
+					<TextBox Name="SelectedSamplePanningBox" Margin="5"
+						TextChanged="SelectedSamplePanningBox_TextChanged"
 						HorizontalAlignment="Stretch"
 						Watermark="0"/>
 
 					<TextBlock Margin="5 5 5 0"
 						FontSize="12"
 						Text="Pitch Shift"/>
-					<TextBox Margin="5" 
+					<TextBox Name="SelectedSamplePitchShiftBox" Margin="5"
+						TextChanged="SelectedSamplePitchShiftBox_TextChanged"
 						HorizontalAlignment="Stretch"
 						Watermark="0"/>
+
+					<StackPanel Name="SoundFontArgsPanel">
+                        <TextBox Name="SelectedSampleBankBox" Margin="5"
+							TextChanged="SelectedSampleBankBox_TextChanged"/>
+                        <TextBox Name="SelectedSamplePatchBox" Margin="5"
+							TextChanged="SelectedSamplePatchBox_TextChanged"/>
+                        <TextBox Name="SelectedSampleInstrumentBox" Margin="5"
+							TextChanged="SelectedSampleInstrumentBox_TextChanged"/>
+                        <TextBox Name="SelectedSampleKeyBox" Margin="5"
+							TextChanged="SelectedSampleKeyBox_TextChanged"/>
+                        <TextBox Name="SelectedSampleLengthBox" Margin="5"
+							TextChanged="SelectedSampleLengthBox_TextChanged"/>
+                        <TextBox Name="SelectedSampleVelocityBox" Margin="5"
+							TextChanged="SelectedSampleVelocityBox_TextChanged"/>
+                    </StackPanel>
 
 					<!-- Import Info -->
 
 					<TextBlock Margin="5 10 5 5"
-						Text="Hitsound Sample"/>
+						FontWeight="Bold"
+						Text="Import info"/>
 					
 					<TextBlock Margin="5 5 5 0"
 						FontSize="12"
 						Text="Import Type"/>
-					<ComboBox Margin="5"
-						HorizontalAlignment="Stretch"/>
+					<ComboBox Name="SelectedImportTypeBox" Margin="5"
+						SelectionChanged="SelectedImportTypeBox_SelectionChanged"
+						HorizontalAlignment="Stretch">
+
+						<ComboBoxItem Content="None" Cursor="Hand"/>
+						<ComboBoxItem Content="Stack" Cursor="Hand"/>
+						<ComboBoxItem Content="Hitsounds" Cursor="Hand"/>
+						<ComboBoxItem Content="Storyboard" Cursor="Hand"/>
+						<ComboBoxItem Content="MIDI" Cursor="Hand"/>
+					</ComboBox>
 
 					<TextBlock Margin="5 5 5 0"
 						FontSize="12"
 						Text="Source path"/>
-					<Grid ColumnDefinitions="*,Auto,Auto">
-						<TextBox Margin="5" Grid.Column="0"
+					<StackPanel Name="ImportArgsPanel">
+						<Grid ColumnDefinitions="*,Auto,Auto">
+							<TextBox Name="SelectedImportPathBox" Margin="5" Grid.Column="0"
+								TextChanged="SelectedImportPathBox_TextChanged"
+								HorizontalAlignment="Stretch"
+								Watermark="Path"/>
+							<Button	Margin="5" Grid.Column="1"
+								Background="Transparent"
+								Click="SelectedImportPathLoad_Click"
+								Width="32"
+								Height="32">
+								<materialIcons:MaterialIcon Kind="DeleteRestore"
+									Width="30"
+									Height="30"/>
+							</Button>
+							<Button	Margin="5" Grid.Column="2"
+								Background="Transparent"
+								Click="SelectedImportPathBrowse_Click"
+								Width="32"
+								Height="32">
+								<materialIcons:MaterialIcon Kind="Folder"
+									Width="30"
+									Height="30"/>
+							</Button>
+						</Grid>
+
+						<StackPanel x:Name="SelectedStackPanel">
+							<TextBlock Margin="5 5 5 0"
+								FontSize="12"
+								Text="X coordinate"/>
+                            <TextBox Name="SelectedImportXCoordBox" Margin="5"
+								TextChanged="SelectedImportXCoordBox_TextChanged"/>
+							<TextBlock Margin="5 5 5 0"
+								FontSize="12"
+								Text="Y coordinate"/>
+                            <TextBox Name="SelectedImportYCoordBox" Margin="5"
+								TextChanged="SelectedImportYCoordBox_TextChanged"/>
+                        </StackPanel>
+
+						<StackPanel Name="SelectedHitsoundsPanel">
+							<TextBlock Margin="5 5 5 0"
+								FontSize="12"
+								Text="Sample path"/>
+							<Grid ColumnDefinitions="*,Auto">
+								<TextBox Name="SelectedImportSamplePathBox" Margin="5" Grid.Column="0"
+									TextChanged="SelectedImportSamplePathBox_TextChanged"
+									HorizontalAlignment="Stretch"
+									Watermark="Path"/>
+								<Button	Margin="5" Grid.Column="1"
+									Background="Transparent"
+									Click="SelectedImportSamplePathBrowse_Click"
+									Width="32"
+									Height="32">
+									<materialIcons:MaterialIcon Kind="Folder"
+										Width="30"
+										Height="30"/>
+								</Button>
+							</Grid>
+
+							<CheckBox Name="SelectedHitsoundImportDiscriminateVolumesBox" Margin="5 5 5 -5"
+								Click="SelectedImportDiscriminateVolumesBox_OnCheck">Discriminate volumes</CheckBox>
+							<CheckBox Name="SelectedHitsoundImportDetectDuplicateSamplesBox" Margin="5 -5 5 -5"
+								Click="SelectedHitsoundImportDetectDuplicateSamplesBox_OnCheck">Detect duplicate samples</CheckBox>
+							<CheckBox Name="SelectedHitsoundImportRemoveDuplicatesBox" Margin="5 -5 5 5"
+								Click="SelectedImportRemoveDuplicatesBox_OnCheck">Remove duplicates</CheckBox>
+						</StackPanel>
+
+						<StackPanel Name="SelectedStoryboardPanel">
+							<TextBlock Margin="5 5 5 0"
+								FontSize="12"
+								Text="Sample path"/>
+							<Grid ColumnDefinitions="*,Auto">
+								<TextBox Name="SelectedStoryboardImportSamplePathBox" Margin="5" Grid.Column="0"
+									TextChanged="SelectedImportSamplePathBox_TextChanged"
+									HorizontalAlignment="Stretch"
+									Watermark="Path"/>
+								<Button	Margin="5" Grid.Column="1"
+									Background="Transparent"
+									Click="SelectedImportSamplePathBrowse_Click"
+									Width="32"
+									Height="32">
+									<materialIcons:MaterialIcon Kind="Folder"
+										Width="30"
+										Height="30"/>
+								</Button>
+							</Grid>
+
+							<CheckBox Name="SelectedStoryboardImportDiscriminateVolumesBox" Margin="5 5 5 -5"
+								Click="SelectedImportDiscriminateVolumesBox_OnCheck">Discriminate volumes</CheckBox>
+							<CheckBox Name="SelectedStoryboardImportRemoveDuplicatesBox" Margin="5 -5 5 5"
+								Click="SelectedImportRemoveDuplicatesBox_OnChecked">Remove duplicates</CheckBox>
+						</StackPanel>
+
+						<StackPanel Name="SelectedMidiPanel">
+							<TextBlock Margin="5 5 5 0"
+								FontSize="12"
+								Text="Bank"/>
+                            <TextBox Name="SelectedImportBankBox" Margin="5"
+								TextChanged="SelectedImportBankBox_TextChanged"/>
+
+							<TextBlock Margin="5 5 5 0"
+								FontSize="12"
+								Text="Patch"/>
+                            <TextBox Name="SelectedImportPatchBox" Margin="5"
+								TextChanged="SelectedImportPatchBox_TextChanged"/>
+							
+							<TextBlock Margin="5 5 5 0"
+								FontSize="12"
+								Text="Key"/>
+                            <TextBox Name="SelectedImportKeyBox" Margin="5"
+								TextChanged="SelectedImportKeyBox_TextChanged"/>
+
+							<TextBlock Margin="5 5 5 0"
+								FontSize="12"
+								Text="Length"/>
+                            <TextBox Name="SelectedImportLengthBox" Margin="5"
+								TextChanged="SelectedImportLengthBox_TextChanged"/>
+
+							<TextBlock Margin="5 5 5 0"
+								FontSize="12"
+								Text="Length roughness"/>
+                            <TextBox Name="SelectedImportLengthRoughnessBox" Margin="5"
+								TextChanged="SelectedImportLengthRoughnessBox_TextChanged"/>
+
+							<TextBlock Margin="5 5 5 0"
+								FontSize="12"
+								Text="Velocity"/>
+                            <TextBox Name="SelectedImportVelocityBox"
+								TextChanged="SelectedImportVelocityBox_TextChanged" Margin="5"/>
+
+							<TextBlock Margin="5 5 5 0"
+								FontSize="12"
+								Text="Velocity roughness"/>
+                            <TextBox Name="SelectedImportVelocityRoughnessBox" Margin="5"
+								TextChanged="SelectedImportVelocityRoughnessBox_TextChanged"/>
+
+							<TextBlock Margin="5 5 5 0"
+								FontSize="12"
+								Text="Offset"/>
+                            <TextBox x:Name="SelectedImportOffsetBox" Margin="5"
+								TextChanged="SelectedImportOffsetBox_TextChanged"/>
+                        </StackPanel>
+
+						<Button Margin="5 10 5 5"
 							HorizontalAlignment="Stretch"
-							Watermark="Path"/>
-						<Button	Margin="5" Grid.Column="1"
-							Background="Transparent"
-							Width="32"
-							Height="32">
-							<materialIcons:MaterialIcon Kind="DeleteRestore"
-								Width="30"
-								Height="30"/>
+							Click="ReloadFromSource_Click">
+							<TextBlock HorizontalAlignment="Center"
+								FontWeight="Bold"
+								Text="Reload from source"/>
 						</Button>
-						<Button	Margin="5" Grid.Column="2"
-							Background="Transparent"
-							Width="32"
-							Height="32">
-							<materialIcons:MaterialIcon Kind="Folder"
-								Width="30"
-								Height="30"/>
-						</Button>
-					</Grid>
-
-					<TextBlock Margin="5 5 5 0"
-						FontSize="12"
-						Text="Sample path"/>
-					<Grid ColumnDefinitions="*,Auto">
-						<TextBox Margin="5" Grid.Column="0"
-							HorizontalAlignment="Stretch"
-							Watermark="Path"/>
-						<Button	Margin="5" Grid.Column="1"
-							Background="Transparent"
-							Width="32"
-							Height="32">
-							<materialIcons:MaterialIcon Kind="Folder"
-								Width="30"
-								Height="30"/>
-						</Button>
-					</Grid>
-
-					<CheckBox Margin="5 5 5 -5">Discriminate volumes</CheckBox>
-					<CheckBox Margin="5 -5 5 -5">Detect duplicate samples</CheckBox>
-					<CheckBox Margin="5 -5 5 5">Remove duplicates</CheckBox>
-
-					<Button Margin="5 10 5 5"
-						HorizontalAlignment="Stretch">
-						<TextBlock HorizontalAlignment="Center"
-							FontWeight="Bold"
-							Text="Reload from source"/>
-					</Button>
+					</StackPanel>
 				</StackPanel>
 			</ScrollViewer>
 
@@ -191,17 +343,20 @@
 
 			<!-- Right Panel -->
 
-			<DataGrid Grid.Column="2"
+			<DataGrid Name="LayersList" Grid.Column="2"
 				Margin="5"
+				ItemsSource="{Binding HitsoundLayers}"
+				SelectionChanged="LayersList_SelectionChanged"
 				GridLinesVisibility="All"
 				CanUserReorderColumns="True"
 				CanUserResizeColumns="True"
 				CanUserSortColumns="False">
 				<DataGrid.Columns>
-					<DataGridTextColumn Header="Name"/>
-					<DataGridTextColumn Header="Amount"/>
-					<DataGridTextColumn Header="SampleSet"/>
-					<DataGridTextColumn Header="Hitsound"/>
+					<DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name}"/>
+					<DataGridTextColumn Header="Amount" Width="90" Binding="{Binding Times.Count}"/>
+					<DataGridTextColumn Header="SampleSet" Width="90" Binding="{Binding SampleSetString}"/>
+					<DataGridTextColumn Header="Hitsound" Width="90" Binding="{Binding HitsoundString}"/>
+					<DataGridTextColumn Header="Sample Path" Width="1000" Binding="{Binding SampleArgs.Path}"/>
 				</DataGrid.Columns>
 			</DataGrid>
 		</Grid>
@@ -268,6 +423,7 @@
 					VerticalAlignment="Center">
 					<Button	Margin="5 5 0 5"
 						Background="Transparent"
+						Click="Add_Click"
 						Width="32"
 						Height="32">
 						<materialIcons:MaterialIcon Kind="Plus"
@@ -276,6 +432,7 @@
 					</Button>
 					<Button	Margin="5 5 0 5"
 						Background="Transparent"
+						Click="Delete_Click"
 						Width="32"
 						Height="32">
 						<materialIcons:MaterialIcon Kind="TrashCan"
@@ -288,6 +445,7 @@
 					VerticalAlignment="Center">
 					<Button	Margin="0 5 5 5"
 						Background="Transparent"
+						Click="Raise_Click"
 						Width="32"
 						Height="32">
 						<materialIcons:MaterialIcon Kind="ChevronUp"
@@ -296,6 +454,7 @@
 					</Button>
 					<Button	Margin="0 5 5 5"
 						Background="Transparent"
+						Click="Lower_Click"
 						Width="32"
 						Height="32">
 						<materialIcons:MaterialIcon Kind="ChevronDown"
@@ -309,6 +468,7 @@
 					HorizontalAlignment="Right"
 					Width="74"
 					Height="74"
+					Click="Start_Click"
 					Background="Transparent"
 					ToolTip.Tip="Run Hitsound Studio">
 					<materialIcons:MaterialIcon
@@ -330,7 +490,7 @@
 				Background="Transparent"
 				Margin="20 0 20 0"
 				Height="20"
-				Value="0"/>
+				Value="{Binding Progress}"/>
 		</Grid>
 
 	</Grid>
