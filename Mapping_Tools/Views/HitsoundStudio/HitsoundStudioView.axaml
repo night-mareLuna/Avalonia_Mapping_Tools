@@ -8,8 +8,331 @@
 		xmlns:domain="clr-namespace:Mapping_Tools.Components.Domain"
         x:DataType="vm:HitsoundStudioViewModel">
 
-	<TextBlock HorizontalAlignment="Center"
-		VerticalAlignment="Center" 
-		Text="Hitsound Studio!"/>
+	<Grid RowDefinitions="Auto,*,Auto,20" Margin="5">
+
+		<!-- Title -->
+
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="0">
+			<TextBlock Margin="10"
+				FontSize="32"
+				FontWeight="Bold"
+				Text="Hitsound Studio"/>
+
+			<Button Margin="5"
+				Width="32" 
+				Height="32"
+				Background="Transparent"
+				ToolTip.Tip="Click Me!"
+				Cursor="Hand">
+				<materialIcons:MaterialIcon
+					Kind="HelpCircle"
+					Width="30"
+					Height="30"/>
+				<Button.Flyout>
+					<Flyout>
+						<TextBlock TextWrapping="Wrap"
+							Padding="5"
+							MaxWidth="400">
+							Hitsound Studio is the tool that lets you import data from multiple outside sources and convert them to osu! standard hitsounds in the form of a hitsounding difficulty that can you copy to other beatmaps.
+							<LineBreak/>
+							<LineBreak/>
+							It represents hitsounds as a list of layers (hitsound layers). One layer contains a unique sound, the sampleset and hitsound that accompany that sound and a list of times that sound has to be played.
+						</TextBlock>
+					</Flyout>
+				</Button.Flyout>
+			</Button>
+		</StackPanel>
+
+		<Grid ColumnDefinitions="*,Auto,2*" Grid.Row="1">
+
+			<!-- Left Panel -->
+
+			<ScrollViewer Grid.Column="0">
+				<StackPanel Margin="5" IsEnabled="false">
+
+					<!-- General -->
+
+					<TextBlock Margin="5"
+						Text="General"/>
+
+					<TextBlock Margin="5 5 5 0"
+						FontSize="12"
+						Text="Name"/>
+					<TextBox Margin="5" 
+						HorizontalAlignment="Stretch"
+						Watermark="Name"/>
+
+					<TextBlock Margin="5 5 5 0"
+						FontSize="12"
+						Text="SampleSet"/>
+					<ComboBox Margin="5"
+						HorizontalAlignment="Stretch"/>
+
+					<TextBlock Margin="5 5 5 0"
+						FontSize="12"
+						Text="Hitsound"/>
+					<ComboBox Margin="5"
+						HorizontalAlignment="Stretch"/>
+
+					<!-- Hitsound Sample -->
+
+					<TextBlock Margin="5 10 5 5"
+						Text="Hitsound Sample"/>
+
+					<TextBlock Margin="5 5 5 0"
+						FontSize="12"
+						Text="Path"/>
+					<Grid ColumnDefinitions="*,Auto">
+						<TextBox Margin="5" Grid.Column="0"
+							HorizontalAlignment="Stretch"
+							Watermark="Path"/>
+						<Button	Margin="5" Grid.Column="1"
+							Background="Transparent"
+							Width="32"
+							Height="32">
+							<materialIcons:MaterialIcon Kind="Folder"
+								Width="30"
+								Height="30"/>
+						</Button>
+					</Grid>
+
+					<TextBlock Margin="5 5 5 0"
+						FontSize="12"
+						Text="Volume %"/>
+					<TextBox Margin="5" 
+						HorizontalAlignment="Stretch"
+						Watermark="100"/>
+
+					<TextBlock Margin="5 5 5 0"
+						FontSize="12"
+						Text="Panning"/>
+					<TextBox Margin="5" 
+						HorizontalAlignment="Stretch"
+						Watermark="0"/>
+
+					<TextBlock Margin="5 5 5 0"
+						FontSize="12"
+						Text="Pitch Shift"/>
+					<TextBox Margin="5" 
+						HorizontalAlignment="Stretch"
+						Watermark="0"/>
+
+					<!-- Import Info -->
+
+					<TextBlock Margin="5 10 5 5"
+						Text="Hitsound Sample"/>
+					
+					<TextBlock Margin="5 5 5 0"
+						FontSize="12"
+						Text="Import Type"/>
+					<ComboBox Margin="5"
+						HorizontalAlignment="Stretch"/>
+
+					<TextBlock Margin="5 5 5 0"
+						FontSize="12"
+						Text="Source path"/>
+					<Grid ColumnDefinitions="*,Auto,Auto">
+						<TextBox Margin="5" Grid.Column="0"
+							HorizontalAlignment="Stretch"
+							Watermark="Path"/>
+						<Button	Margin="5" Grid.Column="1"
+							Background="Transparent"
+							Width="32"
+							Height="32">
+							<materialIcons:MaterialIcon Kind="DeleteRestore"
+								Width="30"
+								Height="30"/>
+						</Button>
+						<Button	Margin="5" Grid.Column="2"
+							Background="Transparent"
+							Width="32"
+							Height="32">
+							<materialIcons:MaterialIcon Kind="Folder"
+								Width="30"
+								Height="30"/>
+						</Button>
+					</Grid>
+
+					<TextBlock Margin="5 5 5 0"
+						FontSize="12"
+						Text="Sample path"/>
+					<Grid ColumnDefinitions="*,Auto">
+						<TextBox Margin="5" Grid.Column="0"
+							HorizontalAlignment="Stretch"
+							Watermark="Path"/>
+						<Button	Margin="5" Grid.Column="1"
+							Background="Transparent"
+							Width="32"
+							Height="32">
+							<materialIcons:MaterialIcon Kind="Folder"
+								Width="30"
+								Height="30"/>
+						</Button>
+					</Grid>
+
+					<CheckBox Margin="5 5 5 -5">Discriminate volumes</CheckBox>
+					<CheckBox Margin="5 -5 5 -5">Detect duplicate samples</CheckBox>
+					<CheckBox Margin="5 -5 5 5">Remove duplicates</CheckBox>
+
+					<Button Margin="5 10 5 5"
+						HorizontalAlignment="Stretch">
+						<TextBlock HorizontalAlignment="Center"
+							FontWeight="Bold"
+							Text="Reload from source"/>
+					</Button>
+				</StackPanel>
+			</ScrollViewer>
+
+			<!-- Splitter -->
+
+			<GridSplitter Grid.Column="1" 
+				Background="#171717"
+				ResizeDirection="Columns"/>
+
+			<!-- Right Panel -->
+
+			<DataGrid Grid.Column="2"
+				Margin="5"
+				GridLinesVisibility="All"
+				CanUserReorderColumns="True"
+				CanUserResizeColumns="True"
+				CanUserSortColumns="False">
+				<DataGrid.Columns>
+					<DataGridTextColumn Header="Name"/>
+					<DataGridTextColumn Header="Amount"/>
+					<DataGridTextColumn Header="SampleSet"/>
+					<DataGridTextColumn Header="Hitsound"/>
+				</DataGrid.Columns>
+			</DataGrid>
+		</Grid>
+
+		<!-- Bottom Area -->
+
+		<Grid ColumnDefinitions="*,Auto" Margin="5" Grid.Row="2">
+
+			<!-- Base selections -->
+			<Border BorderBrush="#171717"
+				BorderThickness="2"
+				CornerRadius="5">
+				<StackPanel Grid.Column="0">
+					<Grid ColumnDefinitions="115,*,Auto,Auto">
+						<TextBlock Margin="5" Grid.Column="0"
+							Text="Base beatmap:"
+							VerticalAlignment="Center"/>
+						<TextBox Margin="5" Grid.Column="1"
+							HorizontalAlignment="Stretch"/>
+						<Button	Margin="5" Grid.Column="2"
+							Background="Transparent"
+							Width="32"
+							Height="32">
+							<materialIcons:MaterialIcon Kind="DeleteRestore"
+								Width="30"
+								Height="30"/>
+						</Button>
+						<Button	Margin="5" Grid.Column="3"
+							Background="Transparent"
+							Width="32"
+							Height="32">
+							<materialIcons:MaterialIcon Kind="Folder"
+								Width="30"
+								Height="30"/>
+						</Button>
+					</Grid>
+
+					<Grid ColumnDefinitions="115,*,Auto,Auto,Auto">
+						<TextBlock Margin="5" Grid.Column="0"
+							Text="Default sample:"
+							VerticalAlignment="Center"/>
+						<TextBox Margin="5" Grid.Column="1"
+							HorizontalAlignment="Stretch"/>
+						<ComboBox Margin="5" Grid.Column="2"
+							HorizontalAlignment="Stretch"/>
+						<TextBox Margin="5" Grid.Column="3"
+							HorizontalAlignment="Stretch"/>
+						<Button	Margin="5" Grid.Column="4"
+							Background="Transparent"
+							Width="32"
+							Height="32">
+							<materialIcons:MaterialIcon Kind="Folder"
+								Width="30"
+								Height="30"/>
+						</Button>
+					</Grid>
+				</StackPanel>
+			</Border>
+
+			<!-- Buttons -->
+
+			<Grid ColumnDefinitions="Auto,Auto,Auto" Grid.Column="1">
+				<StackPanel Grid.Column="0"
+					VerticalAlignment="Center">
+					<Button	Margin="5 5 0 5"
+						Background="Transparent"
+						Width="32"
+						Height="32">
+						<materialIcons:MaterialIcon Kind="Plus"
+							Width="30"
+							Height="30"/>
+					</Button>
+					<Button	Margin="5 5 0 5"
+						Background="Transparent"
+						Width="32"
+						Height="32">
+						<materialIcons:MaterialIcon Kind="TrashCan"
+							Width="30"
+							Height="30"/>
+					</Button>
+				</StackPanel>
+
+				<StackPanel Grid.Column="1"
+					VerticalAlignment="Center">
+					<Button	Margin="0 5 5 5"
+						Background="Transparent"
+						Width="32"
+						Height="32">
+						<materialIcons:MaterialIcon Kind="ChevronUp"
+							Width="30"
+							Height="30"/>
+					</Button>
+					<Button	Margin="0 5 5 5"
+						Background="Transparent"
+						Width="32"
+						Height="32">
+						<materialIcons:MaterialIcon Kind="ChevronDown"
+							Width="30"
+							Height="30"/>
+					</Button>
+				</StackPanel>
+
+				<Button Margin="5" Grid.Column="2"
+					VerticalAlignment="Center"
+					HorizontalAlignment="Right"
+					Width="74"
+					Height="74"
+					Background="Transparent"
+					ToolTip.Tip="Run Hitsound Studio">
+					<materialIcons:MaterialIcon
+						Kind="PlayCircle"
+						Width="76"
+						Height="76"/>
+				</Button>
+			</Grid>
+		</Grid>
+
+		<!-- Credit and progress bar -->
+
+		<Grid ColumnDefinitions="Auto,*" Grid.Row="4">
+			<TextBlock Grid.Column="0"
+				Text="Made by OliBomby"
+				FontWeight="Bold" 
+				Opacity="0.58"/>
+			<ProgressBar Grid.Column="1"
+				Background="Transparent"
+				Margin="20 0 20 0"
+				Height="20"
+				Value="0"/>
+		</Grid>
+
+	</Grid>
 
 </UserControl>
