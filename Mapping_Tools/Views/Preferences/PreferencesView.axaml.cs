@@ -13,7 +13,6 @@ public partial class PreferencesView : UserControl
 	{
 		DataContext = SettingsManager.Settings;
 		InitializeComponent();
-		MaxWidth = MainWindow.GetScreenSize()[0] - 10;
 	}
 
 	private void SetTheme(object obj, RoutedEventArgs args)

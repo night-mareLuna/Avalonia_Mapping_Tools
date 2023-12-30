@@ -106,13 +106,8 @@
 				</StackPanel>
 			</SplitView.Pane>
 
-			<ScrollViewer Grid.Row="1"
-				Margin="5 5"
-				AllowAutoHide="true"
-				ScrollViewer.VerticalScrollBarVisibility="Auto" 
-				ScrollViewer.HorizontalScrollBarVisibility="Auto">
-				<ContentControl Content="{Binding CurrentView}"/>
-			</ScrollViewer>
+			<ContentControl Margin="5"
+				Content="{Binding CurrentView}"/>
 		</SplitView>
 
 	</Grid>
