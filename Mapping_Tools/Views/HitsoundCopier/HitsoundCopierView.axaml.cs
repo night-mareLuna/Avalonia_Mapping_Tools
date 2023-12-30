@@ -250,7 +250,7 @@ public partial class HitsoundCopierView : SingleRunMappingTool, ISavable<Hitsoun
             editorTo.SaveFile();
             // Export the sample schema if there are samples
             if (sampleSchema.Count > 0) {
-                string exportFolder = Program.configPath + "/Exports";
+                string exportFolder = MainWindow.ExportPath;
                 DirectoryInfo di = new DirectoryInfo(exportFolder);
                 foreach (FileInfo file in di.GetFiles()) {
                     file.Delete();
