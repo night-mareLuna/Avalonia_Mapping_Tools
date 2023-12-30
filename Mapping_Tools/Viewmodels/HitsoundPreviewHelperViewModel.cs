@@ -7,13 +7,17 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
+using Avalonia_Mapping_Tools.Views;
+using System.Collections;
 
 namespace Avalonia_Mapping_Tools.ViewModels;
 
 public partial class HitsoundPreviewHelperViewModel : ViewModelBase
 {
 	[ObservableProperty] private ObservableCollection<HitsoundZone> _Items;
+	[ObservableProperty] [property: JsonIgnore] private object? _SelectedItem;
 	[ObservableProperty] [property: JsonIgnore] private int _Progress = 0;
+    private static int LastSelectedItemsCount = 0;
 	private static HitsoundPreviewHelperViewModel? Me;
 	public HitsoundPreviewHelperViewModel()
 	{
@@ -71,5 +75,28 @@ public partial class HitsoundPreviewHelperViewModel : ViewModelBase
         }
     }
 
-	public static void SetProgress(int prog) => Me!.Progress = prog;
+    partial void OnSelectedItemChanged(object? value)
+    {
+		OnSelectedItemsChanged(HitsoundPreviewHelperView.GetDataGridSelectedItems());
+    }
+
+	private void OnSelectedItemsChanged(IList value)
+	{
+		if(LastSelectedItemsCount != 0)
+		{
+
+			foreach(HitsoundZone zone in Items)
+			{
+				if(!value.Contains(zone))
+					zone.IsSelected = false;
+			}
+		}
+
+		foreach(HitsoundZone zone in value)
+			zone.IsSelected = true;
+
+		LastSelectedItemsCount = value.Count;
+	}
+
+    public static void SetProgress(int prog) => Me!.Progress = prog;
 }

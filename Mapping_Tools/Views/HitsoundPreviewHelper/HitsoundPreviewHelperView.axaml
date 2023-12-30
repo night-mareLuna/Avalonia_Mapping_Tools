@@ -46,10 +46,12 @@
 		<!-- Data Grid things -->
 
 		<DataGrid Margin="5" Grid.Row="1"
+			Name="HitsoundDataGrid"
 			GridLinesVisibility="All"
 			CanUserReorderColumns="True"
 			CanUserResizeColumns="True"
 			CanUserSortColumns="False"
+			SelectedItem="{Binding SelectedItem}"
 			ItemsSource="{Binding Items}">
 			<DataGrid.Columns>
 				<DataGridCheckBoxColumn Binding="{Binding IsSelected}"/>
