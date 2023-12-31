@@ -37,8 +37,24 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
 
 	private void Lower_Click(object obj, RoutedEventArgs args)
 	{
+
+	}
+
+	private void BaseBeatmapLoad_Click(object obj, RoutedEventArgs args)
+	{
 		
 	}
+
+	private void BaseBeatmapBrowse_Click(object obj, RoutedEventArgs args)
+	{
+
+	}
+
+	private void DefaultSampleBrowse_Click(object obj, RoutedEventArgs args)
+	{
+
+	}
+
 	private void ValidateSamples_Click(object obj, RoutedEventArgs args)
 	{
 		
