@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
 		Width="1280" Height="720"
-		MinWidth="800" MinHeight="620"
+		MinWidth="980" MinHeight="620"
         x:Class="Avalonia_Mapping_Tools.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Data/mt_icon.ico"
