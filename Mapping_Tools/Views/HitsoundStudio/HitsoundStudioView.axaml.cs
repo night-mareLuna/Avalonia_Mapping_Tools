@@ -2,6 +2,8 @@ using System;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia_Mapping_Tools.ViewModels;
+using Avalonia_Mapping_Tools.Views.HitsoundStudio;
+using Mapping_Tools.Classes;
 using Mapping_Tools.Classes.SystemTools;
 using Mapping_Tools.Views;
 
@@ -22,7 +24,15 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
 
 	private void Add_Click(object obj, RoutedEventArgs args)
 	{
-
+		try
+		{
+			HitsoundLayerImportWindow importWindow = new HitsoundLayerImportWindow();
+			MainWindow.ShowSomeDialog(importWindow);
+		}
+		catch(Exception e)
+		{
+			e.Show();
+		}
 	}
 
 	private void Delete_Click(object obj, RoutedEventArgs args)
