@@ -208,6 +208,8 @@ public partial class MainWindow : Window
 		return ButtonResult.Ok;
 	}
 
+	public static void ShowSomeDialog(Window dialogWindow) => dialogWindow.ShowDialog(Me!);
+
     private static FilePickerFileType OsuFile { get; } = new("osu! beatmap file")
 	{
 		Patterns = new[] { "*.osu" }
