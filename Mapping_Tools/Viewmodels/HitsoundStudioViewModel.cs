@@ -27,7 +27,7 @@ public partial class HitsoundStudioViewModel : ViewModelBase
 	[ObservableProperty] private bool _UsePreviousSampleSchema;
 	[ObservableProperty] private bool _AllowGrowthPreviousSampleSchema;
 	[ObservableProperty] private bool _AddCoincidingRegularHitsounds;
-	public SampleSchema PreviousSampleSchema { get; set; }
+	public SampleSchema? PreviousSampleSchema { get; set; }
 	[ObservableProperty] private HitsoundExportMode _HitsoundExportModeSetting;
 	[JsonIgnore] public bool StandardExtraSettingsVisibility =>
 		HitsoundExportModeSetting == HitsoundExportMode.Standard;
