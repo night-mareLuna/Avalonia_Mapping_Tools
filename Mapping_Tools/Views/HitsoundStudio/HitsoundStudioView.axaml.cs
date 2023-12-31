@@ -39,6 +39,10 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
 	{
 		
 	}
+	private void ValidateSamples_Click(object obj, RoutedEventArgs args)
+	{
+		
+	}
 
 	private void SelectedNameBox_TextChanged(object obj, TextChangedEventArgs args)
 	{

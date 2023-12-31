@@ -418,52 +418,60 @@
 
 			<!-- Buttons -->
 
-			<Grid ColumnDefinitions="Auto,Auto,Auto" Grid.Column="1">
-				<StackPanel Grid.Column="0"
+			<Grid ColumnDefinitions="Auto,Auto" Grid.Column="1">
+				<StackPanel Grid.Column="0">
+					<StackPanel Orientation="Horizontal"
 					VerticalAlignment="Center">
-					<Button	Margin="5 5 0 5"
+						<Button	Margin="5"
 						Background="Transparent"
 						Click="Add_Click"
+							Width="34"
+							Height="34">
+							<materialIcons:MaterialIcon Kind="Plus"
 						Width="32"
-						Height="32">
-						<materialIcons:MaterialIcon Kind="Plus"
-							Width="30"
-							Height="30"/>
+								Height="32"/>
 					</Button>
-					<Button	Margin="5 5 0 5"
+						<Button	Margin="5"
 						Background="Transparent"
 						Click="Delete_Click"
+							Width="34"
+							Height="34">
+							<materialIcons:MaterialIcon Kind="TrashCan"
 						Width="32"
-						Height="32">
-						<materialIcons:MaterialIcon Kind="TrashCan"
-							Width="30"
-							Height="30"/>
+								Height="32"/>
 					</Button>
-				</StackPanel>
-
-				<StackPanel Grid.Column="1"
-					VerticalAlignment="Center">
-					<Button	Margin="0 5 5 5"
+						<Button	Margin="5"
 						Background="Transparent"
 						Click="Raise_Click"
+							Width="34"
+							Height="34">
+							<materialIcons:MaterialIcon Kind="ChevronUp"
 						Width="32"
-						Height="32">
-						<materialIcons:MaterialIcon Kind="ChevronUp"
-							Width="30"
-							Height="30"/>
+								Height="32"/>
 					</Button>
-					<Button	Margin="0 5 5 5"
+						<Button	Margin="5"
 						Background="Transparent"
 						Click="Lower_Click"
+							Width="34"
+							Height="34">
+							<materialIcons:MaterialIcon Kind="ChevronDown"
 						Width="32"
-						Height="32">
-						<materialIcons:MaterialIcon Kind="ChevronDown"
-							Width="30"
-							Height="30"/>
+								Height="32"/>
+						</Button>
+					</StackPanel>
+
+					<Button Margin="5"
+						Click="ValidateSamples_Click"
+						VerticalAlignment="Stretch"
+						HorizontalAlignment="Stretch">
+						<TextBlock HorizontalAlignment="Center"
+							VerticalAlignment="Center"
+							FontWeight="Bold"
+							Text="Validate samples"/>
 					</Button>
 				</StackPanel>
 
-				<Button Margin="5" Grid.Column="2"
+				<Button Margin="5" Grid.Column="1"
 					VerticalAlignment="Center"
 					HorizontalAlignment="Right"
 					Width="74"
