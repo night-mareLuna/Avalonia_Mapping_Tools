@@ -366,18 +366,21 @@
 		<Grid ColumnDefinitions="*,Auto" Margin="5" Grid.Row="2">
 
 			<!-- Base selections -->
-			<Border BorderBrush="#171717"
+			<Border Grid.Column="0"
+				BorderBrush="#171717"
 				BorderThickness="2"
 				CornerRadius="5">
-				<StackPanel Grid.Column="0">
+				<StackPanel>
 					<Grid ColumnDefinitions="115,*,Auto,Auto">
 						<TextBlock Margin="5" Grid.Column="0"
 							Text="Base beatmap:"
 							VerticalAlignment="Center"/>
-						<TextBox Margin="5" Grid.Column="1"
+						<TextBox Name="BaseBeatmapPathBox" Margin="5" Grid.Column="1"
+							Text="{Binding BaseBeatmap, Mode=TwoWay}"
 							HorizontalAlignment="Stretch"/>
 						<Button	Margin="5" Grid.Column="2"
 							Background="Transparent"
+							Click="BaseBeatmapLoad_Click"
 							Width="32"
 							Height="32">
 							<materialIcons:MaterialIcon Kind="DeleteRestore"
@@ -386,6 +389,7 @@
 						</Button>
 						<Button	Margin="5" Grid.Column="3"
 							Background="Transparent"
+							Click="BaseBeatmapBrowse_Click"
 							Width="32"
 							Height="32">
 							<materialIcons:MaterialIcon Kind="Folder"
@@ -394,18 +398,28 @@
 						</Button>
 					</Grid>
 
-					<Grid ColumnDefinitions="115,*,Auto,Auto,Auto">
+					<Grid ColumnDefinitions="115,*,Auto,Auto,Auto" DataContext="{Binding DefaultSample}">
 						<TextBlock Margin="5" Grid.Column="0"
 							Text="Default sample:"
 							VerticalAlignment="Center"/>
-						<TextBox Margin="5" Grid.Column="1"
+						<TextBox Name="DefaultSamplePathBox" Margin="5" Grid.Column="1"
+							Text="{Binding SampleArgs.Path, Mode=TwoWay}"
 							HorizontalAlignment="Stretch"/>
 						<ComboBox Margin="5" Grid.Column="2"
-							HorizontalAlignment="Stretch"/>
-						<TextBox Margin="5" Grid.Column="3"
+							SelectedValue="{Binding SampleSet, Mode=TwoWay}"
+							HorizontalAlignment="Stretch">
+
+							<ComboBoxItem Content="None" Cursor="Hand"/>
+							<ComboBoxItem Content="Normal" Cursor="Hand"/>
+							<ComboBoxItem Content="Soft" Cursor="Hand"/>
+							<ComboBoxItem Content="Drum" Cursor="Hand"/>
+						</ComboBox>
+						<TextBox Name="DefaultSampleVolumeBox" Margin="5" Grid.Column="3"
+							Text="{Binding SampleArgs.Volume, Mode=TwoWay}"
 							HorizontalAlignment="Stretch"/>
 						<Button	Margin="5" Grid.Column="4"
 							Background="Transparent"
+							Click="DefaultSampleBrowse_Click"
 							Width="32"
 							Height="32">
 							<materialIcons:MaterialIcon Kind="Folder"
@@ -421,41 +435,41 @@
 			<Grid ColumnDefinitions="Auto,Auto" Grid.Column="1">
 				<StackPanel Grid.Column="0">
 					<StackPanel Orientation="Horizontal"
-					VerticalAlignment="Center">
+						VerticalAlignment="Center">
 						<Button	Margin="5"
-						Background="Transparent"
-						Click="Add_Click"
+							Background="Transparent"
+							Click="Add_Click"
 							Width="34"
 							Height="34">
 							<materialIcons:MaterialIcon Kind="Plus"
-						Width="32"
+								Width="32"
 								Height="32"/>
-					</Button>
+						</Button>
 						<Button	Margin="5"
-						Background="Transparent"
-						Click="Delete_Click"
+							Background="Transparent"
+							Click="Delete_Click"
 							Width="34"
 							Height="34">
 							<materialIcons:MaterialIcon Kind="TrashCan"
-						Width="32"
+								Width="32"
 								Height="32"/>
-					</Button>
+						</Button>
 						<Button	Margin="5"
-						Background="Transparent"
-						Click="Raise_Click"
+							Background="Transparent"
+							Click="Raise_Click"
 							Width="34"
 							Height="34">
 							<materialIcons:MaterialIcon Kind="ChevronUp"
-						Width="32"
+								Width="32"
 								Height="32"/>
-					</Button>
+						</Button>
 						<Button	Margin="5"
-						Background="Transparent"
-						Click="Lower_Click"
+							Background="Transparent"
+							Click="Lower_Click"
 							Width="34"
 							Height="34">
 							<materialIcons:MaterialIcon Kind="ChevronDown"
-						Width="32"
+								Width="32"
 								Height="32"/>
 						</Button>
 					</StackPanel>
