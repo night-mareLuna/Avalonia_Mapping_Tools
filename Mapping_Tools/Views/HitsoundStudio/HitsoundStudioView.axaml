@@ -43,7 +43,7 @@
 			</Button>
 		</StackPanel>
 
-		<Grid ColumnDefinitions="*,Auto,2*" Grid.Row="1">
+		<Grid Name="FirstGrid" ColumnDefinitions="*,Auto,2*" Grid.Row="1">
 
 			<!-- Left Panel -->
 
@@ -271,7 +271,7 @@
 							<CheckBox Name="SelectedStoryboardImportDiscriminateVolumesBox" Margin="5 5 5 -5"
 								Click="SelectedImportDiscriminateVolumesBox_OnCheck">Discriminate volumes</CheckBox>
 							<CheckBox Name="SelectedStoryboardImportRemoveDuplicatesBox" Margin="5 -5 5 5"
-								Click="SelectedImportRemoveDuplicatesBox_OnChecked">Remove duplicates</CheckBox>
+								Click="SelectedImportRemoveDuplicatesBox_OnCheck">Remove duplicates</CheckBox>
 						</StackPanel>
 
 						<StackPanel Name="SelectedMidiPanel">
@@ -345,6 +345,7 @@
 
 			<DataGrid Name="LayersList" Grid.Column="2"
 				Margin="5"
+				IsReadOnly="true"
 				ItemsSource="{Binding HitsoundLayers}"
 				SelectionChanged="LayersList_SelectionChanged"
 				GridLinesVisibility="All"
