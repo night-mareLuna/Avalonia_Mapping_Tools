@@ -61,7 +61,16 @@ namespace Mapping_Tools.Classes.HitsoundStuff {
         /// <summary>
         /// Checks if the specified path is a cafewalk soundfont file.
         /// </summary>
-        public bool UsesSoundFont => GetExtension().ToLower() == ".sf2";
+		public bool UsesSoundFont
+		{
+			get
+			{
+				if(!string.IsNullOrWhiteSpace(GetExtension()))
+					return GetExtension().ToLower() == ".sf2";
+				else return false;
+			}
+		}
+        //public bool UsesSoundFont => GetExtension().ToLower() == ".sf2";
 
         /// <summary>
         /// Means you can export this sample by simply copy pasting the source file in <see cref="Path"/>.
