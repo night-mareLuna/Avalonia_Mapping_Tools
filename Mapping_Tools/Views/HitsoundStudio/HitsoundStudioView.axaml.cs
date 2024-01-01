@@ -27,7 +27,8 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
 	{
 		try
 		{
-			HitsoundLayerImportWindow importWindow = new HitsoundLayerImportWindow();
+			int layerCount = (DataContext as HitsoundStudioViewModel)!.HitsoundLayers.Count;
+			HitsoundLayerImportWindow importWindow = new HitsoundLayerImportWindow(layerCount);
 			MainWindow.ShowSomeDialog(importWindow);
 		}
 		catch(Exception e)

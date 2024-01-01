@@ -34,26 +34,37 @@
 					<TextBlock Margin="0 10 0 0"
 						FontSize="12"
 						Text="Name"/>
-					<TextBox Margin="0 5"
+					<TextBox Name="NameBox0" Margin="0 5"
 						Watermark="Name"/>
 
 					<TextBlock Margin="0 5 0 0"
 						FontSize="12"
 						Text="Sampleset"/>
-					<ComboBox Margin="0 5"
-						HorizontalAlignment="Stretch"/>
+					<ComboBox Name="SampleSetBox0" Margin="0 5"
+						SelectedIndex="0"
+						HorizontalAlignment="Stretch">
+                        <ComboBoxItem Content="Normal" HorizontalAlignment="Stretch" Cursor="Hand"/>
+                        <ComboBoxItem Content="Soft" HorizontalAlignment="Stretch" Cursor="Hand"/>
+                        <ComboBoxItem Content="Drum" HorizontalAlignment="Stretch" Cursor="Hand"/>
+					</ComboBox>
 
 					<TextBlock Margin="0 5 0 0"
 						FontSize="12"
 						Text="Hitsound"/>
-					<ComboBox Margin="0 5"
-						HorizontalAlignment="Stretch"/>
+					<ComboBox Name="HitsoundBox0" Margin="0 5"
+						SelectedIndex="0"
+						HorizontalAlignment="Stretch">
+                        <ComboBoxItem Content="Normal" HorizontalAlignment="Stretch" Cursor="Hand"/>
+                        <ComboBoxItem Content="Whistle" HorizontalAlignment="Stretch" Cursor="Hand"/>
+                        <ComboBoxItem Content="Finish" HorizontalAlignment="Stretch" Cursor="Hand"/>
+                        <ComboBoxItem Content="Clap" HorizontalAlignment="Stretch" Cursor="Hand"/>
+					</ComboBox>
 					
 					<Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" Margin="0 5">
 						<TextBlock Grid.Column="0" Grid.Row="0"
 							FontSize="12"
 							Text="Hitsound sample"/>
-						<TextBox Margin="0 5" Grid.Column="0" Grid.Row="1"
+						<TextBox Name="SamplePathBox0" Margin="0 5" Grid.Column="0" Grid.Row="1"
 							Watermark="Hitsound sample"/>
 						<Button Grid.Column="1" Grid.Row="1" Margin="5 5 0 0" 
 							Background="Transparent"
@@ -75,26 +86,37 @@
 					<TextBlock Margin="0 10 0 0"
 						FontSize="12"
 						Text="Name"/>
-					<TextBox Margin="0 5"
+					<TextBox Name="NameBox" Margin="0 5"
 						Watermark="Name"/>
 
 					<TextBlock Margin="0 5 0 0"
 						FontSize="12"
 						Text="Sampleset"/>
-					<ComboBox Margin="0 5"
-						HorizontalAlignment="Stretch"/>
+					<ComboBox Name="SampleSetBox" Margin="0 5"
+						SelectedIndex="0"
+						HorizontalAlignment="Stretch">
+                        <ComboBoxItem Content="Normal" HorizontalAlignment="Stretch" Cursor="Hand"/>
+                        <ComboBoxItem Content="Soft" HorizontalAlignment="Stretch" Cursor="Hand"/>
+                        <ComboBoxItem Content="Drum" HorizontalAlignment="Stretch" Cursor="Hand"/>
+					</ComboBox>
 
 					<TextBlock Margin="0 5 0 0"
 						FontSize="12"
 						Text="Hitsound"/>
-					<ComboBox Margin="0 5"
-						HorizontalAlignment="Stretch"/>
-					
+					<ComboBox Name="HitsoundBox" Margin="0 5"
+						SelectedIndex="0"
+						HorizontalAlignment="Stretch">
+                        <ComboBoxItem Content="Normal" HorizontalAlignment="Stretch" Cursor="Hand"/>
+                        <ComboBoxItem Content="Whistle" HorizontalAlignment="Stretch" Cursor="Hand"/>
+                        <ComboBoxItem Content="Finish" HorizontalAlignment="Stretch" Cursor="Hand"/>
+                        <ComboBoxItem Content="Clap" HorizontalAlignment="Stretch" Cursor="Hand"/>
+					</ComboBox>
+
 					<Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" Margin="0 5">
 						<TextBlock Grid.Column="0" Grid.Row="0"
 							FontSize="12"
 							Text="Hitsound sample"/>
-						<TextBox Margin="0 5 0 0" Grid.Column="0" Grid.Row="1"
+						<TextBox Name="SamplePathBox" Margin="0 5 0 0" Grid.Column="0" Grid.Row="1"
 							Watermark="Hitsound sample"/>
 						<Button Grid.Column="1" Grid.Row="1" Margin="5 5 0 0" 
 							Background="Transparent"
@@ -110,7 +132,7 @@
 						<TextBlock Grid.Column="0" Grid.Row="0"
 							FontSize="12"
 							Text="Source beatmap"/>
-						<TextBox Margin="0 5 0 0" Grid.Column="0" Grid.Row="1"
+						<TextBox Name="BeatmapPathBox" Margin="0 5 0 0" Grid.Column="0" Grid.Row="1"
 							Watermark="Source beatmap"/>
 						<Button Grid.Column="1" Grid.Row="1" Margin="5 5 0 0" 
 							Background="Transparent"
@@ -134,12 +156,12 @@
 						<TextBlock Grid.Column="0" Grid.Row="0"
 							FontSize="12"
 							Text="X coordinate"/>
-						<TextBox Margin="0 5 5 0" Grid.Column="0" Grid.Row="1"
+						<TextBox Name="XCoordBox" Margin="0 5 5 0" Grid.Column="0" Grid.Row="1"
 							Watermark="X coordinate"/>
 						<TextBlock Grid.Column="1" Grid.Row="0"
 							FontSize="12"
 							Text="Y coordinate"/>
-						<TextBox Margin="0 5 0 0" Grid.Column="1" Grid.Row="1"
+						<TextBox Name="YCoordBox" Margin="0 5 0 0" Grid.Column="1" Grid.Row="1"
 							Watermark="Y coordinate"/>
 					</Grid>
 				</StackPanel>
@@ -152,14 +174,14 @@
 					<TextBlock Margin="0 10 0 0"
 						FontSize="12"
 						Text="Name"/>
-					<TextBox Margin="0 5"
+					<TextBox Name="NameBox2" Margin="0 5"
 						Watermark="Name"/>
 
 					<Grid ColumnDefinitions="*,Auto,Auto" RowDefinitions="Auto,Auto" Margin="0 5">
 						<TextBlock Grid.Column="0" Grid.Row="0"
 							FontSize="12"
 							Text="Source beatmap"/>
-						<TextBox Margin="0 5 0 0" Grid.Column="0" Grid.Row="1"
+						<TextBox Name="BeatmapPathBox2" Margin="0 5 0 0" Grid.Column="0" Grid.Row="1"
 							Watermark="Source beatmap"/>
 						<Button Grid.Column="1" Grid.Row="1" Margin="5 5 0 0" 
 							Background="Transparent"
@@ -179,10 +201,10 @@
 						</Button>
 					</Grid>
 
-					<CheckBox Margin="0 5 0 -5">Discriminate volumes</CheckBox>
-					<CheckBox Margin="0 0 0 -5">Detect duplicate samples</CheckBox>
-					<CheckBox Margin="0 0 0 -5">Remove duplicate hitsounds</CheckBox>
-					<CheckBox Margin="0 0 0 5">Include storyboarded samples</CheckBox>
+					<CheckBox Name="VolumesBox2" Margin="0 5 0 -5">Discriminate volumes</CheckBox>
+					<CheckBox Name="DetectDuplicateSamplesBox2" Margin="0 0 0 -5">Detect duplicate samples</CheckBox>
+					<CheckBox Name="RemoveDuplicatesBox2" Margin="0 0 0 -5">Remove duplicate hitsounds</CheckBox>
+					<CheckBox Name="IncludeStoryboardBox2" Margin="0 0 0 5">Include storyboarded samples</CheckBox>
 				</StackPanel>
 			</TabItem>
 
@@ -193,14 +215,14 @@
 					<TextBlock Margin="0 10 0 0"
 						FontSize="12"
 						Text="Name"/>
-					<TextBox Margin="0 5"
+					<TextBox Name="NameBox3" Margin="0 5"
 						Watermark="Name"/>
 
 					<Grid ColumnDefinitions="*,Auto,Auto" RowDefinitions="Auto,Auto" Margin="0 5">
 						<TextBlock Grid.Column="0" Grid.Row="0"
 							FontSize="12"
 							Text="Source MIDI"/>
-						<TextBox Margin="0 5 0 0" Grid.Column="0" Grid.Row="1"
+						<TextBox Name="BeatmapPathBox3" Margin="0 5 0 0" Grid.Column="0" Grid.Row="1"
 							Watermark="Source MIDI"/>
 						<Button Grid.Column="2" Grid.Row="1" Margin="5 5 0 0" 
 							Background="Transparent"
@@ -216,13 +238,20 @@
 					<TextBlock Grid.Column="0" Grid.Row="0"
 						FontSize="12"
 						Text="Offset"/>
-					<TextBox Margin="0 5 0 0" Grid.Column="0" Grid.Row="1"
-						Watermark="0"/>
+					<TextBox Name="OffsetBox3" Margin="0 5 0 0" Grid.Column="0" Grid.Row="1"
+						Watermark="0"
+						Text="0"/>
 
-					<CheckBox Margin="0 5 0 -5">Discriminate instruments</CheckBox>
-					<CheckBox Margin="0 0 0 -5">Discriminate keysounds</CheckBox>
-					<CheckBox Margin="0 0 0 -5">Discriminate lengths</CheckBox>
-					<CheckBox Margin="0 0 0 5">Discriminate velocities</CheckBox>
+					<CheckBox Name="InstrumentBox3" Margin="0 5 0 -5">Discriminate instruments</CheckBox>
+					<CheckBox Name="KeysoundBox3" Margin="0 0 0 -5">Discriminate keysounds</CheckBox>
+					<CheckBox Name="LengthBox3" Margin="0 0 0 -5">Discriminate lengths</CheckBox>
+					<TextBox Name="LengthRoughnessBox3" Margin="0 5"
+						Watermark="Length rounding roughness"
+						IsVisible="{Binding #LengthBox3.IsChecked}"/>
+					<CheckBox Name="VelocityBox3" Margin="0 0 0 5">Discriminate velocities</CheckBox>
+					<TextBox Name="VelocityRoughnessBox3" Margin="0 5"
+						Watermark="Velocity rounding roughness"
+						IsVisible="{Binding #VelocityBox3.IsChecked}"/>
 				</StackPanel>
 			</TabItem>
 
@@ -233,14 +262,14 @@
 					<TextBlock Margin="0 10 0 0"
 						FontSize="12"
 						Text="Name"/>
-					<TextBox Margin="0 5"
+					<TextBox Name="NameBox4" Margin="0 5"
 						Watermark="Name"/>
 
 					<Grid ColumnDefinitions="*,Auto,Auto" RowDefinitions="Auto,Auto" Margin="0 5">
 						<TextBlock Grid.Column="0" Grid.Row="0"
 							FontSize="12"
 							Text="Source beatmap"/>
-						<TextBox Margin="0 5 0 0" Grid.Column="0" Grid.Row="1"
+						<TextBox Name="BeatmapPathBox4" Margin="0 5 0 0" Grid.Column="0" Grid.Row="1"
 							Watermark="Source beatmap"/>
 						<Button Grid.Column="1" Grid.Row="1" Margin="5 5 0 0" 
 							Background="Transparent"
@@ -260,8 +289,8 @@
 						</Button>
 					</Grid>
 
-					<CheckBox Margin="0 5 0 -5">Discriminate volumes</CheckBox>
-					<CheckBox Margin="0 0 0 5">Remove duplicate hitsounds</CheckBox>
+					<CheckBox Name="VolumesBox4" Margin="0 5 0 -5">Discriminate volumes</CheckBox>
+					<CheckBox Name="RemoveDuplicatesBox4" Margin="0 0 0 5">Remove duplicate hitsounds</CheckBox>
 				</StackPanel>
 			</TabItem>
 		</TabControl>
@@ -270,14 +299,16 @@
 
 		<UniformGrid Rows="1" Columns="2" Grid.Row="1" Background="#171717">
 			<Button Margin="10" Grid.Column="0"
+				Click="Add_Click"
 				HorizontalAlignment="Stretch">
-				<TextBlock HorizontalAlignment="Center"
+				<TextBlock HorizontalAlignment="Stretch"
 					VerticalAlignment="Center"
 					Text="Accept"/>
 			</Button>
 			<Button Margin="10" Grid.Column="1"
+				Click="Cancel_Click"
 				HorizontalAlignment="Stretch">
-				<TextBlock HorizontalAlignment="Center"
+				<TextBlock HorizontalAlignment="Stretch"
 					VerticalAlignment="Center"
 					Text="Cancel"/>
 			</Button>
