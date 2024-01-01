@@ -7,6 +7,7 @@ using Mapping_Tools.Classes;
 using Mapping_Tools.Classes.BeatmapHelper.Enums;
 using Mapping_Tools.Classes.HitsoundStuff;
 using Mapping_Tools.Classes.SystemTools;
+using Mapping_Tools.Views;
 
 namespace Avalonia_Mapping_Tools.Views.HitsoundStudio;
 public partial class HitsoundLayerImportWindow : Window
@@ -112,10 +113,7 @@ public partial class HitsoundLayerImportWindow : Window
         try {
             if( Tabs.SelectedIndex == 1 ) {
                 // Import one layer
-				double xchoord = double.Parse(XCoordBox.Text!);
-				double ychoord = double.Parse(YCoordBox.Text!);
-
-                HitsoundLayer layer = HitsoundImporter.ImportStack(BeatmapPathBox.Text!, xchoord, ychoord);
+                HitsoundLayer layer = HitsoundImporter.ImportStack(BeatmapPathBox.Text!, XCoordBox.GetDouble(), YCoordBox.GetDouble());
                 layer.Name = NameBox.Text!;
                 layer.SampleSet = (SampleSet) ( SampleSetBox.SelectedIndex + 1 );
                 layer.Hitsound = (Hitsound) HitsoundBox.SelectedIndex;
@@ -125,7 +123,7 @@ public partial class HitsoundLayerImportWindow : Window
             }
             else if( Tabs.SelectedIndex == 2 ) {
                 // Import complete hitsounds
-                foreach( string path in BeatmapPathBox2.Text!.Split('|') ) {
+                foreach( string path in BeatmapPathBox2!.Text!.Split('|') ) {
                     HitsoundLayers.AddRange(HitsoundImporter.ImportHitsounds(path, VolumesBox2.IsChecked.GetValueOrDefault(),
                         DetectDuplicateSamplesBox2.IsChecked.GetValueOrDefault(),
                         RemoveDuplicatesBox2.IsChecked.GetValueOrDefault(),
@@ -135,13 +133,10 @@ public partial class HitsoundLayerImportWindow : Window
             }
             else if( Tabs.SelectedIndex == 3 ) {
                 // Import MIDI
-				double offset = double.Parse(OffsetBox3.Text!);
-				double lengthRoughness = double.Parse(LengthRoughnessBox3.Text!);
-				double velocityRoughness = double.Parse(VelocityRoughnessBox3.Text!);
-                HitsoundLayers = HitsoundImporter.ImportMidi(BeatmapPathBox3.Text!, offset,
+                HitsoundLayers = HitsoundImporter.ImportMidi(BeatmapPathBox3.Text!, OffsetBox3.GetDouble(0),
                     InstrumentBox3.IsChecked.GetValueOrDefault(), KeysoundBox3.IsChecked.GetValueOrDefault(),
-                    LengthBox3.IsChecked.GetValueOrDefault(), lengthRoughness,
-                    VelocityBox3.IsChecked.GetValueOrDefault(), velocityRoughness);
+                    LengthBox3.IsChecked.GetValueOrDefault(), LengthRoughnessBox3.GetDouble(2),
+                    VelocityBox3.IsChecked.GetValueOrDefault(), VelocityRoughnessBox3.GetDouble(10));
                 HitsoundLayers.ForEach(o => o.Name = $"{NameBox3.Text}: {o.Name}");
             }
             else if( Tabs.SelectedIndex == 4 ) {
@@ -154,7 +149,7 @@ public partial class HitsoundLayerImportWindow : Window
             }
             else {
                 // Import none
-                HitsoundLayer layer = new HitsoundLayer(NameBox0.Text, ImportType.None, (SampleSet) ( SampleSetBox0.SelectedIndex + 1 ), (Hitsound) HitsoundBox0.SelectedIndex, SamplePathBox0.Text);
+                HitsoundLayer layer = new HitsoundLayer(NameBox0.Text!, ImportType.None, (SampleSet) ( SampleSetBox0.SelectedIndex + 1 ), (Hitsound) HitsoundBox0.SelectedIndex, SamplePathBox0.Text);
                 HitsoundLayers.Add(layer);
             }
 
