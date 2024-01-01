@@ -6,7 +6,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Windows;
 using Mapping_Tools.Classes.BeatmapHelper.Enums;
 using Mapping_Tools.Classes.ToolHelpers;
 
@@ -464,23 +463,23 @@ namespace Mapping_Tools.Classes.HitsoundStuff {
             return hitsoundLayers;
         }
 
-        // public static List<HitsoundLayer> ImportReloading(ImportReloadingArgs reloadingArgs) {
-        //     switch (reloadingArgs.ImportType) {
-        //         case ImportType.Stack:
-        //             return new List<HitsoundLayer>
-        //                 {ImportStack(reloadingArgs.Path, reloadingArgs.X, reloadingArgs.Y)};
-        //         case ImportType.Hitsounds:
-        //             return ImportHitsounds(reloadingArgs.Path, reloadingArgs.DiscriminateVolumes, reloadingArgs.DetectDuplicateSamples, reloadingArgs.RemoveDuplicates, false);
-        //         case ImportType.Storyboard:
-        //             return ImportStoryboard(reloadingArgs.Path, reloadingArgs.DiscriminateVolumes, reloadingArgs.RemoveDuplicates);
-        //         case ImportType.MIDI:
-        //             return ImportMidi(reloadingArgs.Path, reloadingArgs.Offset,
-        //                 lengthRoughness: reloadingArgs.LengthRoughness,
-        //                 velocityRoughness: reloadingArgs.VelocityRoughness);
-        //         default:
-        //             return new List<HitsoundLayer>();
-        //     }
-        // }
+        public static List<HitsoundLayer> ImportReloading(ImportReloadingArgs reloadingArgs) {
+            switch (reloadingArgs.ImportType) {
+                case ImportType.Stack:
+                    return new List<HitsoundLayer>
+                        {ImportStack(reloadingArgs.Path, reloadingArgs.X, reloadingArgs.Y)};
+                case ImportType.Hitsounds:
+                    return ImportHitsounds(reloadingArgs.Path, reloadingArgs.DiscriminateVolumes, reloadingArgs.DetectDuplicateSamples, reloadingArgs.RemoveDuplicates, false);
+                case ImportType.Storyboard:
+                    return ImportStoryboard(reloadingArgs.Path, reloadingArgs.DiscriminateVolumes, reloadingArgs.RemoveDuplicates);
+                case ImportType.MIDI:
+                    return ImportMidi(reloadingArgs.Path, reloadingArgs.Offset,
+                        lengthRoughness: reloadingArgs.LengthRoughness,
+                        velocityRoughness: reloadingArgs.VelocityRoughness);
+                default:
+                    return new List<HitsoundLayer>();
+            }
+        }
 
         private static double RoundVelocity(double length, double roughness) {
             if (length == -1) {
