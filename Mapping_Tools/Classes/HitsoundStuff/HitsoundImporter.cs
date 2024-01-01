@@ -12,29 +12,29 @@ using Mapping_Tools.Classes.ToolHelpers;
 
 namespace Mapping_Tools.Classes.HitsoundStuff {
     class HitsoundImporter {
-        // public static List<double> TimesFromStack(string path, double x, double y) {
-        //     List<double> times = new List<double>();
-        //     var editor = EditorReaderStuff.GetNewestVersionOrNot(path);
+        public static List<double> TimesFromStack(string path, double x, double y) {
+            List<double> times = new List<double>();
+            var editor = EditorReaderStuff.GetNewestVersionOrNot(path);
 
-        //     bool xIgnore = x == -1;
-        //     bool yIgnore = y == -1;
+            bool xIgnore = x == -1;
+            bool yIgnore = y == -1;
 
-        //     foreach (HitObject ho in editor.Beatmap.HitObjects) {
-        //         if ((Math.Abs(ho.Pos.X - x) < 3 || xIgnore) && (Math.Abs(ho.Pos.Y - y) < 3 || yIgnore)) {
-        //             times.Add(ho.Time);
-        //         }
-        //     }
-        //     return times;
-        // }
+            foreach (HitObject ho in editor.Beatmap.HitObjects) {
+                if ((Math.Abs(ho.Pos.X - x) < 3 || xIgnore) && (Math.Abs(ho.Pos.Y - y) < 3 || yIgnore)) {
+                    times.Add(ho.Time);
+                }
+            }
+            return times;
+        }
 
-        // public static HitsoundLayer ImportStack(string path, double x, double y) {
-        //     HitsoundLayer layer = new HitsoundLayer
-        //     {
-        //         ImportArgs = {ImportType = ImportType.Stack, Path = path, X = x, Y = y},
-        //         Times = TimesFromStack(path, x, y)
-        //     };
-        //     return layer;
-        // }
+        public static HitsoundLayer ImportStack(string path, double x, double y) {
+            HitsoundLayer layer = new HitsoundLayer
+            {
+                ImportArgs = {ImportType = ImportType.Stack, Path = path, X = x, Y = y},
+                Times = TimesFromStack(path, x, y)
+            };
+            return layer;
+        }
 
         /// <summary>
         /// Analyses all sound samples in a folder and generates a mapping from a full path without extension to the full path of the first sample which makes the same sound.
@@ -127,85 +127,85 @@ namespace Mapping_Tools.Classes.HitsoundStuff {
         /// <param name="removeDuplicates">Removes duplicate sounds at the same millisecond.</param>
         /// <param name="includeStoryboard">Also imports storyboarded samples.</param>
         /// <returns>The hitsound layers</returns>
-        // public static List<HitsoundLayer> ImportHitsounds(string path, bool volumes, bool detectDuplicateSamples, bool removeDuplicates, bool includeStoryboard) {
-        //     var editor = EditorReaderStuff.GetNewestVersionOrNot(path);
-        //     Beatmap beatmap = editor.Beatmap;
-        //     Timeline timeline = beatmap.GetTimeline();
+        public static List<HitsoundLayer> ImportHitsounds(string path, bool volumes, bool detectDuplicateSamples, bool removeDuplicates, bool includeStoryboard) {
+            var editor = EditorReaderStuff.GetNewestVersionOrNot(path);
+            Beatmap beatmap = editor.Beatmap;
+            Timeline timeline = beatmap.GetTimeline();
 
-        //     GameMode mode = (GameMode)beatmap.General["Mode"].IntValue;
-        //     string mapDir = editor.GetParentFolder();
-        //     Dictionary<string, string> firstSamples = AnalyzeSamples(mapDir, false, detectDuplicateSamples);
+            GameMode mode = (GameMode)beatmap.General["Mode"].IntValue;
+            string mapDir = editor.GetParentFolder();
+            Dictionary<string, string> firstSamples = AnalyzeSamples(mapDir, false, detectDuplicateSamples);
 
-        //     List<HitsoundLayer> hitsoundLayers = new List<HitsoundLayer>();
+            List<HitsoundLayer> hitsoundLayers = new List<HitsoundLayer>();
 
-        //     foreach (TimelineObject tlo in timeline.TimelineObjects) {
-        //         if (!tlo.HasHitsound) { continue; }
+            foreach (TimelineObject tlo in timeline.TimelineObjects) {
+                if (!tlo.HasHitsound) { continue; }
 
-        //         double volume = volumes ? tlo.FenoSampleVolume / 100 : 1;
+                double volume = volumes ? tlo.FenoSampleVolume / 100 : 1;
 
-        //         List<string> samples = tlo.GetPlayingFilenames(mode);
+                List<string> samples = tlo.GetPlayingFilenames(mode);
 
-        //         foreach (string filename in samples) {
-        //             bool isFilename = tlo.UsesFilename;
+                foreach (string filename in samples) {
+                    bool isFilename = tlo.UsesFilename;
 
-        //             SampleSet sampleSet = isFilename ? tlo.FenoSampleSet : GetSamplesetFromFilename(filename);
-        //             Hitsound hitsound = isFilename ? tlo.GetHitsound() : GetHitsoundFromFilename(filename);
+                    SampleSet sampleSet = isFilename ? tlo.FenoSampleSet : GetSamplesetFromFilename(filename);
+                    Hitsound hitsound = isFilename ? tlo.GetHitsound() : GetHitsoundFromFilename(filename);
 
-        //             string samplePath = Path.Combine(mapDir, filename);
-        //             string fullPathExtLess = Path.Combine(
-        //                 Path.GetDirectoryName(samplePath) ?? throw new InvalidOperationException(),
-        //                 Path.GetFileNameWithoutExtension(samplePath));
+                    string samplePath = Path.Combine(mapDir, filename);
+                    string fullPathExtLess = Path.Combine(
+                        Path.GetDirectoryName(samplePath) ?? throw new InvalidOperationException(),
+                        Path.GetFileNameWithoutExtension(samplePath));
 
                     // Get the first occurence of this sound to not get duplicated
-                    // if (firstSamples.Keys.Contains(fullPathExtLess)) {
-                    //     samplePath = firstSamples[fullPathExtLess];
-                    // } else {
-                    //     // Sample doesn't exist
-                    //     if (!isFilename) {
-                    //         samplePath = string.Empty;
-                    //     }
-                    // }
+                    if (firstSamples.Keys.Contains(fullPathExtLess)) {
+                        samplePath = firstSamples[fullPathExtLess];
+                    } else {
+                        // Sample doesn't exist
+                        if (!isFilename) {
+                            samplePath = string.Empty;
+                        }
+                    }
                     
-        //             string extLessFilename = Path.GetFileNameWithoutExtension(samplePath);
-        //             var importArgs = new LayerImportArgs(ImportType.Hitsounds) { Path = path, SamplePath = samplePath,
-        //                 Volume = volume, DetectDuplicateSamples = detectDuplicateSamples, DiscriminateVolumes = volumes, RemoveDuplicates = removeDuplicates};
+                    string extLessFilename = Path.GetFileNameWithoutExtension(samplePath);
+                    var importArgs = new LayerImportArgs(ImportType.Hitsounds) { Path = path, SamplePath = samplePath,
+                        Volume = volume, DetectDuplicateSamples = detectDuplicateSamples, DiscriminateVolumes = volumes, RemoveDuplicates = removeDuplicates};
 
-        //             // Find the hitsoundlayer with this path
-        //             HitsoundLayer layer = hitsoundLayers.Find(o => o.ImportArgs == importArgs);
+                    // Find the hitsoundlayer with this path
+                    HitsoundLayer layer = hitsoundLayers.Find(o => o.ImportArgs == importArgs)!;
 
-        //             if (layer != null) {
-        //                 // Find hitsound layer with this path and add this time
-        //                 layer.Times.Add(tlo.Time);
-        //             } else {
-        //                 // Add new hitsound layer with this path
-        //                 HitsoundLayer newLayer = new HitsoundLayer(extLessFilename,
-        //                     sampleSet,
-        //                     hitsound,
-        //                     new SampleGeneratingArgs(samplePath) {Volume = volume},
-        //                     importArgs);
-        //                 newLayer.Times.Add(tlo.Time);
+                    if (layer != null) {
+                        // Find hitsound layer with this path and add this time
+                        layer.Times.Add(tlo.Time);
+                    } else {
+                        // Add new hitsound layer with this path
+                        HitsoundLayer newLayer = new HitsoundLayer(extLessFilename,
+                            sampleSet,
+                            hitsound,
+                            new SampleGeneratingArgs(samplePath) {Volume = volume},
+                            importArgs);
+                        newLayer.Times.Add(tlo.Time);
 
-        //                 hitsoundLayers.Add(newLayer);
-        //             }
-        //         }
-        //     }
+                        hitsoundLayers.Add(newLayer);
+                    }
+                }
+            }
 
-        //     if (includeStoryboard) {
-        //         hitsoundLayers.AddRange(ImportStoryboard(path, volumes, removeDuplicates, beatmap, mapDir, "SB: "));
-        //     }
+            if (includeStoryboard) {
+                hitsoundLayers.AddRange(ImportStoryboard(path, volumes, removeDuplicates, beatmap, mapDir, "SB: "));
+            }
 
-        //     // Sort layers by name
-        //     hitsoundLayers = hitsoundLayers.OrderBy(o => o.Name).ToList();
+            // Sort layers by name
+            hitsoundLayers = hitsoundLayers.OrderBy(o => o.Name).ToList();
 
-        //     if (removeDuplicates) {
-        //         foreach (var hitsoundLayer in hitsoundLayers) {
-        //             hitsoundLayer.Times.Sort();
-        //             hitsoundLayer.RemoveDuplicates();
-        //         }
-        //     }
+            if (removeDuplicates) {
+                foreach (var hitsoundLayer in hitsoundLayers) {
+                    hitsoundLayer.Times.Sort();
+                    hitsoundLayer.RemoveDuplicates();
+                }
+            }
 
-        //     return hitsoundLayers;
-        // }
+            return hitsoundLayers;
+        }
 
         private static List<HitsoundLayer> ImportStoryboard(string path, bool volumes, bool removeDuplicates, Beatmap beatmap, string mapDir, string prefix=null) {
             var hitsoundLayers = new List<HitsoundLayer>();
@@ -254,15 +254,15 @@ namespace Mapping_Tools.Classes.HitsoundStuff {
             return hitsoundLayers;
         }
 
-        // public static List<HitsoundLayer> ImportStoryboard(string path, bool volumes, bool removeDuplicates) {
-        //     var editor = EditorReaderStuff.GetNewestVersionOrNot(path);
-        //     Beatmap beatmap = editor.Beatmap;
-        //     string mapDir = editor.GetParentFolder();
+        public static List<HitsoundLayer> ImportStoryboard(string path, bool volumes, bool removeDuplicates) {
+            var editor = EditorReaderStuff.GetNewestVersionOrNot(path);
+            Beatmap beatmap = editor.Beatmap;
+            string mapDir = editor.GetParentFolder();
 
-        //     var hitsoundLayers = ImportStoryboard(path, volumes, removeDuplicates, beatmap, mapDir);
+            var hitsoundLayers = ImportStoryboard(path, volumes, removeDuplicates, beatmap, mapDir);
 
-        //     return hitsoundLayers;
-        // }
+            return hitsoundLayers;
+        }
 
         public static SampleSet GetSamplesetFromFilename(string filename) {
             string[] split = filename.Split('-');
