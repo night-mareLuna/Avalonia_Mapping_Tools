@@ -208,7 +208,7 @@ public partial class MainWindow : Window
 		return ButtonResult.Ok;
 	}
 
-	public static void ShowSomeDialog(Window dialogWindow) => dialogWindow.ShowDialog(Me!);
+	public static async Task ShowSomeDialog(Window dialogWindow) => await dialogWindow.ShowDialog(Me!);
 
     private static FilePickerFileType OsuFile { get; } = new("osu! beatmap file")
 	{
