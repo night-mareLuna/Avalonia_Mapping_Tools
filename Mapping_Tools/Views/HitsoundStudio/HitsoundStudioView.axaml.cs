@@ -317,7 +317,7 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
 
 	private void SelectedNameBox_TextChanged(object obj, TextChangedEventArgs args)
 	{
-        if (suppressEvents) return;
+        if (suppressEvents) return;	//// NEEDS FIXING WHEN SELECTING MULTIPLE LAYERS
 
         string t = (obj as TextBox)!.Text!;
         foreach (HitsoundLayer hitsoundLayer in selectedLayers)
