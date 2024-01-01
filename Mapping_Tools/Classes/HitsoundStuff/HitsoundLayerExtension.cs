@@ -7,25 +7,35 @@ using System.Text;
 namespace Mapping_Tools.Classes.HitsoundStuff {
     static class HitsoundLayerExtension {
         public static string AllToStringOrDefault<TObj, TResult>(this List<TObj> list, Func<TObj, TResult> func, CultureInfo culture=null) {
-            if (list.Count == 0)
-                return "";
-            TResult first = func(list.First());
-            foreach (TObj o in list) {
-                if (!func(o).Equals(first))
-                    return "";
-            }
-            return Convert.ToString(first, culture);
+			try
+			{
+				if (list.Count == 0)
+					return "";
+				TResult first = func(list.First());
+				foreach (TObj o in list) {
+					if (!func(o).Equals(first))
+						return "";
+				return Convert.ToString(first, culture);
+				}
+			}
+			catch { }
+			return "";
         }
 
         public static string AllToStringOrDefault<TObj, TResult>(this List<TObj> list, Func<TObj, TResult> func, Func<TResult, string> stringConverter) {
-            if (list.Count == 0)
-                return "";
-            TResult first = func(list.First());
-            foreach (TObj o in list) {
-                if (!func(o).Equals(first))
-                    return "";
-            }
-            return stringConverter(first);
+			try
+			{
+				if (list.Count == 0)
+					return "";
+				TResult first = func(list.First());
+				foreach (TObj o in list) {
+					if (!func(o).Equals(first))
+						return "";
+				}
+				return stringConverter(first);
+			}
+			catch { }
+			return "";
         }
 
         public static string DoubleListToStringConverter(List<double> list) {
