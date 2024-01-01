@@ -38,25 +38,30 @@ public partial class PreferencesView : UserControl
 				strLastFolder = SettingsManager.GetOsuPath();
 				pickerTitle = "Select osu! folder";
 				folder = await SelectFolder(strLastFolder, pickerTitle);
-				SettingsManager.Settings.OsuPath = folder ?? "";
+				if(string.IsNullOrEmpty(folder)) break;
+				SettingsManager.Settings.OsuPath = folder;
 				break;
 			case "osuSongsFolder":
 				strLastFolder = SettingsManager.GetSongsPath();
 				pickerTitle = "Select osu! songs folder";
 				folder = await SelectFolder(strLastFolder, pickerTitle);
-				SettingsManager.Settings.SongsPath = folder ?? "";
+				if(string.IsNullOrEmpty(folder)) break;
+				SettingsManager.Settings.SongsPath = folder;
 				break;
 			case "osuConfigFile":
 				strLastFolder = SettingsManager.GetOsuPath();
 				pickerTitle = "Select osu! user config file";
 				folder = await SelectFile(strLastFolder, pickerTitle);
-				SettingsManager.Settings.OsuConfigPath = folder ?? "";
+				if(string.IsNullOrEmpty(folder)) break;
+				if(folder == "") break;
+				SettingsManager.Settings.OsuConfigPath = folder;
 				break;
 			case "backupsFolder":
 				strLastFolder = SettingsManager.GetBackupsPath();
 				pickerTitle = "Select Mapping Tools backups folder";
 				folder = await SelectFolder(strLastFolder, pickerTitle);
-				SettingsManager.Settings.BackupsPath = folder ?? "";
+				if(string.IsNullOrEmpty(folder)) break;
+				SettingsManager.Settings.BackupsPath = folder;
 				break;
 			default:
 				break;
