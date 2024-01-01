@@ -19,7 +19,8 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
 
 	private void Start_Click(object obj, RoutedEventArgs args)
 	{
-		
+		var exportDialog = new HitsoundStudioExportDialog();
+		MainWindow.ShowSomeDialog(exportDialog);
 	}
 
 	private void Add_Click(object obj, RoutedEventArgs args)
