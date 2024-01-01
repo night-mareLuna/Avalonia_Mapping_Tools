@@ -1,256 +1,827 @@
 using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text;
+using ActiproSoftware.Extensions;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia_Mapping_Tools.ViewModels;
 using Avalonia_Mapping_Tools.Views.HitsoundStudio;
 using Mapping_Tools.Classes;
+using Mapping_Tools.Classes.HitsoundStuff;
 using Mapping_Tools.Classes.SystemTools;
 using Mapping_Tools.Views;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Enums;
 
 namespace Avalonia_Mapping_Tools.Views;
 public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<HitsoundStudioViewModel>, IHaveExtraProjectMenuItems
 {
+	private readonly HitsoundStudioViewModel settings;
+	private bool suppressEvents;
+	private List<HitsoundLayer>? selectedLayers;
+	private HitsoundLayer? selectedLayer;
 	public HitsoundStudioView()
 	{
-		DataContext = new HitsoundStudioViewModel();
 		InitializeComponent();
+
+		settings = new HitsoundStudioViewModel();
+		DataContext = settings;
+		LayersList.SelectedIndex = 0;
+		Num_Layers_Changed();
+		GetSelectedLayers();
 		Verbose = true;
 	}
 
-	private void Start_Click(object obj, RoutedEventArgs args)
+	private async void Start_Click(object obj, RoutedEventArgs args)
 	{
 		var exportDialog = new HitsoundStudioExportDialog();
-		MainWindow.ShowSomeDialog(exportDialog);
+		await MainWindow.ShowSomeDialog(exportDialog);
 	}
 
-	private void Add_Click(object obj, RoutedEventArgs args)
+	private async void Add_Click(object obj, RoutedEventArgs args)
 	{
+		suppressEvents = true;
 		try
 		{
-			int layerCount = (DataContext as HitsoundStudioViewModel)!.HitsoundLayers.Count;
+			int layerCount = settings.HitsoundLayers.Count;
 			HitsoundLayerImportWindow importWindow = new HitsoundLayerImportWindow(layerCount);
-			MainWindow.ShowSomeDialog(importWindow);
+			await MainWindow.ShowSomeDialog(importWindow);
+			
+			LayersList.SelectedItems.Clear();
+			foreach(HitsoundLayer layer in importWindow.HitsoundLayers)
+			{
+				if(layer is not null)
+				{
+					settings.HitsoundLayers.Add(layer);
+					LayersList.SelectedItems.Add(layer);
+				}
+			}
+
+			RecalculatePriorities();
+			Num_Layers_Changed();
+			GetSelectedLayers();
 		}
 		catch(Exception e)
 		{
 			e.Show();
 		}
+		suppressEvents = false;
 	}
 
-	private void Delete_Click(object obj, RoutedEventArgs args)
+	private async void Delete_Click(object obj, RoutedEventArgs args)
 	{
 
+        try
+        {
+            // Ask for confirmation
+			var box = MessageBoxManager.GetMessageBoxStandard("Confirm deletion",
+				"Are you sure?",
+				ButtonEnum.YesNo);
+			var messageBoxResult = await box.ShowAsync();
+            if (messageBoxResult != ButtonResult.Yes) { return; }
+
+            if (selectedLayers.Count == 0 || selectedLayers == null) { return; }
+
+            suppressEvents = true;
+
+            int index = settings.HitsoundLayers.IndexOf(selectedLayer!);
+
+            foreach (HitsoundLayer hsl in selectedLayers)
+            {
+                settings.HitsoundLayers.Remove(hsl);
+            }
+            suppressEvents = false;
+
+            LayersList.SelectedIndex = Math.Max(Math.Min(index - 1, settings.HitsoundLayers.Count - 1), 0);
+
+            RecalculatePriorities();
+            Num_Layers_Changed();
+        }
+        catch (Exception ex) { ex.Show(); }
 	}
 
 	private void Raise_Click(object obj, RoutedEventArgs args)
 	{
+        try
+        {
+            int repeats = 1;
+            for (int n = 0; n < repeats; n++)
+            {
+                suppressEvents = true;
 
+                int selectedIndex = settings.HitsoundLayers.IndexOf(selectedLayer!);
+                List<HitsoundLayer> moveList = new List<HitsoundLayer>();
+                foreach (HitsoundLayer hsl in selectedLayers)
+                {
+                    moveList.Add(hsl);
+                }
+
+                foreach (HitsoundLayer hsl in settings.HitsoundLayers)
+                {
+                    if (moveList.Contains(hsl))
+                    {
+                        moveList.Remove(hsl);
+                    }
+                    else
+                        break;
+                }
+
+                foreach (HitsoundLayer hsl in moveList)
+                {
+                    int index = settings.HitsoundLayers.IndexOf(hsl);
+
+                    //Dont move left if it is the first item in the list or it is not in the list
+                    if (index <= 0)
+                        continue;
+
+                    //Swap with this item with the one to its left
+                    settings.HitsoundLayers.Remove(hsl);
+                    settings.HitsoundLayers.Insert(index - 1, hsl);
+                }
+
+                LayersList.SelectedItems.Clear();
+                foreach (HitsoundLayer hsl in selectedLayers)
+                {
+                    LayersList.SelectedItems.Add(hsl);
+                }
+
+                suppressEvents = false;
+
+                RecalculatePriorities();
+                GetSelectedLayers();
+            }
+        }
+        catch (Exception ex) { ex.Show(); }
 	}
 
 	private void Lower_Click(object obj, RoutedEventArgs args)
 	{
+		try
+        {
+            int repeats = 1;
+            for (int n = 0; n < repeats; n++)
+            {
+                suppressEvents = true;
 
+                int selectedIndex = settings.HitsoundLayers.IndexOf(selectedLayer!);
+                List<HitsoundLayer> moveList = new List<HitsoundLayer>();
+                foreach (HitsoundLayer hsl in selectedLayers)
+                {
+                    moveList.Add(hsl);
+                }
+
+                for (int i = settings.HitsoundLayers.Count - 1; i >= 0; i--)
+                {
+                    HitsoundLayer hsl = settings.HitsoundLayers[i];
+                    if (moveList.Contains(hsl))
+                    {
+                        moveList.Remove(hsl);
+                    }
+                    else
+                        break;
+                }
+
+                for (int i = moveList.Count - 1; i >= 0; i--)
+                {
+                    HitsoundLayer hsl = moveList[i];
+                    int index = settings.HitsoundLayers.IndexOf(hsl);
+
+                    //Dont move left if it is the first item in the list or it is not in the list
+                    if (index >= settings.HitsoundLayers.Count - 1)
+                        continue;
+
+                    //Swap with this item with the one to its left
+                    settings.HitsoundLayers.Remove(hsl);
+                    settings.HitsoundLayers.Insert(index + 1, hsl);
+                }
+
+                LayersList.SelectedItems.Clear();
+                foreach (HitsoundLayer hsl in selectedLayers)
+                {
+                    LayersList.SelectedItems.Add(hsl);
+                }
+
+                suppressEvents = false;
+
+                RecalculatePriorities();
+                GetSelectedLayers();
+            }
+        }
+        catch (Exception ex) { ex.Show(); }
 	}
 
 	private void BaseBeatmapLoad_Click(object obj, RoutedEventArgs args)
 	{
-		
+        try
+        {
+            string path = IOHelper.GetCurrentBeatmap();
+            if (path != "")
+            {
+                settings.BaseBeatmap = path;
+            }
+        } catch (Exception ex) { ex.Show(); }
 	}
 
-	private void BaseBeatmapBrowse_Click(object obj, RoutedEventArgs args)
+	private async void BaseBeatmapBrowse_Click(object obj, RoutedEventArgs args)
 	{
+        try
+        {
+            string[] paths = await IOHelper.BeatmapFileDialog(restore: SettingsManager.Settings.CurrentBeatmapDefaultFolder);
+            if (paths.Length != 0)
+            {
+                settings.BaseBeatmap = paths[0];
+            }
+        } catch (Exception ex) { ex.Show(); }
 
 	}
 
-	private void DefaultSampleBrowse_Click(object obj, RoutedEventArgs args)
+	private async void DefaultSampleBrowse_Click(object obj, RoutedEventArgs args)
 	{
-
+        try
+        {
+            string path = await IOHelper.SampleFileDialog();
+            if (path != "")
+            {
+                settings.DefaultSample.SampleArgs.Path = path;
+                DefaultSamplePathBox.Text = path;
+            }
+        } catch (Exception ex) { ex.Show(); }
 	}
 
 	private void ValidateSamples_Click(object obj, RoutedEventArgs args)
 	{
-		
+		var couldNotFind = new List<HitsoundLayer>();
+        var invalidExtension = new List<HitsoundLayer>();
+        var couldNotLoad = new List<(HitsoundLayer, Exception)>();
+
+        var allSampleArgs = settings.HitsoundLayers.Select(o => o.SampleArgs).ToList();
+        var sampleExceptions = SampleImporter.ValidateSamples(allSampleArgs);
+
+        foreach (HitsoundLayer hitsoundLayer in settings.HitsoundLayers) {
+            if (string.IsNullOrEmpty(hitsoundLayer.SampleArgs.Path))
+                continue;
+
+            if (!sampleExceptions.TryGetValue(hitsoundLayer.SampleArgs, out var exception) || exception == null)
+                continue;
+
+            switch (exception) {
+                case FileNotFoundException:
+                    couldNotFind.Add(hitsoundLayer);
+                    break;
+                case InvalidDataException:
+                    invalidExtension.Add(hitsoundLayer);
+                    break;
+                default:
+                    couldNotLoad.Add((hitsoundLayer, exception));
+                    break;
+            }
+        }
+
+
+        if (couldNotFind.Count == 0 && invalidExtension.Count == 0 && couldNotLoad.Count == 0) {
+			var successBox = MessageBoxManager.GetMessageBoxStandard("Success!",
+				"All samples are valid!",
+				ButtonEnum.Ok);
+			successBox.ShowAsync();
+            return;
+        }
+
+        var message = new StringBuilder();
+
+        if (couldNotFind.Count > 0) {
+            message.AppendLine("Could not find the following samples:");
+            message.AppendLine(string.Join(Environment.NewLine, couldNotFind.Select(o => o.Name)));
+            message.AppendLine();
+        }
+
+        if (invalidExtension.Count > 0) {
+            message.AppendLine("The following samples have an invalid extension:");
+            message.AppendLine(string.Join(Environment.NewLine, invalidExtension.Select(o => o.Name)));
+            message.AppendLine();
+        }
+
+        if (couldNotLoad.Count > 0) {
+            message.AppendLine("Could not load the following samples because of an exception:");
+            message.AppendLine(string.Join(Environment.NewLine, couldNotLoad.Select(o => $"{o.Item1.Name}: {o.Item2.Message}")));
+            message.AppendLine();
+        }
+
+		var errorBox = MessageBoxManager.GetMessageBoxStandard("Error!",
+			message.ToString(),
+			ButtonEnum.Ok);
+        errorBox.ShowAsync();
 	}
 
 	private void SelectedNameBox_TextChanged(object obj, TextChangedEventArgs args)
 	{
-		
+        if (suppressEvents) return;
+
+        string t = (obj as TextBox)!.Text!;
+        foreach (HitsoundLayer hitsoundLayer in selectedLayers)
+        {
+            hitsoundLayer.Name = t;
+        }
 	}
 
 	private void SelectedSampleSetBox_SelectionChanged(object obj, SelectionChangedEventArgs args)
 	{
+        if (suppressEvents) return;
 
+        string t = ((obj as ComboBox)!.SelectedItem as ComboBoxItem)!.Content!.ToString()!;
+        foreach (HitsoundLayer hitsoundLayer in selectedLayers)
+        {
+            hitsoundLayer.SampleSetString = t;
+        }
 	}
 
 	private void SelectedHitsoundBox_SelectionChanged(object obj, SelectionChangedEventArgs args)
 	{
-		
+        if (suppressEvents) return;
+
+        string t = ((obj as ComboBox)!.SelectedItem as ComboBoxItem)!.Content!.ToString()!;
+        foreach (HitsoundLayer hitsoundLayer in selectedLayers)
+        {
+            hitsoundLayer.HitsoundString = t;
+        }
 	}
 
 	private void SelectedSamplePathBox_TextChanged(object obj, TextChangedEventArgs args)
 	{
+        if (suppressEvents) return;
 
+        string t = (obj as TextBox)!.Text!;
+        foreach (HitsoundLayer hitsoundLayer in selectedLayers)
+        {
+            hitsoundLayer.SampleArgs.Path = t!;
+        }
+        UpdateEditingField();
 	}
 
-	private void SelectedSamplePathBrowse_Click(object obj, RoutedEventArgs args)
+	private async void SelectedSamplePathBrowse_Click(object obj, RoutedEventArgs args)
 	{
-
+        try
+        {
+            string path = await IOHelper.SampleFileDialog();
+            if (path != "")
+            {
+                SelectedSamplePathBox.Text = path;
+            }
+        } catch (Exception ex) { ex.Show(); }
 	}
 
 	private void SelectedSampleVolumeBox_TextChanged(object obj, TextChangedEventArgs args)
 	{
+        if (suppressEvents) return;
 
+        double t = (obj as TextBox)!.GetDouble(100).ClampToRange(0,100);
+        foreach (HitsoundLayer hitsoundLayer in selectedLayers)
+        {
+            hitsoundLayer.SampleArgs.Volume = t / 100;
+        }
+        UpdateEditingField();
 	}
 
 	private void SelectedSamplePanningBox_TextChanged(object obj, TextChangedEventArgs args)
 	{
+        if (suppressEvents) return;
 
+        double t = (obj as TextBox)!.GetDouble(0);
+        foreach (HitsoundLayer hitsoundLayer in selectedLayers)
+        {
+            hitsoundLayer.SampleArgs.Panning = t;
+        }
+        UpdateEditingField();
 	}
 
 	private void SelectedSamplePitchShiftBox_TextChanged(object obj, TextChangedEventArgs args)
 	{
+        if (suppressEvents) return;
 
+        double t = (obj as TextBox)!.GetDouble(0);
+        foreach (HitsoundLayer hitsoundLayer in selectedLayers)
+        {
+            hitsoundLayer.SampleArgs.PitchShift = t;
+        }
+        UpdateEditingField();
 	}
 
 	private void SelectedSampleBankBox_TextChanged(object obj, TextChangedEventArgs args)
 	{
+        if (suppressEvents) return;
 
+        int t = (obj as TextBox)!.GetInt(-1);
+        foreach (HitsoundLayer hitsoundLayer in selectedLayers)
+        {
+            hitsoundLayer.SampleArgs.Bank = t;
+        }
 	}
 
 	private void SelectedSamplePatchBox_TextChanged(object obj, TextChangedEventArgs args)
 	{
+        if (suppressEvents) return;
 
+        int t = (obj as TextBox)!.GetInt(-1);
+        foreach (HitsoundLayer hitsoundLayer in selectedLayers)
+        {
+            hitsoundLayer.SampleArgs.Patch = t;
+        }
 	}
 
 	private void SelectedSampleInstrumentBox_TextChanged(object obj, TextChangedEventArgs args)
 	{
+        if (suppressEvents) return;
 
+        int t = (obj as TextBox)!.GetInt(-1);
+        foreach (HitsoundLayer hitsoundLayer in selectedLayers)
+        {
+            hitsoundLayer.SampleArgs.Instrument = t;
+        }
 	}
 
 	private void SelectedSampleKeyBox_TextChanged(object obj, TextChangedEventArgs args)
 	{
+        if (suppressEvents) return;
 
+        int t = (obj as TextBox)!.GetInt(-1);
+        foreach (HitsoundLayer hitsoundLayer in selectedLayers)
+        {
+            hitsoundLayer.SampleArgs.Key = t;
+        }
 	}
 
 	private void SelectedSampleLengthBox_TextChanged(object obj, TextChangedEventArgs args)
 	{
+        if (suppressEvents) return;
 
+        double t = (obj as TextBox)!.GetDouble(-1);
+        foreach (HitsoundLayer hitsoundLayer in selectedLayers)
+        {
+            hitsoundLayer.SampleArgs.Length = t;
+        }
 	}
 
 	private void SelectedSampleVelocityBox_TextChanged(object obj, TextChangedEventArgs args)
 	{
+        if (suppressEvents) return;
 
+        int t = (obj as TextBox)!.GetInt(127);
+        foreach (HitsoundLayer hitsoundLayer in selectedLayers)
+        {
+            hitsoundLayer.SampleArgs.Velocity = t;
+        }
+        UpdateEditingField();
 	}
 
 	private void SelectedImportTypeBox_SelectionChanged(object obj, SelectionChangedEventArgs args)
 	{
+        if (suppressEvents) return;
 
+        string t = ((obj as ComboBox)!.SelectedItem as ComboBoxItem)!.Content!.ToString()!;
+        ImportType type = (ImportType)Enum.Parse(typeof(ImportType), t);
+        foreach (HitsoundLayer hitsoundLayer in selectedLayers)
+        {
+            hitsoundLayer.ImportArgs.ImportType = type;
+        }
+        UpdateEditingField();
 	}
 
 	private void SelectedImportPathBox_TextChanged(object obj, TextChangedEventArgs args)
 	{
+        if (suppressEvents) return;
 
+        string t = (obj as TextBox)!.Text;
+        foreach (HitsoundLayer hitsoundLayer in selectedLayers)
+        {
+            hitsoundLayer.ImportArgs.Path = t;
+        }
 	}
 
 	private void SelectedImportPathLoad_Click(object obj, RoutedEventArgs args)
 	{
-
+        try
+        {
+            string path = IOHelper.GetCurrentBeatmap();
+            if (path != "")
+            {
+                SelectedImportPathBox.Text = path;
+            }
+        }
+        catch (Exception ex) { ex.Show(); }
 	}
 
-	private void SelectedImportPathBrowse_Click(object obj, RoutedEventArgs args)
+	private async void SelectedImportPathBrowse_Click(object obj, RoutedEventArgs args)
 	{
-
+        try
+        {
+            string path = await IOHelper.FileDialog();
+            if (!string.IsNullOrEmpty(path))
+            {
+                SelectedImportPathBox.Text = path;
+            }
+        } catch (Exception ex) { ex.Show(); }
 	}
 
 	private void SelectedImportXCoordBox_TextChanged(object obj, TextChangedEventArgs args)
 	{
+        if (suppressEvents) return;
 
+        double t = (obj as TextBox)!.GetDouble(-1);
+        foreach (HitsoundLayer hitsoundLayer in selectedLayers)
+        {
+            hitsoundLayer.ImportArgs.X = t;
+        }
 	}
 
 	private void SelectedImportYCoordBox_TextChanged(object obj, TextChangedEventArgs args)
 	{
+        if (suppressEvents) return;
 
+        double t = (obj as TextBox)!.GetDouble(-1);
+        foreach (HitsoundLayer hitsoundLayer in selectedLayers)
+        {
+            hitsoundLayer.ImportArgs.Y = t;
+        }
 	}
 
 	private void SelectedImportSamplePathBox_TextChanged(object obj, TextChangedEventArgs args)
 	{
+        if (suppressEvents) return;
 
+        string t = (obj as TextBox).Text;
+        foreach (HitsoundLayer hitsoundLayer in selectedLayers)
+        {
+            hitsoundLayer.ImportArgs.SamplePath = t;
+        }
 	}
 
-	private void SelectedImportSamplePathBrowse_Click(object obj, RoutedEventArgs args)
+	private async void SelectedImportSamplePathBrowse_Click(object obj, RoutedEventArgs args)
 	{
-
+        try
+        {
+            string path = await IOHelper.SampleFileDialog();
+            if (path != "")
+            {
+                SelectedImportSamplePathBox.Text = path;
+                SelectedStoryboardImportSamplePathBox.Text = path;
+            }
+        } catch (Exception ex) { ex.Show(); }
 	}
 
 	private void SelectedImportDiscriminateVolumesBox_OnCheck(object obj, RoutedEventArgs args)
 	{
-		bool? isChecked = (obj as CheckBox)!.IsChecked;
+        if (suppressEvents) return;
+
+		bool isChecked = (obj as CheckBox)!.IsChecked.GetValueOrDefault();
+        foreach (HitsoundLayer hitsoundLayer in selectedLayers) {
+            hitsoundLayer.ImportArgs.DiscriminateVolumes = isChecked;
+        }
 	}
 
 	private void SelectedHitsoundImportDetectDuplicateSamplesBox_OnCheck(object obj, RoutedEventArgs args)
 	{
-		bool? isChecked = (obj as CheckBox)!.IsChecked;
+        if (suppressEvents) return;
+
+		bool isChecked = (obj as CheckBox)!.IsChecked.GetValueOrDefault();
+        foreach (HitsoundLayer hitsoundLayer in selectedLayers) {
+            hitsoundLayer.ImportArgs.DetectDuplicateSamples = isChecked;
+        }
 	}
 
 	private void SelectedImportRemoveDuplicatesBox_OnCheck(object obj, RoutedEventArgs args)
 	{
-		bool? isChecked = (obj as CheckBox)!.IsChecked;
-	}
+        if (suppressEvents) return;
 
-	private void SelectedImportRemoveDuplicatesBox_OnChecked(object obj, RoutedEventArgs args)
-	{
-		bool? isChecked = (obj as CheckBox)!.IsChecked;
+		bool isChecked = (obj as CheckBox)!.IsChecked.GetValueOrDefault();
+        foreach (HitsoundLayer hitsoundLayer in selectedLayers) {
+            hitsoundLayer.ImportArgs.RemoveDuplicates = isChecked;
+        }
 	}
 
 	private void SelectedImportBankBox_TextChanged(object obj, TextChangedEventArgs args)
 	{
+        if (suppressEvents) return;
 
+        int t = (obj as TextBox)!.GetInt(-1);
+        foreach (HitsoundLayer hitsoundLayer in selectedLayers)
+        {
+            hitsoundLayer.ImportArgs.Bank = t;
+        }
 	}
 
 	private void SelectedImportPatchBox_TextChanged(object obj, TextChangedEventArgs args)
 	{
+        if (suppressEvents) return;
 
+        int t = (obj as TextBox)!.GetInt(-1);
+        foreach (HitsoundLayer hitsoundLayer in selectedLayers)
+        {
+            hitsoundLayer.ImportArgs.Patch = t;
+        }
 	}
 
 	private void SelectedImportKeyBox_TextChanged(object obj, TextChangedEventArgs args)
 	{
+        if (suppressEvents) return;
 
+        int t = (obj as TextBox).GetInt(-1);
+        foreach (HitsoundLayer hitsoundLayer in selectedLayers)
+        {
+            hitsoundLayer.ImportArgs.Key = t;
+        }
 	}
 
 	private void SelectedImportLengthBox_TextChanged(object obj, TextChangedEventArgs args)
 	{
+        if (suppressEvents) return;
 
+        int t = (obj as TextBox)!.GetInt(-1);
+        foreach (HitsoundLayer hitsoundLayer in selectedLayers)
+        {
+            hitsoundLayer.ImportArgs.Length = t;
+        }
 	}
 
 	private void SelectedImportLengthRoughnessBox_TextChanged(object obj, TextChangedEventArgs args)
 	{
+        if (suppressEvents) return;
 
+        double t = (obj as TextBox)!.GetDouble(1);
+        foreach (HitsoundLayer hitsoundLayer in selectedLayers)
+        {
+            hitsoundLayer.ImportArgs.LengthRoughness = t;
+        }
 	}
 
 	private void SelectedImportVelocityBox_TextChanged(object obj, TextChangedEventArgs args)
 	{
+        if (suppressEvents) return;
 
+        int t = (obj as TextBox)!.GetInt(-1);
+        foreach (HitsoundLayer hitsoundLayer in selectedLayers)
+        {
+            hitsoundLayer.ImportArgs.Velocity = t;
+        }
 	}
 
 	private void SelectedImportVelocityRoughnessBox_TextChanged(object obj, TextChangedEventArgs args)
 	{
+        if (suppressEvents) return;
 
+        double t = (obj as TextBox)!.GetDouble(1);
+        foreach (HitsoundLayer hitsoundLayer in selectedLayers)
+        {
+            hitsoundLayer.ImportArgs.VelocityRoughness = t;
+        }
 	}
 
 	private void SelectedImportOffsetBox_TextChanged(object obj, TextChangedEventArgs args)
 	{
+        if (suppressEvents) return;
 
+        double t = (obj as TextBox)!.GetDouble(0);
+        foreach (HitsoundLayer hitsoundLayer in selectedLayers)
+        {
+            hitsoundLayer.ImportArgs.Offset = t;
+        }
 	}
 
 	private void ReloadFromSource_Click(object obj, RoutedEventArgs args)
 	{
+		try
+        {
+			Console.WriteLine("Reloaded");
+            var seperatedByImportArgsForReloading = new Dictionary<ImportReloadingArgs, List<HitsoundLayer>>(new ImportReloadingArgsComparer());
 
+            foreach (var layer in selectedLayers)
+            {
+                var reloadingArgs = layer.ImportArgs.GetImportReloadingArgs();
+                if (seperatedByImportArgsForReloading.TryGetValue(reloadingArgs, out List<HitsoundLayer> value))
+                {
+                    value.Add(layer);
+                }
+                else
+                {
+                    seperatedByImportArgsForReloading.Add(reloadingArgs, new List<HitsoundLayer> { layer });
+                }
+            }
+
+            foreach (var pair in seperatedByImportArgsForReloading)
+            {
+                var reloadingArgs = pair.Key;
+                var layers = pair.Value;
+
+                var importedLayers = HitsoundImporter.ImportReloading(reloadingArgs);
+
+                layers.ForEach(o => o.Reload(importedLayers));
+            }
+
+            UpdateEditingField();
+        }
+        catch (Exception ex) { ex.Show(); }
 	}
 
 	private void LayersList_SelectionChanged(object obj, SelectionChangedEventArgs args)
 	{
+        if (suppressEvents) return;
 
+        GetSelectedLayers();
+        UpdateEditingField();
 	}
+
+	private void RecalculatePriorities()
+	{
+		for(int i = 0; i < settings.HitsoundLayers.Count; i++)
+			settings.HitsoundLayers[i].Priority = i;
+	}
+
+	private void Num_Layers_Changed()
+    {
+        if (settings.HitsoundLayers.Count == 0)
+        {
+            FirstGrid.ColumnDefinitions[0].Width = new GridLength(0);
+            EditPanel.IsEnabled = false;
+        }
+        else if (FirstGrid.ColumnDefinitions[0].Width.Value < 100)
+        {
+            FirstGrid.ColumnDefinitions[0].Width = new GridLength(1, GridUnitType.Star);
+            FirstGrid.ColumnDefinitions[2].Width = new GridLength(2, GridUnitType.Star);
+            EditPanel.IsEnabled = true;
+        }
+    }
+
+	private void GetSelectedLayers()
+    {
+        selectedLayers = new List<HitsoundLayer>();
+
+        if (LayersList.SelectedItems.Count == 0)
+        {
+            selectedLayer = null;
+            return;
+        }
+
+        foreach (HitsoundLayer hsl in LayersList.SelectedItems)
+        {
+            selectedLayers.Add(hsl);
+        }
+
+        selectedLayer = selectedLayers[0];
+    }
+
+	private async void UpdateEditingField()
+    {
+        if (selectedLayers.Count == 0) { return; }
+
+        suppressEvents = true;
+        // Populate the editing fields
+        SelectedNameBox.Text = selectedLayers.AllToStringOrDefault(o => o.Name);
+        SelectedSampleSetBox.PlaceholderText = selectedLayers.AllToStringOrDefault(o => o.SampleSetString);
+        SelectedHitsoundBox.PlaceholderText = selectedLayers.AllToStringOrDefault(o => o.HitsoundString);
+        TimesBox.Text = selectedLayers.AllToStringOrDefault(o => o.Times, HitsoundLayerExtension.DoubleListToStringConverter);
+
+        SelectedSamplePathBox.Text = selectedLayers.AllToStringOrDefault(o => o.SampleArgs.Path);
+        SelectedSampleVolumeBox.Text = selectedLayers.AllToStringOrDefault(o => o.SampleArgs.Volume * 100, CultureInfo.InvariantCulture);
+        SelectedSamplePanningBox.Text = selectedLayers.AllToStringOrDefault(o => o.SampleArgs.Panning, CultureInfo.InvariantCulture);
+        SelectedSamplePitchShiftBox.Text = selectedLayers.AllToStringOrDefault(o => o.SampleArgs.PitchShift, CultureInfo.InvariantCulture);
+        SelectedSampleBankBox.Text = selectedLayers.AllToStringOrDefault(o => o.SampleArgs.Bank);
+        SelectedSamplePatchBox.Text = selectedLayers.AllToStringOrDefault(o => o.SampleArgs.Patch);
+        SelectedSampleInstrumentBox.Text = selectedLayers.AllToStringOrDefault(o => o.SampleArgs.Instrument);
+        SelectedSampleKeyBox.Text = selectedLayers.AllToStringOrDefault(o => o.SampleArgs.Key);
+        SelectedSampleLengthBox.Text = selectedLayers.AllToStringOrDefault(o => o.SampleArgs.Length, CultureInfo.InvariantCulture);
+        SelectedSampleVelocityBox.Text = selectedLayers.AllToStringOrDefault(o => o.SampleArgs.Velocity);
+
+        SelectedImportTypeBox.PlaceholderText = selectedLayers.AllToStringOrDefault(o => o.ImportArgs.ImportType);
+        SelectedImportPathBox.Text = selectedLayers.AllToStringOrDefault(o => o.ImportArgs.Path);
+        SelectedImportXCoordBox.Text = selectedLayers.AllToStringOrDefault(o => o.ImportArgs.X, CultureInfo.InvariantCulture);
+        SelectedImportYCoordBox.Text = selectedLayers.AllToStringOrDefault(o => o.ImportArgs.Y, CultureInfo.InvariantCulture);
+        SelectedImportSamplePathBox.Text = selectedLayers.AllToStringOrDefault(o => o.ImportArgs.SamplePath);
+        SelectedHitsoundImportDiscriminateVolumesBox.IsChecked = selectedLayers.All(o => o.ImportArgs.DiscriminateVolumes);
+        SelectedHitsoundImportDetectDuplicateSamplesBox.IsChecked = selectedLayers.All(o => o.ImportArgs.DetectDuplicateSamples);
+        SelectedHitsoundImportRemoveDuplicatesBox.IsChecked = selectedLayers.All(o => o.ImportArgs.RemoveDuplicates);
+        SelectedStoryboardImportSamplePathBox.Text = selectedLayers.AllToStringOrDefault(o => o.ImportArgs.SamplePath);
+        SelectedStoryboardImportDiscriminateVolumesBox.IsChecked = selectedLayers.All(o => o.ImportArgs.DiscriminateVolumes);
+        SelectedStoryboardImportRemoveDuplicatesBox.IsChecked = selectedLayers.All(o => o.ImportArgs.RemoveDuplicates);
+        SelectedImportBankBox.Text = selectedLayers.AllToStringOrDefault(o => o.ImportArgs.Bank);
+        SelectedImportPatchBox.Text = selectedLayers.AllToStringOrDefault(o => o.ImportArgs.Patch);
+        SelectedImportKeyBox.Text = selectedLayers.AllToStringOrDefault(o => o.ImportArgs.Key);
+        SelectedImportLengthBox.Text = selectedLayers.AllToStringOrDefault(o => o.ImportArgs.Length, CultureInfo.InvariantCulture);
+        SelectedImportLengthRoughnessBox.Text = selectedLayers.AllToStringOrDefault(o => o.ImportArgs.LengthRoughness, CultureInfo.InvariantCulture);
+        SelectedImportVelocityBox.Text = selectedLayers.AllToStringOrDefault(o => o.ImportArgs.Velocity);
+        SelectedImportVelocityRoughnessBox.Text = selectedLayers.AllToStringOrDefault(o => o.ImportArgs.VelocityRoughness, CultureInfo.InvariantCulture);
+        SelectedImportOffsetBox.Text = selectedLayers.AllToStringOrDefault(o => o.ImportArgs.Offset, CultureInfo.InvariantCulture);
+
+        // Update visibility
+        SoundFontArgsPanel.IsVisible = selectedLayers.Any(o => o.SampleArgs.UsesSoundFont || string.IsNullOrEmpty(o.SampleArgs.GetExtension()));
+        SelectedStackPanel.IsVisible = selectedLayers.Any(o => o.ImportArgs.ImportType == ImportType.Stack);
+        SelectedHitsoundsPanel.IsVisible = selectedLayers.Any(o => o.ImportArgs.ImportType == ImportType.Hitsounds);
+        SelectedStoryboardPanel.IsVisible = selectedLayers.Any(o => o.ImportArgs.ImportType == ImportType.Storyboard);
+        SelectedMidiPanel.IsVisible = selectedLayers.Any(o => o.ImportArgs.ImportType == ImportType.MIDI);
+        ImportArgsPanel.IsVisible = selectedLayers.Any(o => o.ImportArgs.CanImport);
+
+        suppressEvents = false;
+    }
 
     public string AutoSavePath => Program.configPath + "/hsstudioproject.json";
 
