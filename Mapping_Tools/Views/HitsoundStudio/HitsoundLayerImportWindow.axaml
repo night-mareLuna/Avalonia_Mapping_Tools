@@ -69,6 +69,7 @@
 						<Button Grid.Column="1" Grid.Row="1" Margin="5 5 0 0" 
 							Background="Transparent"
 							VerticalAlignment="Top"
+							Click="SampleBrowse0_Click"
 							Width="32"
 							Height="32">
 							<materialIcons:MaterialIcon Kind="Folder"
@@ -120,6 +121,7 @@
 							Watermark="Hitsound sample"/>
 						<Button Grid.Column="1" Grid.Row="1" Margin="5 5 0 0" 
 							Background="Transparent"
+							Click="SampleBrowse_Click"
 							Width="32"
 							Height="32">
 							<materialIcons:MaterialIcon Kind="Folder"
@@ -136,6 +138,7 @@
 							Watermark="Source beatmap"/>
 						<Button Grid.Column="1" Grid.Row="1" Margin="5 5 0 0" 
 							Background="Transparent"
+							Click="BeatmapLoad_Click"
 							Width="32"
 							Height="32">
 							<materialIcons:MaterialIcon Kind="DeleteRestore"
@@ -144,6 +147,7 @@
 						</Button>
 						<Button Grid.Column="2" Grid.Row="1" Margin="5 5 0 0" 
 							Background="Transparent"
+							Click="BeatmapBrowse_Click"
 							Width="32"
 							Height="32">
 							<materialIcons:MaterialIcon Kind="Folder"
@@ -185,6 +189,7 @@
 							Watermark="Source beatmap"/>
 						<Button Grid.Column="1" Grid.Row="1" Margin="5 5 0 0" 
 							Background="Transparent"
+							Click="BeatmapLoad2_Click"
 							Width="32"
 							Height="32">
 							<materialIcons:MaterialIcon Kind="DeleteRestore"
@@ -193,6 +198,7 @@
 						</Button>
 						<Button Grid.Column="2" Grid.Row="1" Margin="5 5 0 0" 
 							Background="Transparent"
+							Click="BeatmapBrowse2_Click"
 							Width="32"
 							Height="32">
 							<materialIcons:MaterialIcon Kind="Folder"
@@ -226,6 +232,7 @@
 							Watermark="Source MIDI"/>
 						<Button Grid.Column="2" Grid.Row="1" Margin="5 5 0 0" 
 							Background="Transparent"
+							Click="MIDIBrowse3_Click"
 							Width="32"
 							Height="32">
 							<materialIcons:MaterialIcon Kind="Folder"
@@ -273,6 +280,7 @@
 							Watermark="Source beatmap"/>
 						<Button Grid.Column="1" Grid.Row="1" Margin="5 5 0 0" 
 							Background="Transparent"
+							Click="BeatmapLoad4_Click"
 							Width="32"
 							Height="32">
 							<materialIcons:MaterialIcon Kind="DeleteRestore"
@@ -281,6 +289,7 @@
 						</Button>
 						<Button Grid.Column="2" Grid.Row="1" Margin="5 5 0 0" 
 							Background="Transparent"
+							Click="BeatmapBrowse4_Click"
 							Width="32"
 							Height="32">
 							<materialIcons:MaterialIcon Kind="Folder"
