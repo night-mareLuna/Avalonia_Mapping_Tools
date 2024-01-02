@@ -8,6 +8,10 @@
 		xmlns:domain="clr-namespace:Mapping_Tools.Components.Domain"
         x:DataType="vm:HitsoundStudioViewModel">
 
+		<UserControl.Resources>
+			<domain:VolumeToPercentageConverter x:Key="V2PConverter"/>
+		</UserControl.Resources>
+
 	<Grid RowDefinitions="Auto,*,Auto,20" Margin="5">
 
 		<!-- Title -->
@@ -416,7 +420,7 @@
 							<ComboBoxItem Content="Drum" Cursor="Hand"/>
 						</ComboBox>
 						<TextBox Name="DefaultSampleVolumeBox" Margin="5" Grid.Column="3"
-							Text="{Binding SampleArgs.Volume, Mode=TwoWay}"
+							Text="{Binding SampleArgs.Volume, Mode=TwoWay, Converter={StaticResource V2PConverter}, ConverterParameter=100}"
 							HorizontalAlignment="Stretch"/>
 						<Button	Margin="5" Grid.Column="4"
 							Background="Transparent"
