@@ -105,10 +105,10 @@ namespace Mapping_Tools.Classes.SystemTools {
                 Console.WriteLine(ex.Message);
 
                 if (message) {
-					var box = MessageBoxManager.GetMessageBoxStandard("Error!",
-						"Project could not be loaded!",
-						ButtonEnum.Ok);
-                    box.ShowAsync();
+                    var box = MessageBoxManager.GetMessageBoxStandard("Error!",
+					"Project could not be loaded!",
+					ButtonEnum.Ok);
+					box.ShowAsync();
                     ex.Show();
                 }
             }
@@ -116,11 +116,11 @@ namespace Mapping_Tools.Classes.SystemTools {
 
         public static async void NewProject<T>(ISavable<T> view, bool dialog = false, bool message = true) {
             if (dialog) {
-				var messageBox = MessageBoxManager.GetMessageBoxStandard("Confirm new project",
+				var box = MessageBoxManager.GetMessageBoxStandard("Confirm new project",
 					"Are you sure you want to start a new project? All unsaved progress will be lost.",
 					ButtonEnum.YesNo);
-				var messageBoxResult = await messageBox.ShowAsync();
-                if (messageBoxResult != ButtonResult.Yes) return;
+				var result = await box.ShowAsync();
+                if (result != ButtonResult.Yes) return;
             }
 
             try {
@@ -134,7 +134,7 @@ namespace Mapping_Tools.Classes.SystemTools {
 					var box = MessageBoxManager.GetMessageBoxStandard("Error!",
 						"New project could not be initialized!",
 						ButtonEnum.Ok);
-					box.ShowAsync();
+                    box.ShowAsync();
                     ex.Show();
                 }
             }
@@ -148,7 +148,7 @@ namespace Mapping_Tools.Classes.SystemTools {
         /// <param name="view">The tool to get the project from</param>
         /// <param name="dialog">Whether to use a dialog</param>
         /// <returns></returns>
-        public static async Task<T> GetProjectAsync<T>(ISavable<T> view, bool dialog=false) {
+        public static async Task<T> GetProject<T>(ISavable<T> view, bool dialog=false) {
             if (dialog)
                 Directory.CreateDirectory(view.DefaultSaveFolder);
             string path = dialog ? await IOHelper.LoadProjectDialog(view.DefaultSaveFolder) : view.AutoSavePath;
