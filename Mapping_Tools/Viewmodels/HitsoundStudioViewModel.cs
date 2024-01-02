@@ -49,7 +49,7 @@ public partial class HitsoundStudioViewModel : ViewModelBase
 			{HitsoundExporter.SampleExportFormat.OggVorbis, "Vorbis (.ogg)"},
 			{HitsoundExporter.SampleExportFormat.MidiChords, "Single-chord MIDI (.mid)"}
 		};
-	[JsonIgnore] public IEnumerable<string> SampleExportFormatNames => SampleExportFormatDisplayNameMapping.Values;
+	[JsonIgnore] public IEnumerable<string> SampleExportFormatDisplayNames => SampleExportFormatDisplayNameMapping.Values;
 	public string SingleSampleExportFormatDisplay
 	{
 		get => SampleExportFormatDisplayNameMapping[SingleSampleExportFormat];
@@ -132,5 +132,17 @@ public partial class HitsoundStudioViewModel : ViewModelBase
 			SingleSampleExportFormat = value;
     }
 
-	public static void SetProgress(int prog) => Me!.Progress = prog;
+    partial void OnZipLayersLeniencyChanged(double oldValue, double newValue)
+    {
+		if(newValue >= 0) return;
+		else ZipLayersLeniency = oldValue;
+    }
+
+    partial void OnFirstCustomIndexChanged(int oldValue, int newValue)
+    {
+        if(newValue >= 0) return;
+		else FirstCustomIndex = oldValue;
+    }
+
+    public static void SetProgress(int prog) => Me!.Progress = prog;
 }
