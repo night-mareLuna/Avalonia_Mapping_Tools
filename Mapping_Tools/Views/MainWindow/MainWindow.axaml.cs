@@ -151,7 +151,7 @@ public partial class MainWindow : Window
         }
     }
 
-	private async void OpenFolder(object obj, RoutedEventArgs args)
+	private void OpenFolder(object obj, RoutedEventArgs args)
 	{
         string folder = (obj as MenuItem)!.Name! switch
         {
@@ -160,6 +160,11 @@ public partial class MainWindow : Window
             _ => ""
         };
 		
+        OpenFolder(folder);
+	}
+
+	public static async void OpenFolder(string folder)
+	{
         using Process fileExplorer = new Process
         {
             StartInfo = new ProcessStartInfo
