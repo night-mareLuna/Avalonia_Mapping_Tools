@@ -21,7 +21,7 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
 {
 	private readonly HitsoundStudioViewModel settings;
 	private bool suppressEvents;
-	private List<HitsoundLayer>? selectedLayers;
+	private List<HitsoundLayer> selectedLayers;
 	private HitsoundLayer? selectedLayer;
 	public HitsoundStudioView()
 	{
@@ -317,7 +317,7 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
 
 	private void SelectedNameBox_TextChanged(object obj, TextChangedEventArgs args)
 	{
-        if (suppressEvents || !(obj as TextBox).IsFocused) return;
+        if (suppressEvents || !(obj as TextBox)!.IsFocused) return;
 
         string t = (obj as TextBox)!.Text!;
         foreach (HitsoundLayer hitsoundLayer in selectedLayers)
@@ -492,7 +492,7 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
 	{
         if (suppressEvents) return;
 
-        string t = (obj as TextBox)!.Text;
+        string t = (obj as TextBox)!.Text!;
         foreach (HitsoundLayer hitsoundLayer in selectedLayers)
         {
             hitsoundLayer.ImportArgs.Path = t;
@@ -550,7 +550,7 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
 	{
         if (suppressEvents) return;
 
-        string t = (obj as TextBox).Text;
+        string t = (obj as TextBox)!.Text!;
         foreach (HitsoundLayer hitsoundLayer in selectedLayers)
         {
             hitsoundLayer.ImportArgs.SamplePath = t;
@@ -626,7 +626,7 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
 	{
         if (suppressEvents) return;
 
-        int t = (obj as TextBox).GetInt(-1);
+        int t = (obj as TextBox)!.GetInt(-1);
         foreach (HitsoundLayer hitsoundLayer in selectedLayers)
         {
             hitsoundLayer.ImportArgs.Key = t;
