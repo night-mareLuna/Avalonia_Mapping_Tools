@@ -770,7 +770,7 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
         selectedLayer = selectedLayers[0];
     }
 
-	private async void UpdateEditingField()
+	private void UpdateEditingField()
     {
         if (selectedLayers.Count == 0) { return; }
 
