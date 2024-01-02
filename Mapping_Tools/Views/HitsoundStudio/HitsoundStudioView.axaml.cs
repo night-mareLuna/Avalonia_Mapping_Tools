@@ -35,6 +35,10 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
 		LayersList.SelectedIndex = 0;
 		Num_Layers_Changed();
 		GetSelectedLayers();
+		if(File.Exists(AutoSavePath))
+			ProjectManager.LoadProject(this, message: false);
+		else
+			ProjectManager.SaveProject(this, AutoSavePath);
 		Verbose = true;
 
 		DefaultSampleSetBox.PlaceholderText = settings.DefaultSample.SampleSet.ToString();
@@ -1161,5 +1165,11 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
 
         LayersList.SelectedIndex = 0;
         Num_Layers_Changed();
+    }
+
+    protected override void OnUnloaded(RoutedEventArgs e)
+    {
+		ProjectManager.SaveProject(this, AutoSavePath);
+        base.OnUnloaded(e);
     }
 }
