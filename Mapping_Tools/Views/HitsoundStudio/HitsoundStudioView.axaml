@@ -410,8 +410,8 @@
 						<TextBox Name="DefaultSamplePathBox" Margin="5" Grid.Column="1"
 							Text="{Binding SampleArgs.Path, Mode=TwoWay}"
 							HorizontalAlignment="Stretch"/>
-						<ComboBox Margin="5" Grid.Column="2"
-							SelectedValue="{Binding SampleSet, Mode=TwoWay}"
+						<ComboBox Name="DefaultSampleSetBox" Margin="5" Grid.Column="2"
+							SelectionChanged="DefaultSampleSet_SelectionChanged"
 							HorizontalAlignment="Stretch">
 
 							<ComboBoxItem Content="None" Cursor="Hand"/>

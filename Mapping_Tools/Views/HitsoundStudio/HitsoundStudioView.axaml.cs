@@ -30,13 +30,14 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
 	public HitsoundStudioView()
 	{
 		InitializeComponent();
-
 		settings = new HitsoundStudioViewModel();
 		DataContext = settings;
 		LayersList.SelectedIndex = 0;
 		Num_Layers_Changed();
 		GetSelectedLayers();
 		Verbose = true;
+
+		DefaultSampleSetBox.PlaceholderText = settings.DefaultSample.SampleSet.ToString();
 	}
 
 	private async void Start_Click(object obj, RoutedEventArgs args)
@@ -728,6 +729,13 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
             hitsoundLayer.ImportArgs.ImportType = type;
         }
         UpdateEditingField();
+	}
+
+	private void DefaultSampleSet_SelectionChanged(object obj, SelectionChangedEventArgs args)
+	{	//A BANDAID FIX TO BINDING CONVERTER NOT WORKING
+		string t = ((obj as ComboBox)!.SelectedItem as ComboBoxItem)!.Content!.ToString()!;
+		SampleSet set = (SampleSet)Enum.Parse(typeof(SampleSet), t);
+		settings.DefaultSample.SampleSet = set;
 	}
 
 	private void SelectedImportPathBox_TextChanged(object obj, TextChangedEventArgs args)
