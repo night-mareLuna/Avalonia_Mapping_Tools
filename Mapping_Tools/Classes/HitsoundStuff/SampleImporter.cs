@@ -30,7 +30,7 @@ namespace Mapping_Tools.Classes.HitsoundStuff {
         }
   
         public static WaveStream OpenSample(string path) {
-            return Path.GetExtension(path).ToLower() == ".ogg" ? (WaveStream)new VorbisWaveReader(path) : new MediaFoundationReader(path);
+            return Path.GetExtension(path).ToLower() == ".ogg" ? new VorbisWaveReader(path) : new WaveFileReader(path);
         }
 
         /// <summary>
@@ -203,7 +203,7 @@ namespace Mapping_Tools.Classes.HitsoundStuff {
         }
 
         public static SampleSoundGenerator ImportFromAudio(SampleGeneratingArgs args) {
-            var generator = new SampleSoundGenerator(new MediaFoundationReader(args.Path)) {
+            var generator = new SampleSoundGenerator(new WaveFileReader(args.Path)) {
                 VolumeCorrection = args.Volume,
                 Panning = args.Panning,
                 PitchShift = args.PitchShift
