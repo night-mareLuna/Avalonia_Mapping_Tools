@@ -2,12 +2,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:Avalonia_Mapping_Tools.ViewModels"
 		xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
         x:Class="Avalonia_Mapping_Tools.Views.HitsoundStudio.HitsoundStudioExportDialog"
 		Title="Export"
 		Width="500" Height="540"
 		MinWidth="400" MinHeight="432"
-		xmlns:domain="clr-namespace:Mapping_Tools.Components.Domain">
+		xmlns:domain="clr-namespace:Mapping_Tools.Components.Domain"
+        x:DataType="vm:HitsoundStudioViewModel">
 
 	<ScrollViewer AllowAutoHide="true"
 		ScrollViewer.VerticalScrollBarVisibility="Auto" 
@@ -17,11 +19,13 @@
 				FontSize="12" 
 				Text="Export folder"/>
 			<Grid ColumnDefinitions="*,Auto">
-				<TextBox Grid.Column="0" Margin="0 5 0 0"
+				<TextBox Name="ExportFolderBox" Grid.Column="0" Margin="0 5 0 0"
 					HorizontalAlignment="Stretch"
+					Text="{Binding ExportFolder, Mode=TwoWay}"
 					Watermark="Export folder"/>
 				<Button Grid.Column="1" Margin="5 5 0 0" 
 					Background="Transparent"
+					Click="ExportFolderBrowseButton_OnClick"
 					Width="32"
 					Height="32">
 					<materialIcons:MaterialIcon Kind="Folder"
@@ -35,59 +39,86 @@
 				Text="Hitsound map name"/>
 			<TextBox Margin="0 5 0 0"
 				HorizontalAlignment="Stretch"
+				Text="{Binding HitsoundDiffName, Mode=TwoWay}"
 				Watermark="Hitsound map name"/>
 
-			<CheckBox Margin="0 10 0 -10">Export hitsound map</CheckBox>
-			<CheckBox Margin="0 0 0 -10">Export hitsound samples</CheckBox>
-			<CheckBox Margin="0 0 0 -10">Show results</CheckBox>
-			<CheckBox Margin="0 0 0 -10">Delete all files in export folder</CheckBox>
-			<CheckBox Margin="0 0 0 -10">Use previous sample schema</CheckBox>
-			<CheckBox Margin="0 0 0 5">Allow growth of previous sample schema</CheckBox>
+			<CheckBox Margin="0 10 0 -10"
+				IsChecked="{Binding ExportMap}">Export hitsound map</CheckBox>
+			<CheckBox Margin="0 0 0 -10"
+				IsChecked="{Binding ExportSamples}">Export hitsound samples</CheckBox>
+			<CheckBox Margin="0 0 0 -10"
+				IsChecked="{Binding ShowResults}">Show results</CheckBox>
+			<CheckBox Margin="0 0 0 -10"
+				IsChecked="{Binding DeleteAllInExportFirst}">Delete all files in export folder</CheckBox>
+			<CheckBox Margin="0 0 0 -10"
+				IsChecked="{Binding UsePreviousSampleSchema}">Use previous sample schema</CheckBox>
+			<CheckBox Margin="0 0 0 5"
+				IsEnabled="{Binding UsePreviousSampleSchema}"
+				IsChecked="{Binding AllowGrowthPreviousSampleSchema}">Allow growth of previous sample schema</CheckBox>
 
 			<TextBlock Margin="0 10 0 0"
 				FontSize="12" 
 				Text="Export mode"/>
 			<ComboBox Margin="0 5 0 0"
+				ItemsSource="{Binding HitsoundExportModes}"
+				SelectedItem="{Binding HitsoundExportModeSetting}"
 				HorizontalAlignment="Stretch"/>
 
 			<TextBlock Margin="0 5 0 0"
 				FontSize="12" 
 				Text="Note grouping leniency"/>
 			<TextBox Margin="0 5 0 0"
+				Text="{Binding ZipLayersLeniency, Mode=TwoWay}"
 				HorizontalAlignment="Stretch"/>
 
 			<TextBlock Margin="0 5 0 0"
 				FontSize="12" 
 				Text="First custom index"/>
 			<TextBox Margin="0 5 0 0"
+				IsVisible="{Binding StandardExtraSettingsVisibility}"
+				Text="{Binding FirstCustomIndex, Mode=TwoWay}"
 				HorizontalAlignment="Stretch"/>
+
+			<CheckBox Margin="0 5 0 0"
+				IsVisible="{Binding CoincidingExtraSettingsVisibility}"
+				IsChecked="{Binding AddCoincidingRegularHitsounds}">Add regular hitsounds</CheckBox>
 
 			<TextBlock Margin="0 5 0 0"
 				FontSize="12" 
 				Text="Export gamemode"/>
 			<ComboBox Margin="0 5 0 0"
+				ItemsSource="{Binding HitsoundExportGameModes}"
+				SelectedItem="{Binding HitsoundExportGameMode}"
 				HorizontalAlignment="Stretch"/>
 
 			<TextBlock Margin="0 20 0 0"
 				FontSize="12" 
 				Text="Sample file format"/>
 			<ComboBox Margin="0 5 0 0"
+				ItemsSource="{Binding SampleExportFormatDisplayNames}"
+				SelectedItem="{Binding SingleSampleExportFormatDisplay}"
 				HorizontalAlignment="Stretch"/>
 
 			<TextBlock Margin="0 5 0 0"
 				FontSize="12" 
 				Text="Mixed sample file format"/>
 			<ComboBox Margin="0 5 0 0"
+				ItemsSource="{Binding SampleExportFormatDisplayNames}"
+				SelectedItem="{Binding MixedSampleExportFormatDisplay}"
 				HorizontalAlignment="Stretch"/>
 
 			<StackPanel Orientation="Horizontal" Margin="0 10 0 0"
 				HorizontalAlignment="Center">
-				<Button	Margin="20 0" HorizontalAlignment="Stretch">
+				<Button	Name="Accept" Margin="20 0"
+					Click="SetResult"
+					HorizontalAlignment="Stretch">
 					<TextBlock HorizontalAlignment="Center"
 						VerticalAlignment="Center"
 						Text="Accept"/>
 				</Button>
-				<Button	Margin="20 0" HorizontalAlignment="Stretch">
+				<Button	Name="Cancel" Margin="20 0"
+					Click="SetResult"
+					HorizontalAlignment="Stretch">
 					<TextBlock HorizontalAlignment="Center"
 						VerticalAlignment="Center"
 						Text="Cancel"/>
