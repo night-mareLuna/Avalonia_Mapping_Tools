@@ -1,16 +1,20 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using ActiproSoftware.Extensions;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia_Mapping_Tools.ViewModels;
 using Avalonia_Mapping_Tools.Views.HitsoundStudio;
 using Mapping_Tools.Classes;
+using Mapping_Tools.Classes.BeatmapHelper.Enums;
 using Mapping_Tools.Classes.HitsoundStuff;
+using Mapping_Tools.Classes.MathUtil;
 using Mapping_Tools.Classes.SystemTools;
 using Mapping_Tools.Views;
 using MsBox.Avalonia;
@@ -19,7 +23,7 @@ using MsBox.Avalonia.Enums;
 namespace Avalonia_Mapping_Tools.Views;
 public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<HitsoundStudioViewModel>, IHaveExtraProjectMenuItems
 {
-	private readonly HitsoundStudioViewModel settings;
+	private HitsoundStudioViewModel settings;
 	private bool suppressEvents;
 	private List<HitsoundLayer> selectedLayers;
 	private HitsoundLayer? selectedLayer;
@@ -37,9 +41,247 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
 
 	private async void Start_Click(object obj, RoutedEventArgs args)
 	{
-		var exportDialog = new HitsoundStudioExportDialog();
+		if(BackgroundWorker.IsBusy) return;
+		
+		var exportDialog = new HitsoundStudioExportDialog(settings);
 		await MainWindow.ShowSomeDialog(exportDialog);
+		bool result = exportDialog.result;
+
+		if (!result) return;
+
+        if (string.IsNullOrWhiteSpace(settings.BaseBeatmap))
+        {
+			var box = MessageBoxManager.GetMessageBoxStandard("Error!",
+				"Please select a base beatmap first.",
+				ButtonEnum.Ok);
+			await box.ShowAsync();
+            return;
+        }
+
+        if (!Directory.Exists(settings.ExportFolder))
+        {
+			var folderBox = MessageBoxManager.GetMessageBoxStandard("Export path not found.",
+				$"Folder at path \"{settings.ExportFolder}\" does not exist.\nCreate a new folder?",
+				ButtonEnum.YesNo);
+
+			ButtonResult folderResult = await folderBox.ShowAsync();
+
+            if (folderResult == ButtonResult.Yes) {
+                try {
+                    Directory.CreateDirectory(settings.ExportFolder);
+                } catch (Exception ex) {
+                    ex.Show();
+                    return;
+                }
+            } else {
+                return;
+            }
+        }
+
+        BackgroundWorker.RunWorkerAsync(settings);
 	}
+
+	protected override void BackgroundWorker_DoWork(object? sender, DoWorkEventArgs e)
+    {
+        var bgw = sender as BackgroundWorker;
+        e.Result = Make_Hitsounds((HitsoundStudioViewModel)e.Argument!, bgw!, e);
+    }
+
+    protected override void BackgroundWorker_ProgressChanged(object? sender, ProgressChangedEventArgs e)
+    {
+        base.BackgroundWorker_ProgressChanged(sender, e);
+		HitsoundStudioViewModel.SetProgress(Progress);
+    }
+
+    private string Make_Hitsounds(HitsoundStudioViewModel arg, BackgroundWorker worker, DoWorkEventArgs _) {
+        string result = string.Empty;
+
+        bool validateSampleFile =
+            !(arg.SingleSampleExportFormat == HitsoundExporter.SampleExportFormat.MidiChords ||
+              arg.MixedSampleExportFormat == HitsoundExporter.SampleExportFormat.MidiChords);
+
+        var comparer = new SampleGeneratingArgsComparer(validateSampleFile);
+
+        if (arg.HitsoundExportModeSetting == HitsoundStudioViewModel.HitsoundExportMode.Standard) {
+            // Convert the multiple layers into packages that have the samples from all the layers at one specific time
+            // Don't add default sample when exporting midi files because that's not a final export.
+            List<SamplePackage> samplePackages = HitsoundConverter.ZipLayers(arg.HitsoundLayers, arg.DefaultSample, arg.ZipLayersLeniency, validateSampleFile);
+            UpdateProgressBar(worker, 10);
+
+            // Balance the volume between greenlines and samples
+            HitsoundConverter.BalanceVolumes(samplePackages, 0, false);
+            UpdateProgressBar(worker, 20);
+
+            // Load the samples so validation can be done
+            HashSet<SampleGeneratingArgs> allSampleArgs = new HashSet<SampleGeneratingArgs>(comparer);
+            foreach (SamplePackage sp in samplePackages) {
+                allSampleArgs.UnionWith(sp.Samples.Select(o => o.SampleArgs));
+            }
+
+            var loadedSamples = SampleImporter.ImportSamples(allSampleArgs, comparer);
+            UpdateProgressBar(worker, 30);
+
+            // Convert the packages to hitsounds that fit on an osu standard map
+            CompleteHitsounds completeHitsounds =
+                HitsoundConverter.GetCompleteHitsounds(samplePackages, loadedSamples, 
+                    arg.UsePreviousSampleSchema ? arg.PreviousSampleSchema.GetCustomIndices() : null, 
+                    arg.AllowGrowthPreviousSampleSchema, arg.FirstCustomIndex, validateSampleFile, comparer);
+            UpdateProgressBar(worker, 60);
+
+            // Save current sample schema
+            if (!arg.UsePreviousSampleSchema) {
+                arg.PreviousSampleSchema = new SampleSchema(completeHitsounds.CustomIndices);
+            } else if (arg.AllowGrowthPreviousSampleSchema) {
+                arg.PreviousSampleSchema.MergeWith(new SampleSchema(completeHitsounds.CustomIndices));
+            }
+
+            if (arg.ShowResults) {
+                // Count the number of samples
+                int samples = completeHitsounds.CustomIndices.SelectMany(ci => ci.Samples.Values)
+                    .Count(h => h.Any(o => 
+                        SampleImporter.ValidateSampleArgs(o, loadedSamples, validateSampleFile)));
+
+                // Count the number of changes of custom index
+                int greenlines = 0;
+                int lastIndex = -1;
+                foreach (var hit in completeHitsounds.Hitsounds.Where(hit => hit.CustomIndex != lastIndex)) {
+                    lastIndex = hit.CustomIndex;
+                    greenlines++;
+                }
+
+                result = $"Number of sample indices: {completeHitsounds.CustomIndices.Count}, " +
+                         $"Number of samples: {samples}, Number of greenlines: {greenlines}";
+            }
+
+            if (arg.DeleteAllInExportFirst && (arg.ExportSamples || arg.ExportMap)) {
+                // Delete all files in the export folder before filling it again
+                DirectoryInfo di = new DirectoryInfo(arg.ExportFolder);
+                foreach (FileInfo file in di.GetFiles()) {
+                    file.Delete();
+                }
+            }
+
+            UpdateProgressBar(worker, 70);
+
+            // Export the hitsound map and sound samples
+            if (arg.ExportMap) {
+                HitsoundExporter.ExportHitsounds(completeHitsounds.Hitsounds, 
+                    arg.BaseBeatmap, arg.ExportFolder, arg.HitsoundDiffName, arg.HitsoundExportGameMode, true, false);
+            }
+
+            UpdateProgressBar(worker, 80);
+
+            if (arg.ExportSamples) {
+                HitsoundExporter.ExportCustomIndices(completeHitsounds.CustomIndices, arg.ExportFolder,
+                    loadedSamples, arg.SingleSampleExportFormat, arg.MixedSampleExportFormat, comparer);
+            }
+
+            UpdateProgressBar(worker, 99);
+        } else if (arg.HitsoundExportModeSetting == HitsoundStudioViewModel.HitsoundExportMode.Coinciding) {
+            List<SamplePackage> samplePackages = HitsoundConverter.ZipLayers(arg.HitsoundLayers, arg.DefaultSample, 0, false);
+
+            HitsoundConverter.BalanceVolumes(samplePackages, 0, false, true);
+            UpdateProgressBar(worker, 20);
+
+            Dictionary<SampleGeneratingArgs, SampleSoundGenerator> loadedSamples = null;
+            Dictionary<SampleGeneratingArgs, string> sampleNames = arg.UsePreviousSampleSchema ? arg.PreviousSampleSchema?.GetSampleNames(comparer) : null;
+            Dictionary<SampleGeneratingArgs, Vector2> samplePositions = null;
+            var hitsounds = HitsoundConverter.GetHitsounds(samplePackages, ref loadedSamples, ref sampleNames, ref samplePositions,
+                arg.HitsoundExportGameMode == GameMode.Mania, arg.AddCoincidingRegularHitsounds, arg.AllowGrowthPreviousSampleSchema,
+                validateSampleFile, comparer);
+
+            // Save current sample schema
+            if (!arg.UsePreviousSampleSchema || arg.PreviousSampleSchema == null) {
+                arg.PreviousSampleSchema = new SampleSchema(sampleNames);
+            } else if (arg.AllowGrowthPreviousSampleSchema) {
+                arg.PreviousSampleSchema.MergeWith(new SampleSchema(sampleNames));
+            }
+
+            // Load the samples so validation can be done
+            UpdateProgressBar(worker, 50);
+
+            if (arg.ShowResults) {
+                result = "Number of sample indices: 0, " +
+                         $"Number of samples: {loadedSamples.Count}, Number of greenlines: 0";
+            }
+
+            if (arg.DeleteAllInExportFirst && (arg.ExportSamples || arg.ExportMap)) {
+                // Delete all files in the export folder before filling it again
+                DirectoryInfo di = new DirectoryInfo(arg.ExportFolder);
+                foreach (FileInfo file in di.GetFiles()) {
+                    file.Delete();
+                }
+            }
+            UpdateProgressBar(worker, 60);
+
+            if (arg.ExportMap) {
+                HitsoundExporter.ExportHitsounds(hitsounds, 
+                    arg.BaseBeatmap, arg.ExportFolder, arg.HitsoundDiffName, arg.HitsoundExportGameMode, false, false);
+            }
+            UpdateProgressBar(worker, 70);
+
+            if (arg.ExportSamples) {
+                HitsoundExporter.ExportLoadedSamples(loadedSamples, arg.ExportFolder, sampleNames, arg.SingleSampleExportFormat, comparer);
+            }
+        } else if (arg.HitsoundExportModeSetting == HitsoundStudioViewModel.HitsoundExportMode.Storyboard) {
+            List<SamplePackage> samplePackages = HitsoundConverter.ZipLayers(arg.HitsoundLayers, arg.DefaultSample, 0, false);
+
+            HitsoundConverter.BalanceVolumes(samplePackages, 0, false, true);
+            UpdateProgressBar(worker, 20);
+
+            Dictionary<SampleGeneratingArgs, SampleSoundGenerator> loadedSamples = null;
+            Dictionary<SampleGeneratingArgs, string> sampleNames = arg.UsePreviousSampleSchema ? arg.PreviousSampleSchema?.GetSampleNames(comparer) : null;
+            Dictionary<SampleGeneratingArgs, Vector2> samplePositions = null;
+            var hitsounds = HitsoundConverter.GetHitsounds(samplePackages, ref loadedSamples, ref sampleNames, ref samplePositions,
+                false, false, arg.AllowGrowthPreviousSampleSchema, validateSampleFile, comparer);
+
+            // Save current sample schema
+            if (!arg.UsePreviousSampleSchema || arg.PreviousSampleSchema == null) {
+                arg.PreviousSampleSchema = new SampleSchema(sampleNames);
+            } else if (arg.AllowGrowthPreviousSampleSchema) {
+                arg.PreviousSampleSchema.MergeWith(new SampleSchema(sampleNames));
+            }
+
+            // Load the samples so validation can be done
+            UpdateProgressBar(worker, 50);
+
+            if (arg.ShowResults) {
+                result = "Number of sample indices: 0, " +
+                         $"Number of samples: {loadedSamples.Count}, Number of greenlines: 0";
+            }
+
+            if (arg.DeleteAllInExportFirst && (arg.ExportSamples || arg.ExportMap)) {
+                // Delete all files in the export folder before filling it again
+                DirectoryInfo di = new DirectoryInfo(arg.ExportFolder);
+                foreach (FileInfo file in di.GetFiles()) {
+                    file.Delete();
+                }
+            }
+            UpdateProgressBar(worker, 60);
+
+            if (arg.ExportMap) {
+                HitsoundExporter.ExportHitsounds(hitsounds, 
+                    arg.BaseBeatmap, arg.ExportFolder, arg.HitsoundDiffName, arg.HitsoundExportGameMode, false, true);
+            }
+            UpdateProgressBar(worker, 70);
+
+            if (arg.ExportSamples) {
+                HitsoundExporter.ExportLoadedSamples(loadedSamples, arg.ExportFolder, sampleNames, arg.SingleSampleExportFormat, comparer);
+            }
+        }
+
+        // Open export folder
+        if (arg.ExportSamples || arg.ExportMap) {
+			MainWindow.OpenFolder(arg.ExportFolder);
+        }
+
+        // Collect garbage
+        GC.Collect();
+
+        UpdateProgressBar(worker, 100);
+
+        return result;
+    }
 
 	private async void Add_Click(object obj, RoutedEventArgs args)
 	{
@@ -829,7 +1071,70 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
 
     public MenuItem[] GetMenuItems()
     {
-        throw new NotImplementedException();
+		var loadSampleSchemaMenu = new MenuItem {
+                Header = "_Load sample schema"
+            };
+            loadSampleSchemaMenu.Click += LoadSampleSchemaFromFile;
+
+            var bulkAssignSamplesMenu = new MenuItem {
+                Header = "_Bulk assign samples"
+            };
+            bulkAssignSamplesMenu.Click += BulkAssignSamples;
+
+            return new[] {
+                loadSampleSchemaMenu,
+                bulkAssignSamplesMenu,
+            };
+    }
+
+	private async void LoadSampleSchemaFromFile(object sender, RoutedEventArgs e) {
+        try {
+            var project = await ProjectManager.GetProject(this, true);
+            settings.PreviousSampleSchema = project.PreviousSampleSchema;
+
+            //Task.Factory.StartNew(() => MainWindow.MessageQueue.Enqueue("Successfully loaded sample schema!"));
+			await Task.Factory.StartNew(() =>
+				MessageBoxManager.GetMessageBoxStandard("Success!",
+                    "Successfully loaded sample schema!",
+					ButtonEnum.Ok).ShowAsync()
+			);
+        } catch (ArgumentException) { }
+        catch (Exception ex) {
+            ex.Show();
+        }
+    }
+
+	private async void BulkAssignSamples(object sender, RoutedEventArgs e) {
+        try {
+            var result = await IOHelper.AudioFileDialog(true);
+
+            foreach (string path in result) {
+                // The file name is expected to be in the following shape:
+                // [bank]_[patch]_[key]_[length]_[velocity].[extension]
+                // Example: 0_39_256_100.wav
+                var fileName = Path.GetFileNameWithoutExtension(path);
+                var split = fileName.Split('_');
+                int? bank = split.Length > 0 && int.TryParse(split[0], out var bankParsed) ? bankParsed : null;
+                int? patch = split.Length > 1 && int.TryParse(split[1], out var patchParsed) ? patchParsed : null;
+                int? key = split.Length > 2 && int.TryParse(split[2], out var keyParsed) ? keyParsed : null;
+                int? length = split.Length > 3 && int.TryParse(split[3], out var lengthParsed) ? lengthParsed : null;
+                int? velocity = split.Length > 4 && int.TryParse(split[4], out var velocityParsed) ? velocityParsed : null;
+
+                foreach (var layer in selectedLayers) {
+                    if (bank.HasValue && bank.Value != layer.ImportArgs.Bank) continue;
+                    if (patch.HasValue && patch.Value != layer.ImportArgs.Patch) continue;
+                    if (key.HasValue && key.Value != layer.ImportArgs.Key) continue;
+                    if (length.HasValue && length.Value != (int)Math.Round(layer.ImportArgs.Length)) continue;
+                    if (velocity.HasValue && velocity.Value != layer.ImportArgs.Velocity) continue;
+
+                    layer.SampleArgs.Path = path;
+                }
+            }
+
+
+        } catch (Exception ex) {
+            ex.Show();
+        }
     }
 
     public HitsoundStudioViewModel GetSaveData()
@@ -839,6 +1144,14 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
 
     public void SetSaveData(HitsoundStudioViewModel saveData)
     {
-        throw new NotImplementedException();
+        suppressEvents = true;
+
+        settings = saveData;
+        DataContext = settings;
+
+        suppressEvents = false;
+
+        LayersList.SelectedIndex = 0;
+        Num_Layers_Changed();
     }
 }
