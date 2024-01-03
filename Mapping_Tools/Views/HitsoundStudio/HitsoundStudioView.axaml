@@ -3,6 +3,8 @@
         xmlns:vm="using:Avalonia_Mapping_Tools.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="using:Avalonia.Xaml.Interactivity"
+		xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
 		xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
         x:Class="Avalonia_Mapping_Tools.Views.HitsoundStudioView"
 		xmlns:domain="clr-namespace:Mapping_Tools.Components.Domain"
@@ -356,6 +358,11 @@
 				CanUserReorderColumns="True"
 				CanUserResizeColumns="True"
 				CanUserSortColumns="False">
+				<i:Interaction.Behaviors>
+					<ia:EventTriggerBehavior EventName="DoubleTapped">
+						<ia:InvokeCommandAction Command="{Binding HitsoundLayer_MouseDoubleClickCommand}"/>
+					</ia:EventTriggerBehavior>
+				</i:Interaction.Behaviors>
 				<DataGrid.Columns>
 					<DataGridTextColumn Header="Name" Width="200" Binding="{Binding Name}"/>
 					<DataGridTextColumn Header="Amount" Width="90" Binding="{Binding Times.Count}"/>

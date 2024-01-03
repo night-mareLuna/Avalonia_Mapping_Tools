@@ -19,6 +19,7 @@ using Mapping_Tools.Classes.SystemTools;
 using Mapping_Tools.Views;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
+using NAudio.Wave;
 
 namespace Avalonia_Mapping_Tools.Views;
 public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<HitsoundStudioViewModel>, IHaveExtraProjectMenuItems
@@ -27,8 +28,10 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
 	private bool suppressEvents;
 	private List<HitsoundLayer> selectedLayers;
 	private HitsoundLayer? selectedLayer;
+	private static HitsoundStudioView? Me;
 	public HitsoundStudioView()
 	{
+		Me = this;
 		InitializeComponent();
 		settings = new HitsoundStudioViewModel();
 		DataContext = settings;
@@ -983,6 +986,11 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
 
         GetSelectedLayers();
         UpdateEditingField();
+	}
+
+	public static HitsoundLayer? GetSelectedLayer()
+	{
+		return Me!.selectedLayer;
 	}
 
 	private void RecalculatePriorities()
