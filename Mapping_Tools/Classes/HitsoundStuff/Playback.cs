@@ -34,21 +34,18 @@ public class Playback
 		};
 	}
 
-	public void Play()
+	public async void Play()
 	{
-		new Thread(async delegate ()
+		AudioPlayerProcess!.Start();
+		await AudioPlayerProcess.WaitForExitAsync();
+		if(AudioPlayerProcess.ExitCode!=0)
 		{
-			AudioPlayerProcess!.Start();
-			await AudioPlayerProcess.WaitForExitAsync();
-			if(AudioPlayerProcess.ExitCode!=0)
-			{
-				var box = MessageBoxManager.GetMessageBoxStandard("Sox not found!",
-					"To support hitsound preview, install \"sox\" and its codecs using your distro's package manager",
-					ButtonEnum.Ok);
-				box.ShowAsync();
-			}
-			Stop();
-		}).Start();
+			var box = MessageBoxManager.GetMessageBoxStandard("Sox not found!",
+				"To support hitsound preview, install \"sox\" and its codecs using your distro's package manager.",
+				ButtonEnum.Ok);
+			box.ShowAsync();
+		}
+		Stop();
 	}
 
 	public void Stop()
