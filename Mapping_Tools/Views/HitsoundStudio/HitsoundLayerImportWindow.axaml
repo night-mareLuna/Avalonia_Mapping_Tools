@@ -12,9 +12,6 @@
 	<!-- Styling -->
 
 	<Window.Styles>
-		<Style Selector="TabControl WrapPanel">
-			<Setter Property="Background" Value="#171717"/>
-		</Style>
 		<Style Selector="TabItem">
 			<Setter Property="FontSize" Value="14"/>
 			<Setter Property="FontWeight" Value="Bold"/>
@@ -306,7 +303,7 @@
 
 		<!-- Bottom Bar -->
 
-		<UniformGrid Rows="1" Columns="2" Grid.Row="1" Background="#171717">
+		<UniformGrid Rows="1" Columns="2" Grid.Row="1">
 			<Button Margin="10" Grid.Column="0"
 				Click="Add_Click"
 				HorizontalAlignment="Stretch">
