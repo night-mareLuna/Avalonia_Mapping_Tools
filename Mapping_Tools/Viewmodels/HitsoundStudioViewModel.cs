@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
-using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Avalonia_Mapping_Tools.Views;
@@ -10,9 +9,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Mapping_Tools.Classes;
 using Mapping_Tools.Classes.BeatmapHelper.Enums;
 using Mapping_Tools.Classes.HitsoundStuff;
-using MsBox.Avalonia;
-using MsBox.Avalonia.Enums;
-using NAudio.Wave;
 using Newtonsoft.Json;
 
 namespace Avalonia_Mapping_Tools.ViewModels;
@@ -149,7 +145,7 @@ public partial class HitsoundStudioViewModel : ViewModelBase
 		else FirstCustomIndex = oldValue;
     }
 
-	public async void HitsoundLayer_MouseDoubleClickCommand()
+	public void HitsoundLayer_MouseDoubleClickCommand()
 	{
 		var selectedLayer = HitsoundStudioView.GetSelectedLayer();
 		if(selectedLayer is null) return;
