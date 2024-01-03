@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ActiproSoftware.Extensions;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia_Mapping_Tools.ViewModels;
@@ -19,7 +18,6 @@ using Mapping_Tools.Classes.SystemTools;
 using Mapping_Tools.Views;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
-using NAudio.Wave;
 
 namespace Avalonia_Mapping_Tools.Views;
 public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<HitsoundStudioViewModel>, IHaveExtraProjectMenuItems
@@ -626,7 +624,7 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
 	{
         if (suppressEvents) return;
 
-        double t = (obj as TextBox)!.GetDouble(100).ClampToRange(0,100);
+        double t = Math.Clamp((obj as TextBox)!.GetDouble(100), 0, 100);
         foreach (HitsoundLayer hitsoundLayer in selectedLayers)
         {
             hitsoundLayer.SampleArgs.Volume = t / 100;
@@ -1044,7 +1042,7 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
         TimesBox.Text = selectedLayers.AllToStringOrDefault(o => o.Times, HitsoundLayerExtension.DoubleListToStringConverter);
 
         SelectedSamplePathBox.Text = selectedLayers.AllToStringOrDefault(o => o.SampleArgs.Path);
-        SelectedSampleVolumeBox.Text = selectedLayers.AllToStringOrDefault(o => o.SampleArgs.Volume * 100, CultureInfo.InvariantCulture);
+        SelectedSampleVolumeBox.Text = selectedLayers.AllToStringOrDefault(o => Math.Round(o.SampleArgs.Volume * 100), CultureInfo.InvariantCulture);
         SelectedSamplePanningBox.Text = selectedLayers.AllToStringOrDefault(o => o.SampleArgs.Panning, CultureInfo.InvariantCulture);
         SelectedSamplePitchShiftBox.Text = selectedLayers.AllToStringOrDefault(o => o.SampleArgs.PitchShift, CultureInfo.InvariantCulture);
         SelectedSampleBankBox.Text = selectedLayers.AllToStringOrDefault(o => o.SampleArgs.Bank);
