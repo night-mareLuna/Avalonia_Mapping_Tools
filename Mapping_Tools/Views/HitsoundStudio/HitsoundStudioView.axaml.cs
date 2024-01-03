@@ -31,6 +31,7 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
 	{
 		Me = this;
 		InitializeComponent();
+		SetLostFocusEvents();
 		settings = new HitsoundStudioViewModel();
 		DataContext = settings;
 		LayersList.SelectedIndex = 0;
@@ -43,6 +44,34 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
 		Verbose = true;
 
 		DefaultSampleSetBox.PlaceholderText = settings.DefaultSample.SampleSet.ToString();
+	}
+
+	private void SetLostFocusEvents()
+	{
+		SelectedNameBox.LostFocus += SelectedNameBox_TextChanged;
+		SelectedSamplePathBox.LostFocus += SelectedSamplePathBox_TextChanged;
+		SelectedSampleVolumeBox.LostFocus += SelectedSampleVolumeBox_TextChanged;
+		SelectedSamplePanningBox.LostFocus += SelectedSamplePanningBox_TextChanged;
+		SelectedSamplePitchShiftBox.LostFocus += SelectedSamplePitchShiftBox_TextChanged;
+		SelectedSampleBankBox.LostFocus += SelectedSampleBankBox_TextChanged;
+		SelectedSamplePatchBox.LostFocus += SelectedSamplePatchBox_TextChanged;
+		SelectedSampleInstrumentBox.LostFocus += SelectedSampleInstrumentBox_TextChanged;
+		SelectedSampleKeyBox.LostFocus += SelectedSampleKeyBox_TextChanged;
+		SelectedSampleLengthBox.LostFocus += SelectedSampleLengthBox_TextChanged;
+		SelectedSampleVelocityBox.LostFocus += SelectedSampleVelocityBox_TextChanged;
+		SelectedImportPathBox.LostFocus += SelectedImportPathBox_TextChanged;
+		SelectedImportXCoordBox.LostFocus += SelectedImportXCoordBox_TextChanged;
+		SelectedImportYCoordBox.LostFocus += SelectedImportYCoordBox_TextChanged;
+		SelectedImportSamplePathBox.LostFocus += SelectedImportSamplePathBox_TextChanged;
+		SelectedStoryboardImportSamplePathBox.LostFocus += SelectedImportSamplePathBox_TextChanged;
+		SelectedImportBankBox.LostFocus += SelectedImportBankBox_TextChanged;
+		SelectedImportPatchBox.LostFocus += SelectedImportPatchBox_TextChanged;
+		SelectedImportKeyBox.LostFocus += SelectedImportKeyBox_TextChanged;
+		SelectedImportLengthBox.LostFocus += SelectedImportLengthBox_TextChanged;
+		SelectedImportLengthRoughnessBox.LostFocus += SelectedImportLengthRoughnessBox_TextChanged;
+		SelectedImportVelocityBox.LostFocus += SelectedImportVelocityBox_TextChanged;
+		SelectedImportVelocityRoughnessBox.LostFocus += SelectedImportVelocityRoughnessBox_TextChanged;
+		SelectedImportOffsetBox.LostFocus += SelectedImportOffsetBox_TextChanged;
 	}
 
 	private async void Start_Click(object obj, RoutedEventArgs args)
@@ -563,9 +592,9 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
         errorBox.ShowAsync();
 	}
 
-	private void SelectedNameBox_TextChanged(object obj, TextChangedEventArgs args)
+	private void SelectedNameBox_TextChanged(object? obj, RoutedEventArgs args)
 	{
-        if (suppressEvents || !(obj as TextBox)!.IsFocused) return;
+        if (suppressEvents) return;
 
         string t = (obj as TextBox)!.Text!;
         foreach (HitsoundLayer hitsoundLayer in selectedLayers)
@@ -596,7 +625,7 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
         }
 	}
 
-	private void SelectedSamplePathBox_TextChanged(object obj, TextChangedEventArgs args)
+	private void SelectedSamplePathBox_TextChanged(object? obj, RoutedEventArgs args)
 	{
         if (suppressEvents) return;
 
@@ -620,7 +649,7 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
         } catch (Exception ex) { ex.Show(); }
 	}
 
-	private void SelectedSampleVolumeBox_TextChanged(object obj, TextChangedEventArgs args)
+	private void SelectedSampleVolumeBox_TextChanged(object? obj, RoutedEventArgs args)
 	{
         if (suppressEvents) return;
 
@@ -632,7 +661,7 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
         UpdateEditingField();
 	}
 
-	private void SelectedSamplePanningBox_TextChanged(object obj, TextChangedEventArgs args)
+	private void SelectedSamplePanningBox_TextChanged(object? obj, RoutedEventArgs args)
 	{
         if (suppressEvents) return;
 
@@ -644,7 +673,7 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
         UpdateEditingField();
 	}
 
-	private void SelectedSamplePitchShiftBox_TextChanged(object obj, TextChangedEventArgs args)
+	private void SelectedSamplePitchShiftBox_TextChanged(object? obj, RoutedEventArgs args)
 	{
         if (suppressEvents) return;
 
@@ -656,7 +685,7 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
         UpdateEditingField();
 	}
 
-	private void SelectedSampleBankBox_TextChanged(object obj, TextChangedEventArgs args)
+	private void SelectedSampleBankBox_TextChanged(object? obj, RoutedEventArgs args)
 	{
         if (suppressEvents) return;
 
@@ -667,7 +696,7 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
         }
 	}
 
-	private void SelectedSamplePatchBox_TextChanged(object obj, TextChangedEventArgs args)
+	private void SelectedSamplePatchBox_TextChanged(object? obj, RoutedEventArgs args)
 	{
         if (suppressEvents) return;
 
@@ -678,7 +707,7 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
         }
 	}
 
-	private void SelectedSampleInstrumentBox_TextChanged(object obj, TextChangedEventArgs args)
+	private void SelectedSampleInstrumentBox_TextChanged(object? obj, RoutedEventArgs args)
 	{
         if (suppressEvents) return;
 
@@ -689,7 +718,7 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
         }
 	}
 
-	private void SelectedSampleKeyBox_TextChanged(object obj, TextChangedEventArgs args)
+	private void SelectedSampleKeyBox_TextChanged(object? obj, RoutedEventArgs args)
 	{
         if (suppressEvents) return;
 
@@ -700,7 +729,7 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
         }
 	}
 
-	private void SelectedSampleLengthBox_TextChanged(object obj, TextChangedEventArgs args)
+	private void SelectedSampleLengthBox_TextChanged(object? obj, RoutedEventArgs args)
 	{
         if (suppressEvents) return;
 
@@ -711,7 +740,7 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
         }
 	}
 
-	private void SelectedSampleVelocityBox_TextChanged(object obj, TextChangedEventArgs args)
+	private void SelectedSampleVelocityBox_TextChanged(object? obj, RoutedEventArgs args)
 	{
         if (suppressEvents) return;
 
@@ -743,7 +772,7 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
 		settings.DefaultSample.SampleSet = set;
 	}
 
-	private void SelectedImportPathBox_TextChanged(object obj, TextChangedEventArgs args)
+	private void SelectedImportPathBox_TextChanged(object? obj, RoutedEventArgs args)
 	{
         if (suppressEvents) return;
 
@@ -779,7 +808,7 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
         } catch (Exception ex) { ex.Show(); }
 	}
 
-	private void SelectedImportXCoordBox_TextChanged(object obj, TextChangedEventArgs args)
+	private void SelectedImportXCoordBox_TextChanged(object? obj, RoutedEventArgs args)
 	{
         if (suppressEvents) return;
 
@@ -790,7 +819,7 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
         }
 	}
 
-	private void SelectedImportYCoordBox_TextChanged(object obj, TextChangedEventArgs args)
+	private void SelectedImportYCoordBox_TextChanged(object? obj, RoutedEventArgs args)
 	{
         if (suppressEvents) return;
 
@@ -801,7 +830,7 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
         }
 	}
 
-	private void SelectedImportSamplePathBox_TextChanged(object obj, TextChangedEventArgs args)
+	private void SelectedImportSamplePathBox_TextChanged(object? obj, RoutedEventArgs args)
 	{
         if (suppressEvents) return;
 
@@ -855,7 +884,7 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
         }
 	}
 
-	private void SelectedImportBankBox_TextChanged(object obj, TextChangedEventArgs args)
+	private void SelectedImportBankBox_TextChanged(object? obj, RoutedEventArgs args)
 	{
         if (suppressEvents) return;
 
@@ -866,7 +895,7 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
         }
 	}
 
-	private void SelectedImportPatchBox_TextChanged(object obj, TextChangedEventArgs args)
+	private void SelectedImportPatchBox_TextChanged(object? obj, RoutedEventArgs args)
 	{
         if (suppressEvents) return;
 
@@ -877,7 +906,7 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
         }
 	}
 
-	private void SelectedImportKeyBox_TextChanged(object obj, TextChangedEventArgs args)
+	private void SelectedImportKeyBox_TextChanged(object? obj, RoutedEventArgs args)
 	{
         if (suppressEvents) return;
 
@@ -888,7 +917,7 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
         }
 	}
 
-	private void SelectedImportLengthBox_TextChanged(object obj, TextChangedEventArgs args)
+	private void SelectedImportLengthBox_TextChanged(object? obj, RoutedEventArgs args)
 	{
         if (suppressEvents) return;
 
@@ -899,7 +928,7 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
         }
 	}
 
-	private void SelectedImportLengthRoughnessBox_TextChanged(object obj, TextChangedEventArgs args)
+	private void SelectedImportLengthRoughnessBox_TextChanged(object? obj, RoutedEventArgs args)
 	{
         if (suppressEvents) return;
 
@@ -910,7 +939,7 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
         }
 	}
 
-	private void SelectedImportVelocityBox_TextChanged(object obj, TextChangedEventArgs args)
+	private void SelectedImportVelocityBox_TextChanged(object? obj, RoutedEventArgs args)
 	{
         if (suppressEvents) return;
 
@@ -921,7 +950,7 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
         }
 	}
 
-	private void SelectedImportVelocityRoughnessBox_TextChanged(object obj, TextChangedEventArgs args)
+	private void SelectedImportVelocityRoughnessBox_TextChanged(object? obj, RoutedEventArgs args)
 	{
         if (suppressEvents) return;
 
@@ -932,7 +961,7 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
         }
 	}
 
-	private void SelectedImportOffsetBox_TextChanged(object obj, TextChangedEventArgs args)
+	private void SelectedImportOffsetBox_TextChanged(object? obj, RoutedEventArgs args)
 	{
         if (suppressEvents) return;
 
