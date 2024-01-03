@@ -16,7 +16,7 @@ namespace Avalonia_Mapping_Tools.ViewModels;
 public partial class HitsoundStudioViewModel : ViewModelBase
 {
 	private static HitsoundStudioViewModel? Me;
-	[ObservableProperty] private int _Progress = 0;
+	[ObservableProperty] [property: JsonIgnore] private int _Progress = 0;
 	[ObservableProperty] private string _BaseBeatmap;
 	[ObservableProperty] private Sample _DefaultSample;
 	[ObservableProperty] private string _ExportFolder;
