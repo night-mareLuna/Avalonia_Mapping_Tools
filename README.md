@@ -14,6 +14,15 @@ All tool specific settings should function exactly the same as original Mapping 
 
 ## Requirements
 - [.NET Runtime 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0), please follow instructions based on your distro for installation.
+- [Sox](https://github.com/chirlu/sox) to preview samples in Hitsound Studio.
+
+## Installing sox
+### Arch
+`pacman -Syu --needed sox wavpack libvorbis`
+### Fedora
+`dnf install sox`
+### Debian
+`apt install sox libsox-fmt-all`
 
 ## Build Requirements
 - [.NET SDK 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0), please follow instructions based on your distro for installation.
