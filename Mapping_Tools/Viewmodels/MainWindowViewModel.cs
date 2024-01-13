@@ -28,7 +28,8 @@ public partial class MainWindowViewModel : ViewModelBase
 		string[] mappingTools = ["Map Cleaner",
 			"Hitsound Copier",
 			"Hitsound Preview Helper",
-			"Hitsound Studio"];
+			"Hitsound Studio",
+			"Rhythm Guide"];
 		string[] allTools = [.. defaultTools, .. mappingTools.OrderBy(d => d).ToArray()];
 		
 		ToolsList = new ObservableCollection<string>(allTools);
@@ -87,6 +88,9 @@ public partial class MainWindowViewModel : ViewModelBase
 				break;
 			case "Hitsound Studio":
 				CurrentView = new HitsoundStudioViewModel();
+				break;
+			case "Rhythm Guide":
+				CurrentView = new RhythmGuideViewModel();
 				break;
 		}
 	}

@@ -18,6 +18,7 @@ public partial class HitsoundPreviewHelperViewModel : ViewModelBase
 	[ObservableProperty] [property: JsonIgnore] private object? _SelectedItem;
 	[ObservableProperty] [property: JsonIgnore] private int _Progress = 0;
     private static int LastSelectedItemsCount = 0;
+	// private RhythmGuideWindow? rhythmGuideWindow;
 	private static HitsoundPreviewHelperViewModel? Me;
 	public HitsoundPreviewHelperViewModel()
 	{
@@ -67,6 +68,18 @@ public partial class HitsoundPreviewHelperViewModel : ViewModelBase
                 }
             }
         } catch (Exception ex) { ex.Show(); }
+	}
+
+	public void RhythmGuideCommand()
+	{
+		// rhythmGuideWindow ??= new();
+		// if(rhythmGuideWindow.IsHidden)
+		// 	rhythmGuideWindow.Show();
+		// else
+		// 	rhythmGuideWindow.Focus(); //NOT WORKING
+
+		RhythmGuideWindow window = new();
+		window.Show();
 	}
 
 	private static void SelectAll(bool select, IEnumerable<HitsoundZone> models) {
