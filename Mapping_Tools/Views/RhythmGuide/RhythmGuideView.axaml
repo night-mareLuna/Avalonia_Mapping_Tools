@@ -8,6 +8,11 @@
 		xmlns:domain="clr-namespace:Mapping_Tools.Components.Domain"
         x:DataType="vm:RhythmGuideViewModel">
 
+	<UserControl.Resources>
+        <domain:StringArrayToStringConverter x:Key="Sa2SConverter"/>
+        <domain:MapPathStringToCountStringConverter x:Key="MapPathStringToCountStringConverter"/>
+    </UserControl.Resources>
+
 	<Grid RowDefinitions="Auto,*,20" Margin="5 5">
 
 		<!-- Title -->
@@ -45,7 +50,7 @@
 		</StackPanel>
 
 		<!-- Rhythm Guide Options -->
-		
+
 		<ScrollViewer Grid.Row="1"
 			AllowAutoHide="true"
 			ScrollViewer.VerticalScrollBarVisibility="Auto" 
@@ -56,18 +61,21 @@
 					Text="Copy rhythm from"/>
 				<Grid ColumnDefinitions="*,Auto,Auto,Auto" Margin="5">
 					<TextBox Grid.Column="0"
+						Name="ImportPathBox"
 						Height="32"
 						HorizontalAlignment="Stretch"
+						Text="{Binding GuideGeneratorArgs.Paths, Converter={StaticResource Sa2SConverter}}"
 						Watermark="Copy rhythm from"/>
 					<TextBlock Grid.Column="1"
 						FontStyle="Italic"
 						FontSize="16"
 						VerticalAlignment="Center"
-						Text="(0) maps total"/>
+						Text="{Binding #ImportPathBox.Text, Converter={StaticResource MapPathStringToCountStringConverter}}"/>
 					<Button	Grid.Column="2"
 						Background="Transparent"
 						Width="32"
-						Height="32">
+						Height="32"
+						Command="{Binding ImportLoadCommand}">
 						<materialIcons:MaterialIcon Kind="DeleteRestore"
 							Width="30"
 							Height="30"/>
@@ -75,7 +83,8 @@
 					<Button	Grid.Column="3"
 						Background="Transparent"
 						Width="32"
-						Height="32">
+						Height="32"
+						Command="{Binding ImportBrowseCommand}">
 						<materialIcons:MaterialIcon Kind="Folder"
 							Width="30"
 							Height="30"/>
@@ -89,11 +98,13 @@
 					<TextBox Grid.Column="0"
 						Height="32"
 						HorizontalAlignment="Stretch"
+						Text="{Binding GuideGeneratorArgs.ExportPath}"
 						Watermark="Copy rhythm to"/>
 					<Button	Grid.Column="1"
 						Background="Transparent"
 						Width="32"
-						Height="32">
+						Height="32"
+						Command="{Binding ExportLoadCommand}">
 						<materialIcons:MaterialIcon Kind="DeleteRestore"
 							Width="30"
 							Height="30"/>
@@ -101,7 +112,8 @@
 					<Button	Grid.Column="2"
 						Background="Transparent"
 						Width="32"
-						Height="32">
+						Height="32"
+						Command="{Binding ExportBrowseCommand}">
 						<materialIcons:MaterialIcon Kind="Folder"
 							Width="30"
 							Height="30"/>
@@ -111,26 +123,37 @@
 				<TextBlock Margin="5 5 5 0"
 					FontSize="12" 
 					Text="Export mode"/>
-				<ComboBox Margin="5" MinWidth="300"/>
+				<ComboBox Margin="5"
+					MinWidth="300"
+					SelectedItem="{Binding GuideGeneratorArgs.ExportMode}"
+					ItemsSource="{Binding ExportModes}"/>
 
 				<TextBlock Margin="5 5 5 0"
 					FontSize="12" 
 					Text="Export map game mode"/>
-				<ComboBox Margin="5" MinWidth="300"/>
+				<ComboBox Margin="5"
+					MinWidth="300"
+					SelectedItem="{Binding GuideGeneratorArgs.OutputGameMode}"
+					ItemsSource="{Binding ExportGameModes}"/>
 
 				<TextBlock Margin="5 5 5 0"
 					FontSize="12" 
 					Text="Export map diff name"/>
 				<TextBox Margin="5" Width="300"
 					HorizontalAlignment="Left"
+					Text="{Binding GuideGeneratorArgs.OutputName}"
 					Watermark="Export map diff name"/>
 
-				<CheckBox Margin="5 20 5 0">NC everything</CheckBox>
+				<CheckBox Margin="5 20 5 0"
+					IsChecked="{Binding GuideGeneratorArgs.NcEverything}">NC everything</CheckBox>
 
 				<TextBlock Margin="5 5 5 0"
 					FontSize="12" 
 					Text="Selection mode"/>
-				<ComboBox Margin="5" MinWidth="300"/>
+				<ComboBox Margin="5"
+					MinWidth="300"
+					SelectedItem="{Binding GuideGeneratorArgs.SelectionMode}"
+					ItemsSource="{Binding SelectionModes}"/>
 
 				<Button Margin="10 10"
 					Width="98"
@@ -138,6 +161,7 @@
 					Background="Transparent"
 					HorizontalAlignment="Right"
 					VerticalAlignment="Bottom"
+					Click="Start_Click"
 					ToolTip.Tip="Run Rhythm Guide">
 					<materialIcons:MaterialIcon
 						Kind="PlayCircle"
@@ -159,7 +183,7 @@
 				Background="Transparent"
 				Margin="20 0 20 0"
 				Height="20"
-				Value="0"/>
+				Value="{Binding Progress}"/>
 		</Grid>
 	</Grid>
 
