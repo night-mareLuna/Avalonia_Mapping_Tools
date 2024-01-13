@@ -13,10 +13,15 @@ namespace Avalonia_Mapping_Tools.ViewModels;
 public partial class RhythmGuideViewModel : ViewModelBase
 {
 	[ObservableProperty] private RhythmGuide.RhythmGuideGeneratorArgs _GuideGeneratorArgs;
+	[ObservableProperty] [property: JsonIgnore] private int _Progress = 0;
+	private static RhythmGuideViewModel? Me;
 	public RhythmGuideViewModel()
 	{
+		Me = this;
 		GuideGeneratorArgs = new();
 	}
+
+	public static void UpdateProgress(int prog) => Me!.Progress = prog;
 
 	public void ImportLoadCommand()
 	{
