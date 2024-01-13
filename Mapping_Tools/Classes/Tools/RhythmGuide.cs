@@ -1,8 +1,8 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Avalonia_Mapping_Tools;
+using Avalonia_Mapping_Tools.Views;
 using Mapping_Tools.Classes.BeatmapHelper;
 using Mapping_Tools.Classes.BeatmapHelper.BeatDivisors;
 using Mapping_Tools.Classes.BeatmapHelper.Enums;
@@ -152,8 +152,7 @@ namespace Mapping_Tools.Classes.Tools {
 
                     var editor = new Editor {TextFile = beatmap, Path = args.ExportPath};
                     editor.SaveFile();
-                    System.Diagnostics.Process.Start("explorer.exe", Path.GetDirectoryName(args.ExportPath) ??
-                                                                     throw new ArgumentException("Export path must be a file."));
+					MainWindow.OpenFolder(Path.GetDirectoryName(args.ExportPath)!);
                     break;
                 case ExportMode.AddToMap:
                     // var editor2 = EditorReaderStuff.GetNewestVersionOrNot(args.ExportPath, reader);
