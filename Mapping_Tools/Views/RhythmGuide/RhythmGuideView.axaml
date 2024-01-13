@@ -8,8 +8,159 @@
 		xmlns:domain="clr-namespace:Mapping_Tools.Components.Domain"
         x:DataType="vm:RhythmGuideViewModel">
 
-		<TextBlock HorizontalAlignment="Center"
-			VerticalAlignment="Center" 
-			Text="Rhythm Guide!"/>
+	<Grid RowDefinitions="Auto,*,20" Margin="5 5">
+
+		<!-- Title -->
+
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="0">
+			<TextBlock Margin="10 10"
+				FontSize="32"
+				FontWeight="Bold"
+				Text="Rhythm Guide"/>
+
+			<Button Margin="5 5"
+				Width="32" 
+				Height="32"
+				Background="Transparent"
+				ToolTip.Tip="Click Me!"
+				Cursor="Hand">
+				<materialIcons:MaterialIcon
+					Kind="HelpCircle"
+					Width="30"
+					Height="30"/>
+				<Button.Flyout>
+					<Flyout>
+						<TextBlock TextWrapping="Wrap"
+							Padding="5"
+							MaxWidth="400">
+							Make a beatmap with circles from the rhythm of multiple maps, so you have a reference for hitsounding.
+							<LineBreak/>
+							You can add the circles to an existing map or make a new map with the circles.
+							<LineBreak/>
+							Use the browse button to choose mutliple maps at the same time.
+						</TextBlock>
+					</Flyout>
+				</Button.Flyout>
+			</Button>
+		</StackPanel>
+
+		<!-- Rhythm Guide Options -->
+		
+		<ScrollViewer Grid.Row="1"
+			AllowAutoHide="true"
+			ScrollViewer.VerticalScrollBarVisibility="Auto" 
+			ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+			<StackPanel>
+				<TextBlock Margin="5 5 5 0"
+					FontSize="12" 
+					Text="Copy rhythm from"/>
+				<Grid ColumnDefinitions="*,Auto,Auto,Auto" Margin="5">
+					<TextBox Grid.Column="0"
+						Height="32"
+						HorizontalAlignment="Stretch"
+						Watermark="Copy rhythm from"/>
+					<TextBlock Grid.Column="1"
+						FontStyle="Italic"
+						FontSize="16"
+						VerticalAlignment="Center"
+						Text="(0) maps total"/>
+					<Button	Grid.Column="2"
+						Background="Transparent"
+						Width="32"
+						Height="32">
+						<materialIcons:MaterialIcon Kind="DeleteRestore"
+							Width="30"
+							Height="30"/>
+					</Button>
+					<Button	Grid.Column="3"
+						Background="Transparent"
+						Width="32"
+						Height="32">
+						<materialIcons:MaterialIcon Kind="Folder"
+							Width="30"
+							Height="30"/>
+					</Button>
+				</Grid>
+
+				<TextBlock Margin="5 5 5 0"
+					FontSize="12" 
+					Text="Copy rhythm to"/>
+				<Grid ColumnDefinitions="*,Auto,Auto" Margin="5">
+					<TextBox Grid.Column="0"
+						Height="32"
+						HorizontalAlignment="Stretch"
+						Watermark="Copy rhythm to"/>
+					<Button	Grid.Column="1"
+						Background="Transparent"
+						Width="32"
+						Height="32">
+						<materialIcons:MaterialIcon Kind="DeleteRestore"
+							Width="30"
+							Height="30"/>
+					</Button>
+					<Button	Grid.Column="2"
+						Background="Transparent"
+						Width="32"
+						Height="32">
+						<materialIcons:MaterialIcon Kind="Folder"
+							Width="30"
+							Height="30"/>
+					</Button>
+				</Grid>
+
+				<TextBlock Margin="5 5 5 0"
+					FontSize="12" 
+					Text="Export mode"/>
+				<ComboBox Margin="5" MinWidth="300"/>
+
+				<TextBlock Margin="5 5 5 0"
+					FontSize="12" 
+					Text="Export map game mode"/>
+				<ComboBox Margin="5" MinWidth="300"/>
+
+				<TextBlock Margin="5 5 5 0"
+					FontSize="12" 
+					Text="Export map diff name"/>
+				<TextBox Margin="5" Width="300"
+					HorizontalAlignment="Left"
+					Watermark="Export map diff name"/>
+
+				<CheckBox Margin="5 20 5 0">NC everything</CheckBox>
+
+				<TextBlock Margin="5 5 5 0"
+					FontSize="12" 
+					Text="Selection mode"/>
+				<ComboBox Margin="5" MinWidth="300"/>
+
+				<Button Margin="10 10"
+					Width="98"
+					Height="98"
+					Background="Transparent"
+					HorizontalAlignment="Right"
+					VerticalAlignment="Bottom"
+					ToolTip.Tip="Run Rhythm Guide">
+					<materialIcons:MaterialIcon
+						Kind="PlayCircle"
+						Width="100"
+						Height="100"/>
+				</Button>
+
+			</StackPanel>
+		</ScrollViewer>
+
+		<!-- Credit and progress -->
+
+		<Grid ColumnDefinitions="Auto,*" Grid.Row="2">
+			<TextBlock Grid.Column="0"
+				Text="Made by OliBomby"
+				FontWeight="Bold" 
+				Opacity="0.58"/>
+			<ProgressBar Grid.Column="1"
+				Background="Transparent"
+				Margin="20 0 20 0"
+				Height="20"
+				Value="0"/>
+		</Grid>
+	</Grid>
 
 </UserControl>
