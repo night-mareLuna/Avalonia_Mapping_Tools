@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.IO;
 using Avalonia.Interactivity;
 using Avalonia_Mapping_Tools.ViewModels;
 using Mapping_Tools.Classes.SystemTools;
@@ -11,8 +12,13 @@ public partial class RhythmGuideView : SingleRunMappingTool, ISavable<RhythmGuid
 	public RhythmGuideView()
 	{
 		DataContext = new RhythmGuideViewModel();
+
+		if(File.Exists(AutoSavePath))
+			ProjectManager.LoadProject(this, message: false);
+		else
+			ProjectManager.SaveProject(this, AutoSavePath);
+		
 		InitializeComponent();
-		Verbose = true;
 	}
 
 	public RhythmGuideViewModel ViewModel => (RhythmGuideViewModel) DataContext!;
@@ -62,4 +68,10 @@ public partial class RhythmGuideView : SingleRunMappingTool, ISavable<RhythmGuid
 	public string AutoSavePath => Program.configPath + "/rhythmguideproject.json";
 
 	public string DefaultSaveFolder => Program.configPath + "/Rhythm Guide Projects";
+
+	protected override void OnUnloaded(RoutedEventArgs e)
+    {
+		ProjectManager.SaveProject(this, AutoSavePath);
+        base.OnUnloaded(e);
+    }
 }
