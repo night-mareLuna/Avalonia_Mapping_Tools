@@ -6,6 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         x:Class="Avalonia_Mapping_Tools.Views.About"
         x:DataType="vm:AboutViewModel"
+        Icon="/Data/mt_icon.ico"
         Title="About">
 
 	<Grid RowDefinitions="*,Auto">
