@@ -12,7 +12,7 @@
 			<domain:IntToStringConverter x:Key="IntToStringConverter"/>
 		</UserControl.Resources>
 
-	<StackPanel Margin="5 5">
+	<StackPanel Margin="5">
 		<TextBlock Margin="10 10"
 			FontSize="32"
 			FontWeight="Bold"
@@ -25,8 +25,8 @@
 			FontSize="12" 
 			Text="osu! folder"/>
 
-		<Grid ColumnDefinitions="*,32">
-			<TextBox Margin="5"
+		<Grid ColumnDefinitions="*,32" Margin="5 0 0 0">
+			<TextBox
 				Grid.Column="0"
 				Height="32"
 				Watermark="osu! folder"
@@ -47,8 +47,8 @@
 			FontSize="12" 
 			Text="Songs folder"/>
 
-		<Grid ColumnDefinitions="*,32">
-			<TextBox Margin="5"
+		<Grid ColumnDefinitions="*,32" Margin="5 0 0 0">
+			<TextBox
 				Grid.Column="0"
 				Height="32"
 				Watermark="osu! songs folder"
@@ -69,8 +69,8 @@
 			FontSize="12" 
 			Text="osu! user config file"/>
 
-		<Grid ColumnDefinitions="*,32">
-			<TextBox Margin="5"
+		<Grid ColumnDefinitions="*,32" Margin="5 0 0 0">
+			<TextBox 
 				Grid.Column="0"
 				Height="32"
 				Watermark="osu! user config file"
@@ -91,8 +91,8 @@
 			FontSize="12" 
 			Text="Backups folder"/>
 
-		<Grid ColumnDefinitions="*,32">
-			<TextBox Margin="5"
+		<Grid ColumnDefinitions="*,32" Margin="5 0 0 0">
+			<TextBox 
 				Grid.Column="0"
 				Height="32"
 				Watermark="backups folder"
@@ -115,7 +115,7 @@
 			FontSize="12" 
 			Text="Max backup files"/>
 
-		<TextBox Margin="5"
+		<TextBox Margin="5 0 0 0"
 			MaxWidth="150"
 			HorizontalAlignment="Left"
 			Text="{Binding MaxBackupFiles, Mode=TwoWay, Converter={StaticResource IntToStringConverter}}"/>
