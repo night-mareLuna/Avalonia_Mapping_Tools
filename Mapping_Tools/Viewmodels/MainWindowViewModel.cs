@@ -29,7 +29,8 @@ public partial class MainWindowViewModel : ViewModelBase
 			"Hitsound Copier",
 			"Hitsound Preview Helper",
 			"Hitsound Studio",
-			"Rhythm Guide"];
+			"Rhythm Guide",
+			"Metadata Manager"];
 		string[] allTools = [.. defaultTools, .. mappingTools.OrderBy(d => d).ToArray()];
 		
 		ToolsList = new ObservableCollection<string>(allTools);
@@ -91,6 +92,9 @@ public partial class MainWindowViewModel : ViewModelBase
 				break;
 			case "Rhythm Guide":
 				CurrentView = new RhythmGuideViewModel();
+				break;
+			case "Metadata Manager":
+				CurrentView = new MetadataManagerViewModel();
 				break;
 		}
 	}
