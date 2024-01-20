@@ -12,6 +12,7 @@ All tool specific settings should function exactly the same as original Mapping 
 - Hitsound Preview Helper by [OliBomby](https://github.com/OliBomby) 
 - Hitsound Studio by [OliBomby](https://github.com/OliBomby) 
 - Rhythm Guide by [OliBomby](https://github.com/OliBomby) 
+- Metadata Manager by [OliBomby](https://github.com/OliBomby) 
 
 
 ## Requirements
