@@ -106,7 +106,12 @@ public partial class MetadataManagerViewModel : ViewModelBase
 
 	public async void ExportBrowseCommand()
 	{
-        string importPathDirectory = Directory.GetParent(ImportPath)!.FullName;
+		string? importPathDirectory = null;
+		if(!string.IsNullOrWhiteSpace(ImportPath))
+			importPathDirectory = Directory.GetParent(ImportPath)?.FullName;
+
+		importPathDirectory ??= Directory.GetParent(MainWindowViewModel.GetCurrentMaps()[0])?.FullName;
+		importPathDirectory ??= SettingsManager.GetSongsPath();
 
         var paths = await IOHelper.BeatmapFileDialog(importPathDirectory, true);
         if( paths.Length != 0 ) {
