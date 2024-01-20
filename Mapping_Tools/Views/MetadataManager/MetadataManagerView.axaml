@@ -8,8 +8,273 @@
 		xmlns:domain="clr-namespace:Mapping_Tools.Components.Domain"
         x:DataType="vm:MetadataManagerViewModel">
 
-	<TextBlock VerticalAlignment="Center"
-		HorizontalAlignment="Center"
-		Text="Metadata Manager!"/>
+	<Grid RowDefinitions="Auto,*,20" Margin="5 5">
+
+		<!-- Title -->
+
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="0">
+			<TextBlock Margin="10 10"
+				FontSize="32"
+				FontWeight="Bold"
+				Text="Metadata Manager"/>
+
+			<Button Margin="5 5"
+				Width="32" 
+				Height="32"
+				Background="Transparent"
+				ToolTip.Tip="Click Me!"
+				Cursor="Hand">
+				<materialIcons:MaterialIcon
+					Kind="HelpCircle"
+					Width="30"
+					Height="30"/>
+				<Button.Flyout>
+					<Flyout>
+						<TextBlock TextWrapping="Wrap"
+							Padding="5"
+							MaxWidth="400">
+							To save you the time of editing metadata on every individual difficulty, edit metadata in this tool and copy it to multiple diffs anytime.
+							<LineBreak/>
+							<LineBreak/>
+							You can also import metadata from beatmaps, so you can copy metadata from A to B.
+							<LineBreak/>
+							Save and load metadata configurations, so you can work on multiple mapsets without hassle.
+						</TextBlock>
+					</Flyout>
+				</Button.Flyout>
+			</Button>
+		</StackPanel>
+
+		<!-- Metadata Manager thingies -->
+
+		<ScrollViewer Grid.Row="1"
+			AllowAutoHide="true"
+			ScrollViewer.VerticalScrollBarVisibility="Auto" 
+			ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+
+			<!-- Map selection -->
+
+			<StackPanel>
+				<Grid RowDefinitions="Auto,32" ColumnDefinitions="*,32,32,Auto" Margin="5">
+					<TextBlock Margin="0 0 0 5"
+						Grid.Row="0"
+						Grid.Column="0"
+						FontSize="12" 
+						Text="Import metadata from"/>
+					<TextBox Grid.Column="0"
+						Grid.Row="1"
+						Height="32"
+						HorizontalAlignment="Stretch"
+						Watermark="Import metadata from"/>
+					<Button	Grid.Column="1"
+						Grid.Row="1"
+						Background="Transparent"
+						Width="32"
+						Height="32">
+						<materialIcons:MaterialIcon Kind="DeleteRestore"
+							Width="30"
+							Height="30"/>
+					</Button>
+					<Button	Grid.Column="2"
+						Grid.Row="1"
+						Background="Transparent"
+						Width="32"
+						Height="32">
+						<materialIcons:MaterialIcon Kind="Folder"
+							Width="30"
+							Height="30"/>
+					</Button>
+					<Button Margin="5 0 0 0"
+						Grid.Column="3"
+						Grid.Row="1">
+						<TextBlock Text="Import metadata"
+							HorizontalAlignment="Center"/>
+					</Button>
+				</Grid>
+
+				<Grid RowDefinitions="Auto,32" ColumnDefinitions="*,Auto,32,32" Margin="5 0">
+					<TextBlock Margin="0 0 0 5"
+						Grid.Row="0"
+						Grid.Column="0"
+						FontSize="12" 
+						Text="Export metadata to"/>
+					<TextBox Grid.Column="0"
+						Grid.Row="1"
+						Height="32"
+						HorizontalAlignment="Stretch"
+						Watermark="Export metadata to"/>
+					<TextBlock Margin="5" 
+						Grid.Column="1"
+						Grid.Row="1"
+						VerticalAlignment="Center"
+						FontStyle="Italic"
+						Text="(0) maps total"/>
+					<Button	Grid.Column="2"
+						Grid.Row="1"
+						Background="Transparent"
+						Width="32"
+						Height="32">
+						<materialIcons:MaterialIcon Kind="DeleteRestore"
+							Width="30"
+							Height="30"/>
+					</Button>
+					<Button	Grid.Column="3"
+						Grid.Row="1"
+						Background="Transparent"
+						Width="32"
+						Height="32">
+						<materialIcons:MaterialIcon Kind="Folder"
+							Width="30"
+							Height="30"/>
+					</Button>
+				</Grid>
+
+				<!-- Metadata stuff -->
+
+				<Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+					ColumnDefinitions="Auto,*"
+					Margin="5 40">
+
+					<!-- Artist -->
+
+					<TextBlock Margin="10 1"
+						Grid.Row="0" Grid.Column="0"
+						HorizontalAlignment="Right"
+						VerticalAlignment="Center"
+						FontWeight="Bold"
+						Text="Artist"/>
+					<TextBox Margin="10 1"
+						Grid.Row="0" Grid.Column="1"/>
+
+					<!-- Romanised Artist -->
+
+					<TextBlock Margin="10 1"
+						Grid.Row="1" Grid.Column="0"
+						HorizontalAlignment="Right"
+						VerticalAlignment="Center"
+						FontWeight="Bold"
+						Text="Romanised Artist"/>
+					<TextBox Margin="10 1"
+						Grid.Row="1" Grid.Column="1"/>
+
+					<!-- Title -->
+
+					<TextBlock Margin="10 1"
+						Grid.Row="2" Grid.Column="0"
+						HorizontalAlignment="Right"
+						VerticalAlignment="Center"
+						FontWeight="Bold"
+						Text="Title"/>
+					<TextBox Margin="10 1"
+						Grid.Row="2" Grid.Column="1"/>
+
+					<!-- Romanised Title -->
+
+					<TextBlock Margin="10 1"
+						Grid.Row="3" Grid.Column="0"
+						HorizontalAlignment="Right"
+						VerticalAlignment="Center"
+						FontWeight="Bold"
+						Text="Romanised Title"/>
+					<TextBox Margin="10 1"
+						Grid.Row="3" Grid.Column="1"/>
+
+					<!-- Beatmap Creator -->
+
+					<TextBlock Margin="10 1"
+						Grid.Row="4" Grid.Column="0"
+						HorizontalAlignment="Right"
+						VerticalAlignment="Center"
+						FontWeight="Bold"
+						Text="Beatmap Creator"/>
+					<TextBox Margin="10 1"
+						Grid.Row="4" Grid.Column="1"/>
+
+					<!-- Source -->
+
+					<TextBlock Margin="10 1"
+						Grid.Row="5" Grid.Column="0"
+						HorizontalAlignment="Right"
+						VerticalAlignment="Center"
+						FontWeight="Bold"
+						Text="Source"/>
+					<TextBox Margin="10 1"
+						Grid.Row="5" Grid.Column="1"/>
+
+					<!-- Tags -->
+
+					<TextBlock Margin="10 1"
+						Grid.Row="6" Grid.Column="0"
+						HorizontalAlignment="Right"
+						VerticalAlignment="Center"
+						FontWeight="Bold"
+						Text="Tags"/>
+					<TextBox Margin="10 1"
+						Grid.Row="6" Grid.Column="1"/>
+
+					<!-- Check Boxes -->
+
+					<CheckBox Margin="10 1 0 -4"
+						Grid.Row="7" Grid.Column="1">Remove duplicate tags</CheckBox>
+					<CheckBox Margin="10 0 0 1"
+						Grid.Row="8" Grid.Column="1">Reset beatmap IDs</CheckBox>
+
+					<!-- Preview Time -->
+
+					<TextBlock Margin="10 1"
+						Grid.Row="9" Grid.Column="0"
+						HorizontalAlignment="Right"
+						VerticalAlignment="Center"
+						FontWeight="Bold"
+						Text="Preview Time"/>
+					<TextBox Margin="10 1"
+						Grid.Row="9" Grid.Column="1"/>
+
+					<!-- Colours -->
+
+					<TextBlock Margin="10 1"
+						Grid.Row="10" Grid.Column="0"
+						HorizontalAlignment="Right"
+						VerticalAlignment="Center"
+						FontWeight="Bold"
+						Text="Colours"/>
+					<ToggleSwitch Margin="10 1"
+						Grid.Row="10" Grid.Column="1"
+						OffContent="" 
+						OnContent=""/>
+				</Grid>
+
+				<!-- Run -->
+
+				<Button Margin="10 10"
+					Width="98"
+					Height="98"
+					Background="Transparent"
+					HorizontalAlignment="Right"
+					VerticalAlignment="Bottom"
+					ToolTip.Tip="Run Metadata Manager">
+					<materialIcons:MaterialIcon
+						Kind="PlayCircle"
+						Width="100"
+						Height="100"/>
+				</Button>
+
+			</StackPanel>
+		</ScrollViewer>
+
+		<!-- Credit and progress -->
+
+		<Grid ColumnDefinitions="Auto,*" Grid.Row="2">
+			<TextBlock Grid.Column="0"
+				Text="Made by OliBomby"
+				FontWeight="Bold" 
+				Opacity="0.58"/>
+			<ProgressBar Grid.Column="1"
+				Background="Transparent"
+				Margin="20 0 20 0"
+				Height="20"
+				Value="{Binding Progress}"/>
+		</Grid>
+	</Grid>
 
 </UserControl>
