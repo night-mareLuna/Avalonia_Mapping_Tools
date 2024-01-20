@@ -16,7 +16,7 @@ All tool specific settings should function exactly the same as original Mapping 
 
 
 ## Requirements
-- [.NET Runtime 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0), please follow instructions based on your distro for installation.
+- [.NET Runtime 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0), please follow instructions based on your distro for installation (There is a separate build for those who do not want to (or cannot) install .NET 8.0).
 - [Sox](https://github.com/chirlu/sox) to preview samples in Hitsound Studio.
 
 ## Installing sox
