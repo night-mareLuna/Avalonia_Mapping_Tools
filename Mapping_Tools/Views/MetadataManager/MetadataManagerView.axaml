@@ -8,7 +8,11 @@
 		xmlns:domain="clr-namespace:Mapping_Tools.Components.Domain"
         x:DataType="vm:MetadataManagerViewModel">
 
-	<Grid RowDefinitions="Auto,*,20" Margin="5 5">
+		<UserControl.Resources>
+			<domain:MapPathStringToCountStringConverter x:Key="MapPathStringToCountStringConverter"/>
+		</UserControl.Resources>
+
+	<Grid RowDefinitions="Auto,*,Auto,20" Margin="5 5">
 
 		<!-- Title -->
 
@@ -55,6 +59,9 @@
 			<!-- Map selection -->
 
 			<StackPanel>
+
+				<!-- Import -->
+
 				<Grid RowDefinitions="Auto,32" ColumnDefinitions="*,32,32,Auto" Margin="5">
 					<TextBlock Margin="0 0 0 5"
 						Grid.Row="0"
@@ -65,12 +72,14 @@
 						Grid.Row="1"
 						Height="32"
 						HorizontalAlignment="Stretch"
-						Watermark="Import metadata from"/>
+						Watermark="Import metadata from"
+						Text="{Binding ImportPath}"/>
 					<Button	Grid.Column="1"
 						Grid.Row="1"
 						Background="Transparent"
 						Width="32"
-						Height="32">
+						Height="32"
+						Command="{Binding ImportLoadCommand}">
 						<materialIcons:MaterialIcon Kind="DeleteRestore"
 							Width="30"
 							Height="30"/>
@@ -79,18 +88,22 @@
 						Grid.Row="1"
 						Background="Transparent"
 						Width="32"
-						Height="32">
+						Height="32"
+						Command="{Binding ImportBrowseCommand}">
 						<materialIcons:MaterialIcon Kind="Folder"
 							Width="30"
 							Height="30"/>
 					</Button>
 					<Button Margin="5 0 0 0"
 						Grid.Column="3"
-						Grid.Row="1">
+						Grid.Row="1"
+						Command="{Binding ImportCommand}">
 						<TextBlock Text="Import metadata"
 							HorizontalAlignment="Center"/>
 					</Button>
 				</Grid>
+
+				<!-- Exports -->
 
 				<Grid RowDefinitions="Auto,32" ColumnDefinitions="*,Auto,32,32" Margin="5 0 5 5">
 					<TextBlock Margin="0 0 0 5"
@@ -101,19 +114,22 @@
 					<TextBox Grid.Column="0"
 						Grid.Row="1"
 						Height="32"
+						Name="BeatmapToBox"
 						HorizontalAlignment="Stretch"
-						Watermark="Export metadata to"/>
+						Watermark="Export metadata to"
+						Text="{Binding ExportPath}"/>
 					<TextBlock Margin="5" 
 						Grid.Column="1"
 						Grid.Row="1"
 						VerticalAlignment="Center"
 						FontStyle="Italic"
-						Text="(0) maps total"/>
+						Text="{Binding #BeatmapToBox.Text, Converter={StaticResource MapPathStringToCountStringConverter}}"/>
 					<Button	Grid.Column="2"
 						Grid.Row="1"
 						Background="Transparent"
 						Width="32"
-						Height="32">
+						Height="32"
+						Command="{Binding ExportLoadCommand}">
 						<materialIcons:MaterialIcon Kind="DeleteRestore"
 							Width="30"
 							Height="30"/>
@@ -122,7 +138,8 @@
 						Grid.Row="1"
 						Background="Transparent"
 						Width="32"
-						Height="32">
+						Height="32"
+						Command="{Binding ExportBrowseCommand}">
 						<materialIcons:MaterialIcon Kind="Folder"
 							Width="30"
 							Height="30"/>
@@ -146,7 +163,8 @@
 						FontWeight="Bold"
 						Text="Artist"/>
 					<TextBox Margin="10 1"
-						Grid.Row="0" Grid.Column="1"/>
+						Grid.Row="0" Grid.Column="1"
+						Text="{Binding Artist, Mode=TwoWay}"/>
 
 					<!-- Romanised Artist -->
 
@@ -157,7 +175,8 @@
 						FontWeight="Bold"
 						Text="Romanised Artist"/>
 					<TextBox Margin="10 1"
-						Grid.Row="1" Grid.Column="1"/>
+						Grid.Row="1" Grid.Column="1"
+						Text="{Binding RomanisedArtist}"/>
 
 					<!-- Title -->
 
@@ -168,7 +187,8 @@
 						FontWeight="Bold"
 						Text="Title"/>
 					<TextBox Margin="10 1"
-						Grid.Row="2" Grid.Column="1"/>
+						Grid.Row="2" Grid.Column="1"
+						Text="{Binding Title}"/>
 
 					<!-- Romanised Title -->
 
@@ -179,7 +199,8 @@
 						FontWeight="Bold"
 						Text="Romanised Title"/>
 					<TextBox Margin="10 1"
-						Grid.Row="3" Grid.Column="1"/>
+						Grid.Row="3" Grid.Column="1"
+						Text="{Binding RomanisedTitle}"/>
 
 					<!-- Beatmap Creator -->
 
@@ -190,7 +211,8 @@
 						FontWeight="Bold"
 						Text="Beatmap Creator"/>
 					<TextBox Margin="10 1"
-						Grid.Row="4" Grid.Column="1"/>
+						Grid.Row="4" Grid.Column="1"
+						Text="{Binding BeatmapCreator}"/>
 
 					<!-- Source -->
 
@@ -201,7 +223,8 @@
 						FontWeight="Bold"
 						Text="Source"/>
 					<TextBox Margin="10 1"
-						Grid.Row="5" Grid.Column="1"/>
+						Grid.Row="5" Grid.Column="1"
+						Text="{Binding Source}"/>
 
 					<!-- Tags -->
 
@@ -212,14 +235,18 @@
 						FontWeight="Bold"
 						Text="Tags"/>
 					<TextBox Margin="10 1"
-						Grid.Row="6" Grid.Column="1"/>
+						Grid.Row="6" Grid.Column="1"
+						TextWrapping="Wrap"
+						Text="{Binding Tags, Mode=TwoWay}"/>
 
 					<!-- Check Boxes -->
 
 					<CheckBox Margin="10 1 0 -4"
-						Grid.Row="7" Grid.Column="1">Remove duplicate tags</CheckBox>
+						Grid.Row="7" Grid.Column="1"
+						IsChecked="{Binding DoRemoveDuplicateTags}">Remove duplicate tags</CheckBox>
 					<CheckBox Margin="10 0 0 1"
-						Grid.Row="8" Grid.Column="1">Reset beatmap IDs</CheckBox>
+						Grid.Row="8" Grid.Column="1"
+						IsChecked="{Binding ResetIds}">Reset beatmap IDs</CheckBox>
 
 					<!-- Preview Time -->
 
@@ -230,7 +257,8 @@
 						FontWeight="Bold"
 						Text="Preview Time"/>
 					<TextBox Margin="10 1"
-						Grid.Row="9" Grid.Column="1"/>
+						Grid.Row="9" Grid.Column="1"
+						Text="{Binding PreviewTime}"/>
 
 					<!-- Colours -->
 
@@ -243,7 +271,8 @@
 					<ToggleSwitch Margin="10 1"
 						Grid.Row="10" Grid.Column="1"
 						OffContent="" 
-						OnContent=""/>
+						OnContent=""
+						IsChecked="{Binding UseComboColours}"/>
 				</Grid>
 
 				<!-- Run -->
@@ -254,6 +283,7 @@
 					Background="Transparent"
 					HorizontalAlignment="Right"
 					VerticalAlignment="Bottom"
+					Click="Start_Click"
 					ToolTip.Tip="Run Metadata Manager">
 					<materialIcons:MaterialIcon
 						Kind="PlayCircle"
@@ -264,9 +294,24 @@
 			</StackPanel>
 		</ScrollViewer>
 
+		<!-- Erorrs -->
+
+		<StackPanel Grid.Row="2">
+            <TextBlock Margin="5 5 5 0"
+				Text="Beatmap file name can not be over 255 characters long."
+				Foreground="Red"
+				FontWeight="Bold"
+				IsVisible="{Binding BeatmapFileNameOverflowErrorVisibility}"/>
+            <TextBlock Margin="5"
+				Text="Tags can have at most 100 words and 1024 characters."
+				Foreground="Red"
+				FontWeight="Bold"
+				IsVisible="{Binding TagsOverflowErrorVisibility}"/>
+		</StackPanel>
+
 		<!-- Credit and progress -->
 
-		<Grid ColumnDefinitions="Auto,*" Grid.Row="2">
+		<Grid ColumnDefinitions="Auto,*" Grid.Row="3">
 			<TextBlock Grid.Column="0"
 				Text="Made by OliBomby"
 				FontWeight="Bold" 
