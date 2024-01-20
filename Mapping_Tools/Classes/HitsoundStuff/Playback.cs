@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Threading;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 
