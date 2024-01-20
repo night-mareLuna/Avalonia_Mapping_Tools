@@ -92,7 +92,7 @@
 					</Button>
 				</Grid>
 
-				<Grid RowDefinitions="Auto,32" ColumnDefinitions="*,Auto,32,32" Margin="5 0">
+				<Grid RowDefinitions="Auto,32" ColumnDefinitions="*,Auto,32,32" Margin="5 0 5 5">
 					<TextBlock Margin="0 0 0 5"
 						Grid.Row="0"
 						Grid.Column="0"
@@ -129,11 +129,13 @@
 					</Button>
 				</Grid>
 
+				<Separator Margin="5 20 5 20"/>
+
 				<!-- Metadata stuff -->
 
 				<Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
 					ColumnDefinitions="Auto,*"
-					Margin="5 40">
+					Margin="5 5">
 
 					<!-- Artist -->
 
