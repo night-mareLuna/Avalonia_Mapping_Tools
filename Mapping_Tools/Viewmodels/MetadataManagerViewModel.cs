@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 //using System.Drawing;
 using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -15,19 +16,19 @@ namespace Avalonia_Mapping_Tools.ViewModels;
 public partial class MetadataManagerViewModel : ViewModelBase
 {
 	[ObservableProperty] [property: JsonIgnore] private int _Progress = 0;
-	[ObservableProperty] [property: JsonIgnore] private bool _TagsOverflowErrorVisibility;
-	[ObservableProperty] [property: JsonIgnore] private bool _BeatmapFileNameOverflowErrorVisibility;
+	[ObservableProperty] [property: JsonIgnore] private bool _TagsOverflowErrorVisibility = false;
+	[ObservableProperty] [property: JsonIgnore] private bool _BeatmapFileNameOverflowErrorVisibility = false;
 	
 	[ObservableProperty] private string _ImportPath = "";
 	[ObservableProperty] private string _ExportPath = "";
 	
-	[ObservableProperty] private string _Artist = "";
-	[ObservableProperty] private string _RomanisedArtist = "";
-	[ObservableProperty] private string _Title = "";
-	[ObservableProperty] private string _RomanisedTitle = "";
-	[ObservableProperty] private string _BeatmapCreator = "";
-	[ObservableProperty] private string _Source = "";
-	[ObservableProperty] private string _Tags = "";
+	[ObservableProperty] [property: MaxLength(81, ErrorMessage = "Field cannot be over 81 characters long.")] private string _Artist = "";
+	[ObservableProperty] [property: MaxLength(81, ErrorMessage = "Field cannot be over 81 characters long.")] private string _RomanisedArtist = "";
+	[ObservableProperty] [property: MaxLength(81, ErrorMessage = "Field cannot be over 81 characters long.")] private string _Title = "";
+	[ObservableProperty] [property: MaxLength(81, ErrorMessage = "Field cannot be over 81 characters long.")] private string _RomanisedTitle = "";
+	[ObservableProperty] [property: MaxLength(81, ErrorMessage = "Field cannot be over 81 characters long.")] private string _BeatmapCreator = "";
+	[ObservableProperty] [property: MaxLength(81, ErrorMessage = "Field cannot be over 81 characters long.")] private string _Source = "";
+	[ObservableProperty] [property: MaxLength(1024, ErrorMessage = "Field cannot be over 1024 characters long.")] private string _Tags = "";
 	[ObservableProperty] private bool _DoRemoveDuplicateTags = true;
 	[ObservableProperty] private bool _ResetIds = false;
 
