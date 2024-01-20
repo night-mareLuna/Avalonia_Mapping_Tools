@@ -150,7 +150,7 @@ public partial class MetadataManagerViewModel : ViewModelBase
 
     private void CheckOverflowError()
 	{
-		var length = 13 + RomanisedArtist?.Length ?? 0 + RomanisedTitle?.Length ?? 0 + BeatmapCreator?.Length ?? 0;
+		var length = 13 + (RomanisedArtist?.Length ?? 0) + (RomanisedTitle?.Length ?? 0) + (BeatmapCreator?.Length ?? 0);
 		BeatmapFileNameOverflowErrorVisibility = length > 255;
 	}
 
@@ -176,7 +176,7 @@ public partial class MetadataManagerViewModel : ViewModelBase
     partial void OnPreviewTimeChanged(double oldValue, double newValue)
     {
 		if(oldValue == newValue) return;
-        if(Math.Abs(oldValue - newValue) > Precision.DoubleEpsilon)
+        if(Math.Abs(oldValue - newValue) < Precision.DoubleEpsilon)
 			PreviewTime = oldValue;
     }
 
