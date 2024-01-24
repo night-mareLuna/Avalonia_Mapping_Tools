@@ -54,7 +54,7 @@
 			<!-- Left Panel -->
 
 			<ScrollViewer Grid.Column="0">
-				<StackPanel Name="EditPanel" Margin="5">
+				<StackPanel Name="EditPanel">
 
 					<!-- General -->
 
