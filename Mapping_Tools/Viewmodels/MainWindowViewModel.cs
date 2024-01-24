@@ -1,6 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Mapping_Tools.Classes;
 using Mapping_Tools.Classes.SystemTools;
@@ -11,7 +12,7 @@ public partial class MainWindowViewModel : ViewModelBase
 {
 	[ObservableProperty] private object _CurrentItem = "Preferences";
 	[ObservableProperty] private ViewModelBase? _CurrentView;
-	[ObservableProperty] private ObservableCollection<string> _ToolsList;
+	[ObservableProperty] private ObservableCollection<object> _ToolsList;
 	[ObservableProperty] private bool _OpenPanel = true;
 	[ObservableProperty] private string _DisplayCurrentMaps = "No Beatmap Selected!";
 	[ObservableProperty] private string _DisplayCurrentMapsTooltip = "No Beatmap Selected!";
@@ -25,15 +26,24 @@ public partial class MainWindowViewModel : ViewModelBase
 		DisplayCurrentMap();
 		UpdateView((CurrentItem as string)!);
 		string[] defaultTools = ["Preferences"];
-		string[] mappingTools = ["Map Cleaner",
+
+        ListBoxItem separator = new()
+        {
+            Focusable = false,
+			IsHitTestVisible = false,
+			Content = new Separator()
+        };
+
+        string[] mappingTools = ["Map Cleaner",
 			"Hitsound Copier",
 			"Hitsound Preview Helper",
 			"Hitsound Studio",
 			"Rhythm Guide",
 			"Metadata Manager",
 			"Slider Merger"];
-		
-		ToolsList = new ObservableCollection<string>(allTools);
+
+		object[] allTools = [.. defaultTools, separator, .. mappingTools.OrderBy(d => d).ToArray()];
+		ToolsList = new ObservableCollection<object>(allTools);
 	}
 
 	private static void DisplayCurrentMap()
