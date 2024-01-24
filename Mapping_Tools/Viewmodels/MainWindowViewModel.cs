@@ -30,8 +30,8 @@ public partial class MainWindowViewModel : ViewModelBase
 			"Hitsound Preview Helper",
 			"Hitsound Studio",
 			"Rhythm Guide",
-			"Metadata Manager"];
-		string[] allTools = [.. defaultTools, .. mappingTools.OrderBy(d => d).ToArray()];
+			"Metadata Manager",
+			"Slider Merger"];
 		
 		ToolsList = new ObservableCollection<string>(allTools);
 	}
@@ -95,6 +95,9 @@ public partial class MainWindowViewModel : ViewModelBase
 				break;
 			case "Metadata Manager":
 				CurrentView = new MetadataManagerViewModel();
+				break;
+			case "Slider Merger":
+				CurrentView = new SliderMergerViewModel();
 				break;
 		}
 	}
