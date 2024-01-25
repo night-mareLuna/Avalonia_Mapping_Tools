@@ -54,24 +54,46 @@
 			<TextBox Margin="5 0 5 10"
 				HorizontalAlignment="Left"
 				Watermark="Merge connection leniency"
-				Width="258"/>
+				Width="258"
+				Text="{Binding Leniency, Mode=TwoWay}"/>
 
-			<TextBlock Margin="5 10 5 5"
-				FontSize="12" 
-				Text="Object selection mode"/>
-			<ComboBox Margin="5 0 5 10"
-				HorizontalAlignment="Left"
-				Width="258"/>
+			<StackPanel Orientation="Horizontal">
+				<StackPanel>
+					<TextBlock Margin="5 10 5 5"
+						FontSize="12" 
+						Text="Object selection mode"/>
+					<ComboBox Margin="5 0 5 10"
+						HorizontalAlignment="Left"
+						Width="258"
+						ItemsSource="{Binding ImportModes}"
+						SelectedItem="{Binding ImportModeSetting}"/>
+				</StackPanel>
+
+				<StackPanel IsVisible="{Binding TimeCodeBoxVisibility}">
+					<TextBlock Margin="5 10 5 5"
+						FontSize="12" 
+						Text="Time code"/>
+					<TextBox Margin="5 0 5 10"
+						HorizontalAlignment="Left"
+						Width="258"
+						Watermark="Time code"
+						Text="{Binding TimeCode}"/>
+				</StackPanel>
+			</StackPanel>
 
 			<TextBlock Margin="5 10 5 5"
 				FontSize="12" 
 				Text="Object connection mode"/>
 			<ComboBox Margin="5 0 5 10"
 				HorizontalAlignment="Left"
-				Width="258"/>
+				Width="258"
+				ItemsSource="{Binding ConnectionModes}"
+				SelectedItem="{Binding ConnectionModeSetting}"/>
 
-			<CheckBox Margin="5 10 5 -5">Merge on slider end</CheckBox>
-			<CheckBox Margin="5 0">Use linear curve type on fully linear merge</CheckBox>
+			<CheckBox Margin="5 10 5 -5"
+				IsChecked="{Binding MergeOnSliderEnd}">Merge on slider end</CheckBox>
+			<CheckBox Margin="5 0"
+				IsChecked="{Binding LinearOnLinear}">Use linear curve type on fully linear merge</CheckBox>
 
 			<Button Margin="10 10"
 				Width="98"
@@ -79,6 +101,7 @@
 				Background="Transparent"
 				HorizontalAlignment="Right"
 				VerticalAlignment="Bottom"
+				Click="Start_Click"
 				ToolTip.Tip="Run Slider Merger">
 				<materialIcons:MaterialIcon
 					Kind="PlayCircle"
@@ -98,7 +121,7 @@
 				Background="Transparent"
 				Margin="20 0 20 0"
 				Height="20"
-				Value="0"/>
+				Value="{Binding Progress}"/>
 		</Grid>
 	</Grid>
 
