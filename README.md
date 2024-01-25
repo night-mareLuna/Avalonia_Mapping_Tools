@@ -13,6 +13,7 @@ All tool specific settings should function exactly the same as original Mapping 
 - Hitsound Studio by [OliBomby](https://github.com/OliBomby) 
 - Rhythm Guide by [OliBomby](https://github.com/OliBomby) 
 - Metadata Manager by [OliBomby](https://github.com/OliBomby) 
+- Slider Merger by [OliBomby](https://github.com/OliBomby) 
 
 
 ## Requirements
