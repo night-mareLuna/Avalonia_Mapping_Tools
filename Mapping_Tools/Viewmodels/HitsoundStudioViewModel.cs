@@ -9,6 +9,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Mapping_Tools.Classes;
 using Mapping_Tools.Classes.BeatmapHelper.Enums;
 using Mapping_Tools.Classes.HitsoundStuff;
+using Mapping_Tools.Components.Domain;
 using Newtonsoft.Json;
 
 namespace Avalonia_Mapping_Tools.ViewModels;
@@ -39,8 +40,8 @@ public partial class HitsoundStudioViewModel : ViewModelBase
 	public IEnumerable<HitsoundExportMode> HitsoundExportModes => Enum.GetValues(typeof(HitsoundExportMode)).Cast<HitsoundExportMode>();
 	[ObservableProperty] private GameMode _HitsoundExportGameMode;
 	[JsonIgnore] public IEnumerable<GameMode> HitsoundExportGameModes => Enum.GetValues(typeof(GameMode)).Cast<GameMode>();
-	[ObservableProperty] private double _ZipLayersLeniency;
-	[ObservableProperty] private int _FirstCustomIndex;
+	[ObservableProperty] [property: GreaterThanOrEqual(0)] private double _ZipLayersLeniency;
+	[ObservableProperty] [property: GreaterThanOrEqual(0)] private int _FirstCustomIndex;
 	[ObservableProperty] private HitsoundExporter.SampleExportFormat _SingleSampleExportFormat;
 	[ObservableProperty] private HitsoundExporter.SampleExportFormat _MixedSampleExportFormat;
 	[JsonIgnore] public readonly Dictionary<HitsoundExporter.SampleExportFormat, string> SampleExportFormatDisplayNameMapping =
@@ -131,18 +132,6 @@ public partial class HitsoundStudioViewModel : ViewModelBase
 			SingleSampleExportFormat = value;
 		else if(SingleSampleExportFormat == HitsoundExporter.SampleExportFormat.MidiChords)
 			SingleSampleExportFormat = value;
-    }
-
-    partial void OnZipLayersLeniencyChanged(double oldValue, double newValue)
-    {
-		if(newValue >= 0) return;
-		else ZipLayersLeniency = oldValue;
-    }
-
-    partial void OnFirstCustomIndexChanged(int oldValue, int newValue)
-    {
-        if(newValue >= 0) return;
-		else FirstCustomIndex = oldValue;
     }
 
 	public void HitsoundLayer_MouseDoubleClickCommand()

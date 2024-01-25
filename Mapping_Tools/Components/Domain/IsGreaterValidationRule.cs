@@ -7,7 +7,15 @@ public sealed class GreaterThanAttribute(double propertyName) : ValidationAttrib
     {
 		if(value is null) return new("Error");
 
-		return propertyName < (double)value ?
-			ValidationResult.Success! : new($"Value needs to be greater than or equal {propertyName}!");
+		var numericValue = 0.0;
+
+		if(value is int i)
+			numericValue = i;
+		else if(value is double d)
+			numericValue = d;
+		else return new("Parse Error.");
+
+		return propertyName < numericValue ?
+			ValidationResult.Success! : new($"Value needs to be greater than {propertyName}!");
     }
 }
