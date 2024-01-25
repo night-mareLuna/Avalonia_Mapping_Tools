@@ -27,12 +27,14 @@ public partial class MainWindowViewModel : ViewModelBase
 		UpdateView((CurrentItem as string)!);
 		string[] defaultTools = ["Preferences"];
 
-        ListBoxItem separator = new()
-        {
-            Focusable = false,
-			IsHitTestVisible = false,
-			Content = new Separator()
-        };
+		/// CRASHES WHEN RUNNING A TOOL IDK PLEASE HELP
+		/// 
+        // ListBoxItem separator = new()
+        // {
+        //     Focusable = false,
+		// 	IsHitTestVisible = false,
+		// 	Content = new Separator()
+        // };
 
         string[] mappingTools = ["Map Cleaner",
 			"Hitsound Copier",
@@ -42,7 +44,7 @@ public partial class MainWindowViewModel : ViewModelBase
 			"Metadata Manager",
 			"Slider Merger"];
 
-		object[] allTools = [.. defaultTools, separator, .. mappingTools.OrderBy(d => d).ToArray()];
+		object[] allTools = [.. defaultTools, /*separator,*/ .. mappingTools.OrderBy(d => d).ToArray()];
 		ToolsList = new ObservableCollection<object>(allTools);
 	}
 
