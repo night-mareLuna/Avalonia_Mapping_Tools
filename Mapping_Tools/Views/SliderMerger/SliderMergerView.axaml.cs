@@ -31,7 +31,7 @@ public partial class SliderMergerView : SingleRunMappingTool, ISavable<SliderMer
 	}
 
 	public SliderMergerViewModel ViewModel => (SliderMergerViewModel) DataContext!;
-	public event EventHandler RunFinished;
+	public event EventHandler? RunFinished;
 
 	private async void Start_Click(object obj, RoutedEventArgs args)
 	{
@@ -284,6 +284,12 @@ public partial class SliderMergerView : SingleRunMappingTool, ISavable<SliderMer
 
         return true;
     }
+
+	protected override void OnUnloaded(RoutedEventArgs e)
+	{
+		ProjectManager.SaveProject(this, AutoSavePath);
+		base.OnUnloaded(e);
+	}
 
     public string AutoSavePath => Program.configPath + "/slidermergerproject.json";
 
