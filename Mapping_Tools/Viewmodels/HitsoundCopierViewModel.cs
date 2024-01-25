@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Mapping_Tools.Classes.BeatmapHelper.BeatDivisors;
 using Mapping_Tools.Classes.BeatmapHelper.Enums;
 using Mapping_Tools.Classes.SystemTools;
+using Mapping_Tools.Components.Domain;
 using Newtonsoft.Json;
 
 namespace Avalonia_Mapping_Tools.ViewModels;
@@ -14,7 +15,7 @@ public partial class HitsoundCopierViewModel : ViewModelBase
     [ObservableProperty] private string pathFrom;
     [ObservableProperty] private int copyMode;
 	[ObservableProperty] private bool smartCopyModeSelected;
-    [ObservableProperty] private double temporalLeniency;
+    [ObservableProperty] [property: GreaterThanOrEqual(0)] private double temporalLeniency;
     [ObservableProperty] private bool copyHitsounds;
     [ObservableProperty] private bool copyBodyHitsounds;
     [ObservableProperty] private bool copySampleSets;

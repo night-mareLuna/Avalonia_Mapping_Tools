@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Mapping_Tools.Components.Domain;
 public sealed class GreaterThanOrEqualAttribute(double propertyName) : ValidationAttribute
@@ -7,7 +9,15 @@ public sealed class GreaterThanOrEqualAttribute(double propertyName) : Validatio
     {
 		if(value is null) return new("Error");
 
-		return propertyName <= (double)value ?
+		var numericValue = 0.0;
+
+		if(value is int i)
+			numericValue = i;
+		else if(value is double d)
+			numericValue = d;
+		else return new("Parse Error.");
+
+		return propertyName <= numericValue ?
 			ValidationResult.Success! : new($"Value needs to be greater than or equal {propertyName}!");
     }
 }
