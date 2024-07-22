@@ -22,7 +22,7 @@ All tool specific settings should function exactly the same as original Mapping 
 
 ## Installing sox
 ### Arch
-`pacman -Syu --needed sox wavpack libvorbis`
+`pacman -S --needed sox wavpack libvorbis`
 ### Fedora
 `dnf install sox`
 ### Debian
