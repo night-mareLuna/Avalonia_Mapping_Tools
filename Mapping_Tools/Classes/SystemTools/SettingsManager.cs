@@ -217,12 +217,28 @@ namespace Mapping_Tools.Classes.SystemTools {
 		private static async Task<string> FindOsuPath()
 		{
 			string? path = null;
-			path = TryOsuWinello();
+            path = TryRunningProcess();
+			path ??= TryOsuWinello();
 			//path ??= TryLutris();
 			path ??= await SelectOsuFolder();
 
 			return path ?? "";
 		}
+
+        private static string? TryRunningProcess()
+        {
+            string? path = null;
+            
+            bool isOsuRunning = BashCommand("pgrep osu\\!.exe") != string.Empty;
+            if(isOsuRunning)
+            {
+                string result = BashCommand("cat /proc/`pgrep osu\\!.exe`/cmdline");
+                if(result[0] == 'Z' || result[0] == 'z')
+                    path = $"/{string.Join('/', result.Split("\\")[1 .. ^1])}/";
+            }
+            Console.WriteLine(path);
+            return path;
+        }
 
 		private static string? TryOsuWinello()
 		{
