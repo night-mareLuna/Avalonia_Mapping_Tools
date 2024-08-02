@@ -236,7 +236,6 @@ namespace Mapping_Tools.Classes.SystemTools {
                 if(result[0] == 'Z' || result[0] == 'z')
                     path = $"/{string.Join('/', result.Split("\\")[1 .. ^1])}/";
             }
-            Console.WriteLine(path);
             return path;
         }
 
