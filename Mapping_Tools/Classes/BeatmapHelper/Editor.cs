@@ -80,7 +80,11 @@ namespace Mapping_Tools.Classes.BeatmapHelper {
                 File.Create(path).Dispose();
             }
 
-            File.WriteAllLines(path, lines);
+            /// force CRLN instead of LN; uploading (without saving each beatmap in editor manually) will fail if LN
+            using StreamWriter writer = new(path);
+            writer.NewLine = "\r\n";
+            foreach (string line in lines)
+                writer.WriteLine(line);
         }
 
         /// <summary>
