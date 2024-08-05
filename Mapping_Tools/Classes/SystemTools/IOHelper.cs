@@ -138,16 +138,14 @@ namespace Mapping_Tools.Classes.SystemTools {
         public static async Task<string[]> BeatmapFileDialog(bool multiselect = false, bool restore = false)
 		{
 			IStorageFolder? startLocation;
-			string[]? currentMaps = MainWindowViewModel.GetCurrentMaps();
-			if(restore && currentMaps != null)
-			{
-				string? beatmapFolder = currentMaps[0];
-				if(!string.IsNullOrWhiteSpace(beatmapFolder))
-					beatmapFolder = beatmapFolder.Remove(beatmapFolder.IndexOf(beatmapFolder.Split('/')[^1]));
-				startLocation = await storage.TryGetFolderFromPathAsync(new Uri(beatmapFolder));
-			}
+			string currentMap = MainWindowViewModel.GetCurrentMaps()[0];
+			
+			if(restore && !string.IsNullOrEmpty(currentMap))
+				currentMap = currentMap.Remove(currentMap.IndexOf(currentMap.Split('/')[^1]));
 			else
-				startLocation = await storage.TryGetFolderFromPathAsync(new Uri(SettingsManager.GetSongsPath()));
+				currentMap = SettingsManager.GetSongsPath();
+
+			startLocation = await storage.TryGetFolderFromPathAsync(new Uri(currentMap));
 
 			var filePicker = await storage.OpenFilePickerAsync(new FilePickerOpenOptions
 			{
