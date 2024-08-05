@@ -832,7 +832,9 @@ namespace Mapping_Tools.Classes.BeatmapHelper {
         public static string GetFileName(string artist, string title, string creator, string version) {
             string fileName = $"{artist} - {title} ({creator}) [{version}]";
 
-            string regexSearch = new string(Path.GetInvalidFileNameChars());
+            /// osu will crash without windows specific invalidations
+            char[] invalidWindowsFileNameChars = ['<','>',':','"','/','\\','|','?','*'];
+            string regexSearch = new(invalidWindowsFileNameChars);
             Regex r = new Regex($"[{Regex.Escape(regexSearch)}]");
             fileName = r.Replace(fileName, "");
 
