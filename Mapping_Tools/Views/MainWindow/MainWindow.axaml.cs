@@ -11,6 +11,7 @@ using Avalonia_Mapping_Tools.ViewModels;
 using Mapping_Tools.Classes;
 using Mapping_Tools.Classes.Exceptions;
 using Mapping_Tools.Classes.SystemTools;
+using Mapping_Tools.Classes.ToolHelpers;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 
@@ -88,6 +89,15 @@ public partial class MainWindow : Window
 			MainWindowViewModel.SetCurrentMaps(maps!);
 			SettingsManager.AddRecentMap(maps, DateTime.Now);
 		}
+	}
+
+	private async void OpenCurrentBeatmap(object obj, RoutedEventArgs args)
+	{
+		string gosumemoryPath = await GosumemoryReader.GetCurrentBeatmap();
+		if(string.IsNullOrEmpty(gosumemoryPath)) return;
+
+		MainWindowViewModel.SetCurrentMaps(gosumemoryPath);
+		SettingsManager.AddRecentMap(gosumemoryPath, DateTime.Now);
 	}
 
 	private async void SaveBackup(object obj, RoutedEventArgs args)

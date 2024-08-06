@@ -34,6 +34,12 @@
 							<materialIcons:MaterialIcon Kind="Folder"/>
 						</MenuItem.Icon>
 					</MenuItem>
+					<MenuItem Header="_Open Current Beatmap"
+						Click="OpenCurrentBeatmap">
+						<MenuItem.Icon>
+							<materialIcons:MaterialIcon Kind="DeleteRestore"/>
+						</MenuItem.Icon>
+					</MenuItem>
 					<MenuItem Header="_Generate Backup"
 						Click="SaveBackup">
 						<MenuItem.Icon>

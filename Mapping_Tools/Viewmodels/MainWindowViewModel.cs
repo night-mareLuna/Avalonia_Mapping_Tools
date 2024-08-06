@@ -76,6 +76,9 @@ public partial class MainWindowViewModel : ViewModelBase
 		}
 		CurrentMaps = maps;
 	}
+
+	public static void SetCurrentMaps(string map) => SetCurrentMaps([map]);
+
 	public static string[] GetCurrentMaps()
 	{
 		return CurrentMaps;
