@@ -15,9 +15,10 @@ namespace Mapping_Tools.Classes.ToolHelpers
 
         public static void StartGosumemory()
         {
-            if(gosumemory is not null || !SettingsManager.Settings.UseGosumemory) return;
-            string gosuPath = SettingsManager.GetGosumemPath();
+            if(gosumemory is not null) return;
+            if(!SettingsManager.Settings.RunGosumemory) return;
 
+            string gosuPath = SettingsManager.GetGosumemPath();
             gosumemory = new Process()
 			{
 				StartInfo = new ProcessStartInfo
@@ -67,7 +68,7 @@ namespace Mapping_Tools.Classes.ToolHelpers
             catch
             {
                 var box = MessageBoxManager.GetMessageBoxStandard("Error!",
-                "Gosumemory most likely is not running.",
+                "Gosumemory, most likely, is not running.",
                 ButtonEnum.Ok);
 				box.ShowAsync();
             }
