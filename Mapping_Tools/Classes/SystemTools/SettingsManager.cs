@@ -4,7 +4,6 @@ using MsBox.Avalonia.Enums;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -231,10 +230,10 @@ namespace Mapping_Tools.Classes.SystemTools {
         {
             string? path = null;
             
-            bool isOsuRunning = BashCommand("pgrep osu\\!.exe") != string.Empty;
+            bool isOsuRunning = Bash.RunCommand("pgrep osu\\!.exe") != string.Empty;
             if(isOsuRunning)
             {
-                string result = BashCommand("cat /proc/`pgrep osu\\!.exe`/cmdline");
+                string result = Bash.RunCommand("cat /proc/`pgrep osu\\!.exe`/cmdline");
                 if(result[0] == 'Z' || result[0] == 'z')
                     path = $"/{string.Join('/', result.Split("\\")[1 .. ^1])}/";
             }
@@ -245,7 +244,7 @@ namespace Mapping_Tools.Classes.SystemTools {
 		{
 			string? path = null;
 			
-			string result = BashCommand($"/home/{Environment.UserName}/.local/bin/osu-wine --info");
+			string result = Bash.RunCommand($"/home/{Environment.UserName}/.local/bin/osu-wine --info");
 			foreach(string line in result.Split(Environment.NewLine))
 			{
 				if(line.Contains("osu! folder:"))
@@ -277,37 +276,6 @@ namespace Mapping_Tools.Classes.SystemTools {
 			return folder;
 		}
 
-		private static string BashCommand(string command)
-		{
-			if(string.IsNullOrWhiteSpace(command))
-				return string.Empty;
-
-			string commandOutput = string.Empty;
-			try
-			{
-				var process = new Process()
-				{
-					StartInfo = new ProcessStartInfo
-					{
-						FileName = "bash",
-						Arguments = $"-c \"{command}\"",
-						RedirectStandardOutput = true,
-						UseShellExecute = false,
-						CreateNoWindow = true,
-						WorkingDirectory = Path.GetDirectoryName("/usr/bin")
-					}
-				};
-				process.Start();
-				commandOutput = process.StandardOutput.ReadToEnd();
-				process.WaitForExit();
-			}
-			catch(Exception e)
-			{
-                Console.WriteLine(e.Message);
-            }
-
-			return commandOutput;
-		}
 
         // internal static void UpdateSettings() {
         //     Settings.MainWindowMaximized = MainWindow.AppWindow.WindowState == WindowState.Maximized;
