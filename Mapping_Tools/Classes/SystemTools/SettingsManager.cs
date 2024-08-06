@@ -1,4 +1,5 @@
 ﻿using Avalonia_Mapping_Tools;
+using Mapping_Tools.Classes.ToolHelpers;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using Newtonsoft.Json;
@@ -149,6 +150,10 @@ namespace Mapping_Tools.Classes.SystemTools {
             if (string.IsNullOrWhiteSpace(Settings.BackupsPath)) {
                 Settings.BackupsPath = ConfigFolder + "/Backups";
             }
+
+            if (string.IsNullOrWhiteSpace(Settings.GosumemoryPath) && !Settings.RunGosumemory) {
+                await SetupGosumemory();
+            }
             //Directory.CreateDirectory(Settings.BackupsPath);
         }
 
@@ -215,6 +220,10 @@ namespace Mapping_Tools.Classes.SystemTools {
 			return Settings.DarkTheme;
 		}
 
+        public static string GetGosumemPath() {
+            return Settings.GosumemoryPath;
+        }
+
 		private static async Task<string> FindOsuPath()
 		{
 			string? path = null;
@@ -275,6 +284,91 @@ namespace Mapping_Tools.Classes.SystemTools {
 
 			return folder;
 		}
+
+        private static async Task SetupGosumemory()
+        {
+            var useGosuBox = MessageBoxManager.GetMessageBoxStandard("Gosumemory Setup",
+                "Do you want to use Gosumemory to read currently selected beatmaps?",
+                ButtonEnum.YesNo);
+            bool useGosumemory = await useGosuBox.ShowAsync() == ButtonResult.Yes;
+            Settings.UseGosumemory = useGosumemory;
+
+            var autoGosuBox = MessageBoxManager.GetMessageBoxStandard("Gosumemory Setup",
+                "Do you want Gosumemory to autorun when opening Avalonia Mapping Tools?",
+                ButtonEnum.YesNo);
+            bool autoGosumemory = await autoGosuBox.ShowAsync() == ButtonResult.Yes;
+            Settings.RunGosumemory = autoGosumemory;
+
+            if(autoGosumemory)
+                await DownloadGosuMemory();
+            else
+            {
+                var manualGosuBox =  MessageBoxManager.GetMessageBoxStandard("Gosumemory Setup",
+                    "Gosumemory will not run with Avalonia Mapping Tools.\nYou need to manually run it if you want to use it.",
+                    ButtonEnum.Ok);
+                manualGosuBox.ShowAsync();
+            }
+        }
+
+        public static async Task DownloadGosuMemory()
+        {
+            //string gosuLink32 = "https://github.com/l3lackShark/gosumemory/releases/download/1.3.9/gosumemory_linux_386.zip";
+            string gosuLink64 = "https://github.com/l3lackShark/gosumemory/releases/download/1.3.9/gosumemory_linux_amd64.zip";
+            string downloadPath = Program.configPath + "/gosumemory_linux_amd64.zip";
+
+            var downloadGosuBox = MessageBoxManager.GetMessageBoxStandard("Gosumemory Setup",
+                $"Gosumemory will be downloaded and saved to {downloadPath}",
+                ButtonEnum.OkAbort);
+            
+            if(await downloadGosuBox.ShowAsync() == ButtonResult.Ok)
+            {
+                var downloadingBox = MessageBoxManager.GetMessageBoxStandard("Gosumemory Setup",
+                    "Downloading and extracting gosumemory... Please wait");
+                downloadingBox.ShowAsync();
+
+                bool downloaded = await DownloadManager.Download(gosuLink64, downloadPath);
+
+                if(downloaded)
+                {
+                    string extractPath = Program.configPath + "/gosumemory";
+                    var extractBox = MessageBoxManager.GetMessageBoxStandard("Gosumemory Setup",
+                        $"Download complete. Extracting to {extractPath}",
+                        ButtonEnum.Ok);
+                    extractBox.ShowAsync();
+
+                    bool extracted = DownloadManager.Unzip(downloadPath, extractPath);
+
+                    if(extracted)
+                    {
+                        var setupCompleteBox = MessageBoxManager.GetMessageBoxStandard("Gosumemory Setup",
+                            "Gosumemory setup complete",
+                            ButtonEnum.Ok);
+
+                        Settings.GosumemoryPath = extractPath + "/gosumemory";
+                        File.Delete(downloadPath);
+
+                        try
+                        {
+                            Bash.RunCommand($"chmod +x {Settings.GosumemoryPath}");
+                        }
+                        catch(Exception e)
+                        {
+                            e.Show();
+                        }
+                        GosumemoryReader.StartGosumemory();
+                        setupCompleteBox.ShowAsync();
+                    }
+
+                }
+            }
+            else
+            {
+                var abortBox = MessageBoxManager.GetMessageBoxStandard("Gosumemory Setup",
+                    "Aborting download",
+                    ButtonEnum.Ok);
+                abortBox.ShowAsync();
+            }
+        }
 
 
         // internal static void UpdateSettings() {

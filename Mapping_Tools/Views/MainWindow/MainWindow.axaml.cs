@@ -43,6 +43,7 @@ public partial class MainWindow : Window
 			Width = SettingsManager.Settings.MainWindowRestoreBounds![0];
 			Height = SettingsManager.Settings.MainWindowRestoreBounds![1];
 			ListenerManager = new ListenerManager();
+			GosumemoryReader.StartGosumemory();
 		}
 		catch (Exception e)
 		{
@@ -203,6 +204,7 @@ public partial class MainWindow : Window
     protected override async void OnClosing(WindowClosingEventArgs e)
     {
 		await SettingsManager.WriteToJson();
+		GosumemoryReader.Stop();
         base.OnClosing(e);
     }
 
