@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,8 +9,47 @@ using MsBox.Avalonia.Enums;
 
 namespace Mapping_Tools.Classes.ToolHelpers
 {
-    public static class GosumemoryReader
+    public class GosumemoryReader
     {
+        private static Process? gosumemory;
+
+        public static void StartGosumemory()
+        {
+            if(gosumemory is not null || !SettingsManager.Settings.UseGosumemory) return;
+            string gosuPath = SettingsManager.GetGosumemPath();
+
+            gosumemory = new Process()
+			{
+				StartInfo = new ProcessStartInfo
+				{
+					FileName = gosuPath,
+					Arguments = $"-path {SettingsManager.GetSongsPath()}",
+					UseShellExecute = false,
+                    CreateNoWindow = true
+				}
+			};
+
+            Console.WriteLine("Attempting to start gosumemory");
+            try
+            {
+			    gosumemory.Start();
+            }
+            catch(Exception e)
+            {
+                e.Show();
+            }
+        }
+
+        public static void Stop()
+        {
+            if(gosumemory is not null)
+            {
+                Console.WriteLine("Closing gosumemory");
+                gosumemory.Kill();
+                gosumemory = null;
+            }
+        }
+
         private static async Task<string> ReadSocket()
         {
             string resString = string.Empty;

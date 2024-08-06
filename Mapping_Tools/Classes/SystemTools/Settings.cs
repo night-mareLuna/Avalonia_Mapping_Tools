@@ -149,6 +149,24 @@ namespace Mapping_Tools.Classes.SystemTools {
 			get => showSaveDialog;
 			set => Set(ref showSaveDialog, value);
 		}
+        private bool useGosumemory;
+        public bool UseGosumemory
+        {
+            get => useGosumemory;
+            set => Set(ref useGosumemory, value);
+        }
+        private bool runGosumemory;
+		public bool RunGosumemory
+		{
+			get => runGosumemory;
+			set => Set(ref runGosumemory, value);
+		}
+        private string gosumemoryPath;
+        public string GosumemoryPath
+        {
+            get => gosumemoryPath;
+            set => Set(ref gosumemoryPath, value);
+        }
 
         /// <summary>
         /// Makes a new Settings objects and initializes default settings.
@@ -176,6 +194,9 @@ namespace Mapping_Tools.Classes.SystemTools {
             SkipVersion = null;
 			DarkTheme = true;
 			ShowSaveDialog = true;
+            UseGosumemory = false;
+            RunGosumemory = false;
+            GosumemoryPath = "";
         }
 
 		private static void OnMakePeriodicBackupsChanged(bool newValue) =>
