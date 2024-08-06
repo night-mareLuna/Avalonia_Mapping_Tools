@@ -113,6 +113,8 @@ namespace Mapping_Tools.Classes.SystemTools {
             }
         }
 
+        public static void AddRecentMap(string path, DateTime date) => AddRecentMap([path], date);
+
         public static async void DefaultPaths() {
             if (string.IsNullOrWhiteSpace(Settings.OsuPath)) {
              //try {
