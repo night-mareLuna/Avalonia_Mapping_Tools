@@ -151,7 +151,7 @@ namespace Mapping_Tools.Classes.SystemTools {
                 Settings.BackupsPath = ConfigFolder + "/Backups";
             }
 
-            if (string.IsNullOrWhiteSpace(Settings.GosumemoryPath) && !Settings.RunGosumemory) {
+            if (string.IsNullOrWhiteSpace(Settings.GosumemoryPath)) {
                 await SetupGosumemory();
             }
             //Directory.CreateDirectory(Settings.BackupsPath);
@@ -292,6 +292,8 @@ namespace Mapping_Tools.Classes.SystemTools {
                 ButtonEnum.YesNo);
             bool useGosumemory = await useGosuBox.ShowAsync() == ButtonResult.Yes;
             Settings.UseGosumemory = useGosumemory;
+            Settings.GosumemoryPath = "none";
+            if(!useGosumemory) return;
 
             var autoGosuBox = MessageBoxManager.GetMessageBoxStandard("Gosumemory Setup",
                 "Do you want Gosumemory to autorun when opening Avalonia Mapping Tools?",
@@ -307,6 +309,7 @@ namespace Mapping_Tools.Classes.SystemTools {
                     "Gosumemory will not run with Avalonia Mapping Tools.\nYou need to manually run it if you want to use it.",
                     ButtonEnum.Ok);
                 manualGosuBox.ShowAsync();
+                Settings.GosumemoryPath = "none";
             }
         }
 
