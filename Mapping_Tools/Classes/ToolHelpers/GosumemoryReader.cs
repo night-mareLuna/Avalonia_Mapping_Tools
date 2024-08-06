@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Net.WebSockets;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Mapping_Tools.Classes.SystemTools;
 using MsBox.Avalonia;
@@ -87,7 +88,8 @@ namespace Mapping_Tools.Classes.ToolHelpers
                 folderName.Split(':')[1][1 .. ^2] + '/' +
                 fileName.Split(':')[1][1 .. ^1];
 
-            return fullPath;
+            // Unescape for rare issues with certain unicode characters like '&'
+            return Regex.Unescape(fullPath);
         }
     }
 }
