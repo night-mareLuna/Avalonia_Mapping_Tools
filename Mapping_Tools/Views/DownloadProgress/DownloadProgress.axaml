@@ -1,0 +1,58 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Avalonia_Mapping_Tools.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:actipro="http://schemas.actiprosoftware.com/avaloniaui"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        x:Class="Avalonia_Mapping_Tools.Views.DownloadProgress"
+        x:DataType="vm:DownloadProgressViewModel"
+        Icon="/Data/mt_icon.ico"
+        Title="Download Progress">
+
+	<Grid RowDefinitions="*,auto,auto,auto">
+		<TextBlock Grid.Row="0" Margin="20"
+			FontSize="24"
+			VerticalAlignment="Top"
+			HorizontalAlignment="Center"
+			TextWrapping="Wrap"
+			Text="{Binding InfoText}"/>
+
+		<TextBlock Grid.Row="1" Margin="5"
+			FontSize="12"
+			FontStyle="Italic"
+			VerticalAlignment="Bottom"
+			HorizontalAlignment="Right"
+			TextWrapping="Wrap"
+			Text="{Binding StringProgress}"/>
+
+		<ProgressBar Grid.Row="2"
+			Background="Transparent"
+			VerticalAlignment="Bottom" 
+			HorizontalAlignment="Stretch"
+			Margin="5"
+			Height="20"
+			Value="{Binding Progress}"/>
+
+		<Grid ColumnDefinitions="*,*" Grid.Row="3">
+			<Button Grid.Column="0" 
+				Margin="5"
+				Height="32" 
+				HorizontalAlignment="Stretch"
+				Click="UserOk"
+				IsEnabled="{Binding DownloadComplete}">
+				<TextBlock Text="Ok"
+					HorizontalAlignment="Center"/>
+			</Button>
+			<Button Grid.Column="1" 
+				Margin="5"
+				Height="32" 
+				HorizontalAlignment="Stretch"
+				Command="{Binding Abort}"
+				IsEnabled="{Binding !DownloadComplete}">
+				<TextBlock Text="Abort"
+					HorizontalAlignment="Center"/>
+			</Button>
+		</Grid>
+	</Grid>
+
+</Window>
