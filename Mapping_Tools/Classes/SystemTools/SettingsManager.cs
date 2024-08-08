@@ -135,7 +135,7 @@ namespace Mapping_Tools.Classes.SystemTools {
 				if(Settings.OsuPath == string.Empty)
 				{
 					var box = MessageBoxManager.GetMessageBoxStandard("Error!",
-						"Could not automatically find osu! install directory. Please set the correct paths in the Preferences.");
+						"Please set the correct paths in the Preferences.");
 					box.ShowAsync();
 				}
             }
@@ -228,7 +228,7 @@ namespace Mapping_Tools.Classes.SystemTools {
 
 		private static async Task<string> FindOsuPath()
 		{
-			string? path = null;
+			string? path;
             path = TryRunningProcess();
 			path ??= TryOsuWinello();
 			//path ??= TryLutris();
@@ -280,7 +280,18 @@ namespace Mapping_Tools.Classes.SystemTools {
 					"Please select your osu! folder",
 					ButtonEnum.Ok);
 				await box.ShowAsync();
-				folder = await IOHelper.FolderDialog("");
+				string path = await IOHelper.FolderDialog("");
+                path = path[^1] == '/' ? path : path + '/';
+                if(File.Exists(path + "osu!.exe"))
+                    folder = path;
+                else
+                {
+                    var warningBox = MessageBoxManager.GetMessageBoxStandard("Error!",
+                        "osu!.exe does not exist in this folder!",
+                        ButtonEnum.Ok);
+                    await warningBox.ShowAsync();
+                    folder = null;
+                }
 			}
 			while(string.IsNullOrEmpty(folder));
 
