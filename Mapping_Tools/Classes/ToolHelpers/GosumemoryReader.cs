@@ -31,7 +31,7 @@ namespace Mapping_Tools.Classes.ToolHelpers
 				}
 			};
 
-            Console.WriteLine("Attempting to start gosumemory");
+            Console.WriteLine($"Attempting to start {gosuPath}");
             try
             {
 			    gosumemory.Start();
