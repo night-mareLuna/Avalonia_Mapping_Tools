@@ -333,8 +333,8 @@ namespace Mapping_Tools.Classes.SystemTools {
 
         public static async Task<bool> DownloadGosuMemory()
         {
-            //string gosuLink32 = "https://github.com/l3lackShark/gosumemory/releases/download/1.3.9/gosumemory_linux_386.zip";
-            string gosuLink64 = "https://github.com/l3lackShark/gosumemory/releases/download/1.3.9/gosumemory_linux_amd64.zip";
+            //string gosuLink32 = "https://github.com/l3lackShark/gosumemory/releases/latest/download/gosumemory_linux_386.zip";
+            string gosuLink64 = "https://github.com/l3lackShark/gosumemory/releases/latest/download/gosumemory_linux_amd64.zip";
             string downloadPath = Program.configPath + "/gosumemory_linux_amd64.zip";
 
             var downloadGosuBox = MessageBoxManager.GetMessageBoxStandard("Gosumemory Setup",
