@@ -69,7 +69,7 @@ namespace Mapping_Tools.Classes.ToolHelpers
             catch
             {
                 var box = MessageBoxManager.GetMessageBoxStandard("Error!",
-                "Gosumemory, most likely, is not running.",
+                "Either gosumemory or osu! is not running.",
                 ButtonEnum.Ok);
 				box.ShowAsync();
             }
