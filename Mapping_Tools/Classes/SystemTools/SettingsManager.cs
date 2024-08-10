@@ -1,4 +1,5 @@
-﻿using Avalonia_Mapping_Tools;
+using Avalonia_Mapping_Tools;
+using Avalonia_Mapping_Tools.ViewModels;
 using Avalonia_Mapping_Tools.Views;
 using Mapping_Tools.Classes.ToolHelpers;
 using MsBox.Avalonia;
@@ -306,6 +307,8 @@ namespace Mapping_Tools.Classes.SystemTools {
             bool useGosumemory = await useGosuBox.ShowAsync() == ButtonResult.Yes;
             Settings.UseGosumemory = useGosumemory;
             Settings.GosumemoryPath = "none";
+            MainWindowViewModel.ChangeUsingGosu(useGosumemory);
+
             if(!useGosumemory) return;
 
             var autoGosuBox = MessageBoxManager.GetMessageBoxStandard("Gosumemory Setup",
