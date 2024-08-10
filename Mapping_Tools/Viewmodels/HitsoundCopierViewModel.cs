@@ -75,10 +75,9 @@ public partial class HitsoundCopierViewModel : ViewModelBase
         MutedSampleSet = SampleSet.None;
 	}
 
-	public void LoadCurrentBeatmap(bool copyTo)
+	public async void LoadCurrentBeatmap(bool copyTo)
 	{
-		if(SettingsManager.GetRecentMaps().Count == 0) return;
-		string[] currentMaps = MainWindowViewModel.GetCurrentMaps();
+		string[] currentMaps = [await IOHelper.GetCurrentBeatmap()];
 		SetPath(currentMaps, copyTo);
 	}
 

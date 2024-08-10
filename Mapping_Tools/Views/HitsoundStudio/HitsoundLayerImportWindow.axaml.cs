@@ -54,9 +54,9 @@ public partial class HitsoundLayerImportWindow : Window
         if( paths.Length != 0 ) { BeatmapPathBox.Text = paths[0]; }
     }
 
-	private void BeatmapLoad_Click(object sender, RoutedEventArgs e) {
+	private async void BeatmapLoad_Click(object sender, RoutedEventArgs e) {
         try {
-            string path = IOHelper.GetCurrentBeatmap();
+            string path = await IOHelper.GetCurrentBeatmap();
             if (path != "") { BeatmapPathBox.Text = path; }
         }
         catch (Exception ex) {
@@ -69,9 +69,9 @@ public partial class HitsoundLayerImportWindow : Window
         if( paths.Length != 0 ) { BeatmapPathBox2.Text = string.Join("|", paths); }
     }
 
-	private void BeatmapLoad2_Click(object sender, RoutedEventArgs e) {
+	private async void BeatmapLoad2_Click(object sender, RoutedEventArgs e) {
         try {
-            string path = IOHelper.GetCurrentBeatmap();
+            string path = await IOHelper.GetCurrentBeatmap();
             if (path != "") { BeatmapPathBox2.Text = path; }
         }
         catch (Exception ex) {
@@ -84,9 +84,9 @@ public partial class HitsoundLayerImportWindow : Window
         if( paths.Length != 0 ) { BeatmapPathBox4.Text = string.Join("|", paths); }
     }
 
-    private void BeatmapLoad4_Click(object sender, RoutedEventArgs e) {
+    private async void BeatmapLoad4_Click(object sender, RoutedEventArgs e) {
         try {
-            string path = IOHelper.GetCurrentBeatmap();
+            string path = await IOHelper.GetCurrentBeatmap();
             if (path != "") { BeatmapPathBox4.Text = path; }
         }
         catch (Exception ex) {

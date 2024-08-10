@@ -88,7 +88,7 @@ namespace Mapping_Tools.Classes.SystemTools {
 
         public static async void QuickUndo() {
             try {
-                var path = IOHelper.GetCurrentBeatmap();
+                var path = await IOHelper.GetCurrentBeatmap();
                 var backupFile = new DirectoryInfo(SettingsManager.GetBackupsPath()).GetFiles().OrderByDescending(x => x.CreationTime).FirstOrDefault();
                 if (backupFile != null) {
                     try {

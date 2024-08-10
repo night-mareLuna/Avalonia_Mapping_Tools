@@ -490,11 +490,11 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
         catch (Exception ex) { ex.Show(); }
 	}
 
-	private void BaseBeatmapLoad_Click(object obj, RoutedEventArgs args)
+	private async void BaseBeatmapLoad_Click(object obj, RoutedEventArgs args)
 	{
         try
         {
-            string path = IOHelper.GetCurrentBeatmap();
+            string path = await IOHelper.GetCurrentBeatmap();
             if (path != "")
             {
                 settings.BaseBeatmap = path;
@@ -783,11 +783,11 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
         }
 	}
 
-	private void SelectedImportPathLoad_Click(object obj, RoutedEventArgs args)
+	private async void SelectedImportPathLoad_Click(object obj, RoutedEventArgs args)
 	{
         try
         {
-            string path = IOHelper.GetCurrentBeatmap();
+            string path = await IOHelper.GetCurrentBeatmap();
             if (path != "")
             {
                 SelectedImportPathBox.Text = path;
