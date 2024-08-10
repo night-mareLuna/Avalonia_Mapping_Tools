@@ -56,7 +56,7 @@ namespace Mapping_Tools.Classes.SystemTools {
         private async void PeriodicBackupTimerOnTick(object? sender, EventArgs e) {
             try {
                 // Get the newest beatmap, save a temp version, get the hash and compare it to the previous hash, backup temp file
-                var path = IOHelper.GetCurrentBeatmap();
+                var path = IOHelper.GetCurrentBeatmapNoGosu();
 
                 if (string.IsNullOrEmpty(path)) return;
 

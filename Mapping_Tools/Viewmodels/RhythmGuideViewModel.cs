@@ -23,11 +23,11 @@ public partial class RhythmGuideViewModel : ViewModelBase
 
 	public static void UpdateProgress(int prog) => Me!.Progress = prog;
 
-	public void ImportLoadCommand()
+	public async void ImportLoadCommand()
 	{
 		try 
 		{
-			var path = IOHelper.GetCurrentBeatmap();
+			var path = await IOHelper.GetCurrentBeatmap();
 			if(!string.IsNullOrEmpty(path))
 				GuideGeneratorArgs.Paths = [path];
 		}
@@ -41,11 +41,11 @@ public partial class RhythmGuideViewModel : ViewModelBase
 			GuideGeneratorArgs.Paths = paths;
 	}
 
-	public void ExportLoadCommand()
+	public async void ExportLoadCommand()
 	{
 		try
 		{
-			var path = IOHelper.GetCurrentBeatmap();
+			var path = await IOHelper.GetCurrentBeatmap();
 			if(!string.IsNullOrEmpty(path))
 				GuideGeneratorArgs.ExportPath = path;
 		}

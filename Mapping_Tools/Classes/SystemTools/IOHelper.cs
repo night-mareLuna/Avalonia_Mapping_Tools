@@ -5,6 +5,7 @@ using Avalonia.Platform.Storage;
 using Avalonia_Mapping_Tools.ViewModels;
 using System.Collections.Generic;
 using Avalonia_Mapping_Tools.Views;
+using Mapping_Tools.Classes.ToolHelpers;
 
 namespace Mapping_Tools.Classes.SystemTools {
     public class IOHelper {
@@ -252,8 +253,14 @@ namespace Mapping_Tools.Classes.SystemTools {
 
         // private static string ReadString(object readObj, string propName)
         //     => ReadClassProperty<string>(readObj, propName);
+		public static async Task<string> GetCurrentBeatmap()
+		{
+			if(SettingsManager.Settings.UseGosumemory)
+				return await GosumemoryReader.GetCurrentBeatmap();
+			else return GetCurrentBeatmapNoGosu();
+		}
 
-        public static string GetCurrentBeatmap() {
+        public static string GetCurrentBeatmapNoGosu() {
             string? path = null;
 			string[]? currentMaps = MainWindowViewModel.GetCurrentMaps();
 			if(currentMaps is not null)

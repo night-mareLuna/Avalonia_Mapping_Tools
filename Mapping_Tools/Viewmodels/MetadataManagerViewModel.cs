@@ -70,10 +70,10 @@ public partial class MetadataManagerViewModel : ViewModelBase
         }
 	}
 
-	public void ImportLoadCommand()
+	public async void ImportLoadCommand()
 	{
         try {
-            string path = IOHelper.GetCurrentBeatmap();
+            string path = await IOHelper.GetCurrentBeatmap();
             if (path != "") {
                 ImportPath = path;
             }
@@ -92,10 +92,10 @@ public partial class MetadataManagerViewModel : ViewModelBase
 
 	public void ImportCommand() => ImportFromBeatmap(ImportPath);
 
-	public void ExportLoadCommand()
+	public async void ExportLoadCommand()
 	{
         try {
-            string path = IOHelper.GetCurrentBeatmap();
+            string path = await IOHelper.GetCurrentBeatmap();
             if (path != "") {
                 ExportPath = path;
             }
