@@ -6,7 +6,7 @@ public partial class AboutViewModel : ViewModelBase
 	public string URLMappingTools { get; } = "https://github.com/OliBomby/Mapping_Tools";
 	public string URLAvalonia { get; } = "https://www.avaloniaui.net/";
 	public string URLGosumemory { get; } = "https://github.com/l3lackShark/gosumemory";
-	public string Version { get; } = "v0.0.6";
+	public string Version { get; } = "v0.1.0";
 	public AboutViewModel()
 	{
 
