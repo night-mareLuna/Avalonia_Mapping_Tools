@@ -17,6 +17,7 @@ public partial class MainWindowViewModel : ViewModelBase
 	[ObservableProperty] private string _DisplayCurrentMaps = "No Beatmap Selected!";
 	[ObservableProperty] private string _DisplayCurrentMapsTooltip = "No Beatmap Selected!";
 	[ObservableProperty] private string _TotalSelectedMaps = "(0) maps total";
+	[ObservableProperty] private bool _UseGosumemory;
 	private static string[] CurrentMaps = [];
 	private static MainWindowViewModel? Me;
 
@@ -46,7 +47,10 @@ public partial class MainWindowViewModel : ViewModelBase
 
 		object[] allTools = [.. defaultTools, /*separator,*/ .. mappingTools.OrderBy(d => d).ToArray()];
 		ToolsList = new ObservableCollection<object>(allTools);
+		UseGosumemory = SettingsManager.Settings.UseGosumemory;
 	}
+
+	public static void ChangeUsingGosu(bool useGosu) => Me!.UseGosumemory = useGosu;
 
 	private static void DisplayCurrentMap()
 	{
