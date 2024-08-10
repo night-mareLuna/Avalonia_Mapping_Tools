@@ -138,6 +138,31 @@
 				SelectedTime="{Binding PeriodicBackupInterval, Mode=TwoWay}"/>
 		</StackPanel>
 
+		<!-- GosuMemory -->
+
+		<CheckBox Margin="5 -5"
+			HorizontalAlignment="Left"
+			Content="Use Gosumemory to open beatmaps"
+			Click="ChangeUsingGosu"
+			IsChecked="{Binding UseGosumemory, Mode=TwoWay}"/>
+
+		<StackPanel Orientation="Horizontal"
+			IsVisible="{Binding UseGosumemory}">
+			<CheckBox Margin="20 0"
+				HorizontalAlignment="Left"
+				Content="Autorun Gosumemory"
+				Click="ChangeRunGosu"
+				IsChecked="{Binding RunGosumemory, Mode=TwoWay}"/>
+
+			<Button Margin="10 0"
+				Click="InstallGosu">
+				<TextBlock Text="Force Redownload"/>
+			</Button>
+
+		</StackPanel>
+
+		<!-- Other -->
+
 		<CheckBox Margin="5 -5"
 			HorizontalAlignment="Left"
 			Content="Current beatmap default folder in all tools"
