@@ -364,7 +364,7 @@ namespace Mapping_Tools.Classes.SystemTools {
                         downloadingBox.ViewModel().Progress = 95;
                         try
                         {
-                            Bash.RunCommandDirect("chmod", $"+x \"{Settings.GosumemoryPath}\"");
+                            Bash.RunCommandDirect("chmod", $"+x \"{Settings.GosumemoryPath}\"", true);
                         }
                         catch(Exception e)
                         {

@@ -6,20 +6,22 @@ namespace Mapping_Tools.Classes.SystemTools
 {
     public class Bash
     {
-        public static string RunCommand(string command)
+        public static string RunCommand(string command, bool printUsedCommand = false)
 		{
 			if(string.IsNullOrWhiteSpace(command))
 				return string.Empty;
 
-			return RunCommandDirect("bash", $"-c \"{command}\"");
+			return RunCommandDirect("bash", $"-c \"{command}\"", printUsedCommand);
 		}
 
-		public static string RunCommandDirect(string exe, string arguments)
+		public static string RunCommandDirect(string exe, string arguments, bool printUsedCommand = false)
 		{
 			if(string.IsNullOrWhiteSpace(arguments))
 				return string.Empty;
 
 			string commandOutput = string.Empty;
+			if(printUsedCommand)
+				Console.WriteLine($"{exe} {arguments}");
 			try
 			{
 				var process = new Process()
