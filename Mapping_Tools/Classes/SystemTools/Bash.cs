@@ -11,6 +11,14 @@ namespace Mapping_Tools.Classes.SystemTools
 			if(string.IsNullOrWhiteSpace(command))
 				return string.Empty;
 
+			return RunCommandDirect("bash", $"-c \"{command}\"");
+		}
+
+		public static string RunCommandDirect(string exe, string arguments)
+		{
+			if(string.IsNullOrWhiteSpace(arguments))
+				return string.Empty;
+
 			string commandOutput = string.Empty;
 			try
 			{
@@ -18,8 +26,8 @@ namespace Mapping_Tools.Classes.SystemTools
 				{
 					StartInfo = new ProcessStartInfo
 					{
-						FileName = "bash",
-						Arguments = $"-c \"{command}\"",
+						FileName = exe,
+						Arguments = arguments,
 						RedirectStandardOutput = true,
 						UseShellExecute = false,
 						CreateNoWindow = true,

@@ -242,7 +242,7 @@ namespace Mapping_Tools.Classes.SystemTools {
         {
             string? path = null;
             
-            bool isOsuRunning = Bash.RunCommand("pgrep osu\\!.exe") != string.Empty;
+            bool isOsuRunning = Bash.RunCommandDirect("pgrep", "osu!.exe") != string.Empty;
             if(isOsuRunning)
             {
                 string result = Bash.RunCommand("cat /proc/`pgrep osu\\!.exe`/cmdline");
@@ -253,17 +253,15 @@ namespace Mapping_Tools.Classes.SystemTools {
         }
 
 		private static string? TryOsuWinello()
-		{
-			string? path = null;
-			
-			string result = Bash.RunCommand($"/home/{Environment.UserName}/.local/bin/osu-wine --info");
+		{			
+			string result = Bash.RunCommandDirect($"/home/{Environment.UserName}/.local/bin/osu-wine", "--info");
 			foreach(string line in result.Split(Environment.NewLine))
 			{
 				if(line.Contains("osu! folder:"))
 					return line.Split(":")[^1].Trim()[1..^1] + '/';
 			}
 
-			return path;
+			return null;
 		}
 
 		private static string? TryLutris()
@@ -366,7 +364,7 @@ namespace Mapping_Tools.Classes.SystemTools {
                         downloadingBox.ViewModel().Progress = 95;
                         try
                         {
-                            Bash.RunCommand($"chmod +x {Settings.GosumemoryPath}");
+                            Bash.RunCommandDirect("chmod", $"+x \"{Settings.GosumemoryPath}\"");
                         }
                         catch(Exception e)
                         {
