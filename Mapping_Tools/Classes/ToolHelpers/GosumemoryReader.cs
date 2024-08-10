@@ -46,9 +46,17 @@ namespace Mapping_Tools.Classes.ToolHelpers
         {
             if(gosumemory is not null)
             {
-                Console.WriteLine("Closing gosumemory");
-                gosumemory.Kill();
+                try
+                {
+                    Console.WriteLine("Closing gosumemory");
+                    gosumemory.Kill();
+                }
+                catch(Exception e)
+                {
+                    e.Show();
+                }
                 gosumemory = null;
+                
             }
         }
 
