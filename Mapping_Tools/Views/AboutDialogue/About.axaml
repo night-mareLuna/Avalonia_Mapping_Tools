@@ -53,6 +53,17 @@
 
 			<TextBlock Margin="5 10" 
 				Text="Go support the original project!"/>
+
+			<TextBlock Margin="5" 
+				TextWrapping="Wrap" 
+				HorizontalAlignment="Left">
+				<InlineUIContainer>
+					<actipro:HyperlinkTextBlock
+						Command="{Binding OpenLink}"
+						CommandParameter="{Binding URLGosumemory}">Gosumemory </actipro:HyperlinkTextBlock>
+				</InlineUIContainer>
+				<Run>by l3lackShark.</Run>
+			</TextBlock>
 		</StackPanel>
 
 		<TextBlock Grid.Row="1"
