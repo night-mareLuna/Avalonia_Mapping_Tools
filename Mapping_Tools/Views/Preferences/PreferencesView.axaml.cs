@@ -4,7 +4,9 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using Avalonia.Styling;
+using Avalonia_Mapping_Tools.ViewModels;
 using Mapping_Tools.Classes.SystemTools;
+using Mapping_Tools.Classes.ToolHelpers;
 
 namespace Avalonia_Mapping_Tools.Views;
 public partial class PreferencesView : UserControl
@@ -25,7 +27,41 @@ public partial class PreferencesView : UserControl
 				ThemeVariant.Dark : ThemeVariant.Light;
 	}
 
-	public async void SelectFolder(object obj, RoutedEventArgs args)
+	private async void InstallGosu(object obj, RoutedEventArgs args)
+	{
+		await SettingsManager.DownloadGosuMemory();
+		if(SettingsManager.Settings.RunGosumemory)
+			GosumemoryReader.StartGosumemory();
+	}
+
+	private void ChangeUsingGosu(object obj, RoutedEventArgs args)
+	{
+		bool checkBoxChecked = (bool) (obj as CheckBox)!.IsChecked!;
+		MainWindowViewModel.ChangeUsingGosu(checkBoxChecked);
+		if(checkBoxChecked)
+		{
+			if(SettingsManager.Settings.RunGosumemory)
+				GosumemoryReader.StartGosumemory();
+		}
+		else
+			GosumemoryReader.Stop();
+	}
+
+	private async void ChangeRunGosu(object obj, RoutedEventArgs args)
+	{
+		bool checkBoxChecked = (bool) (obj as CheckBox)!.IsChecked!;
+		if(checkBoxChecked)
+		{
+			if(SettingsManager.Settings.GosumemoryPath == "none")
+				await SettingsManager.DownloadGosuMemory();
+			
+			GosumemoryReader.StartGosumemory();
+		}
+		else
+			GosumemoryReader.Stop();
+	}
+
+	private async void SelectFolder(object obj, RoutedEventArgs args)
 	{
 		string buttonName = (obj as Control)!.Name!;
 

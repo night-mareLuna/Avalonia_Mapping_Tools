@@ -17,7 +17,7 @@ namespace Mapping_Tools.Classes.ToolHelpers
         public static void StartGosumemory()
         {
             if(gosumemory is not null) return;
-            if(!SettingsManager.Settings.RunGosumemory) return;
+            if(!SettingsManager.Settings.UseGosumemory || !SettingsManager.Settings.RunGosumemory) return;
 
             string gosuPath = SettingsManager.GetGosumemPath();
             gosumemory = new Process()

@@ -1,4 +1,4 @@
-using Avalonia_Mapping_Tools;
+﻿using Avalonia_Mapping_Tools;
 using Avalonia_Mapping_Tools.ViewModels;
 using Avalonia_Mapping_Tools.Views;
 using Mapping_Tools.Classes.ToolHelpers;
@@ -333,6 +333,8 @@ namespace Mapping_Tools.Classes.SystemTools {
 
         public static async Task<bool> DownloadGosuMemory()
         {
+            GosumemoryReader.Stop();
+
             //string gosuLink32 = "https://github.com/l3lackShark/gosumemory/releases/latest/download/gosumemory_linux_386.zip";
             string gosuLink64 = "https://github.com/l3lackShark/gosumemory/releases/latest/download/gosumemory_linux_amd64.zip";
             string downloadPath = Program.configPath + "/gosumemory_linux_amd64.zip";
@@ -383,6 +385,9 @@ namespace Mapping_Tools.Classes.SystemTools {
                 var abortBox = MessageBoxManager.GetMessageBoxStandard("Gosumemory Setup",
                     "Aborting download",
                     ButtonEnum.Ok);
+
+                if(Settings.GosumemoryPath == "none")
+                    Settings.RunGosumemory = false;
                 abortBox.ShowAsync();
             }
             return false;
