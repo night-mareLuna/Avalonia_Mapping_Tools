@@ -1,19 +1,20 @@
 # Avalonia Mapping Tools 
 
-Very early (but usable) port of [Mapping Tools](https://github.com/OliBomby/Mapping_Tools) to [AvaloniaUI](https://www.avaloniaui.net/).
-This is made for the purpose of running Mapping Tools natively on linux based systems. This also makes it possible to run on MacOS, however I have no way to run and test for any MacOS system.
+A basic port of [Mapping Tools](https://github.com/OliBomby/Mapping_Tools) to [AvaloniaUI](https://www.avaloniaui.net/).
+This is made for the purpose of running Mapping Tools natively on linux based desktops. This theoretically makes it possible to run on MacOS, however I have no way to run and test for any MacOS system.
 
 All tool specific settings should function exactly the same as original Mapping Tools. Any issues encountered with tools should be reported to OliBomby unless issues are specific to Avalonia Mapping Tools.
 
 ## Currently Implimented Tools and Features
 - Automatic and periodic backups
+- Automatically setup and run [gosumemory](https://github.com/l3lackShark/gosumemory) to fetch the currently selected beatmap directly from osu!
 - [Map Cleaner](https://github.com/OliBomby/Map-Cleaner) by [OliBomby](https://github.com/OliBomby)
 - Hitsound Copier by [OliBomby](https://github.com/OliBomby)
 - Hitsound Preview Helper by [OliBomby](https://github.com/OliBomby) 
 - Hitsound Studio by [OliBomby](https://github.com/OliBomby) 
 - Rhythm Guide by [OliBomby](https://github.com/OliBomby) 
 - Metadata Manager by [OliBomby](https://github.com/OliBomby) 
-- Slider Merger by [OliBomby](https://github.com/OliBomby) 
+- Slider Merger by [OliBomby](https://github.com/OliBomby)
 
 
 ## Requirements
