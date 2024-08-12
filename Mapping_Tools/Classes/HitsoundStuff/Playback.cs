@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using MsBox.Avalonia;
@@ -8,49 +9,45 @@ namespace Mapping_Tools.Classes.HitsoundStuff;
 
 public class Playback
 {
-	private static Process? AudioPlayerProcess;
+	/// Use a list to prevent issues caused by multiple hitsounds playing at the same time (spam clicking the hitsounds)
+	private static readonly List<Process> AudioPlayerProcesses = [];
 	public Playback(string path)
 	{
-		if(string.IsNullOrEmpty(path))
-			throw new Exception("Path to file is empty");
+		if(string.IsNullOrWhiteSpace(path))
+			throw new ArgumentNullException("Path to file is null or empty");
 		if(!File.Exists(path))
-			throw new FileNotFoundException($"{path} does not exist!");
+			throw new FileNotFoundException($"{path} does not exist or is not accessible!");
 		if(!IsHitsound(path))
-			throw new Exception($"{path.Split('/')[^1]} is not a sound file!");
+			throw new ArgumentOutOfRangeException($"{path.Split('/')[^1]} is not a sound file!");
 
-
-		if(AudioPlayerProcess is not null)
-			Stop();
-
-		AudioPlayerProcess = new Process
+		Process hitsound = new Process
 		{
 			StartInfo = new ProcessStartInfo
             {
-                FileName = "/bin/bash",
-                Arguments = $"-c \"play \'{path}\'\"",
-				CreateNoWindow = true
+                FileName = "play",
+                Arguments = $"\"{path}\"",
+				CreateNoWindow = true,
+				RedirectStandardOutput = true,
+				RedirectStandardError = true // Prevent sox from printing to console
             }
 		};
+
+		AudioPlayerProcesses.Add(hitsound);
 	}
 
 	public async void Play()
 	{
-		AudioPlayerProcess!.Start();
-		await AudioPlayerProcess.WaitForExitAsync();
-		if(AudioPlayerProcess.ExitCode!=0)
+		using Process hitsound = AudioPlayerProcesses[^1];
+		hitsound.Start();
+		await hitsound.WaitForExitAsync();
+		if(hitsound.ExitCode!=0)
 		{
 			var box = MessageBoxManager.GetMessageBoxStandard("Sox not found!",
 				"To support hitsound preview, install \"sox\" and its codecs using your distro's package manager.",
 				ButtonEnum.Ok);
-			box.ShowAsync();
+			await box.ShowAsync();
 		}
-		Stop();
-	}
-
-	public void Stop()
-	{
-		AudioPlayerProcess!.Dispose();
-		AudioPlayerProcess = null;
+		AudioPlayerProcesses.Remove(AudioPlayerProcesses[AudioPlayerProcesses.IndexOf(hitsound)]);
 	}
 
 	private static bool IsHitsound(string path)
