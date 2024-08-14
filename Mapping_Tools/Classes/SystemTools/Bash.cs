@@ -11,7 +11,7 @@ namespace Mapping_Tools.Classes.SystemTools
 			if(string.IsNullOrWhiteSpace(command))
 				return string.Empty;
 
-			return RunCommandDirect("bash", $"-c \"{command}\"", printUsedCommand);
+			return RunCommandDirect("sh", $"-c \"{command}\"", printUsedCommand);
 		}
 
 		public static string RunCommandDirect(string exe, string arguments, bool printUsedCommand = false)
