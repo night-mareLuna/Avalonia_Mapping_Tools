@@ -333,7 +333,7 @@ namespace Mapping_Tools.Classes.SystemTools {
         {
             GosumemoryReader.Stop();
 
-            string gosuLink = "https://github.com/l3lackShark/gosumemory/releases/latest/download/gosumemory_windows_amd64.zip";
+            string gosuLink = "https://github.com/l3lackShark/gosumemory/releases/latest/download/gosumemory_windows_386.zip";
             string downloadPath = Program.configPath + '/' + gosuLink.Split('/')[^1];
 
             var downloadGosuBox = MessageBoxManager.GetMessageBoxStandard("Gosumemory Setup",
