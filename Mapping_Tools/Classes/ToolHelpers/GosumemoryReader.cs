@@ -84,7 +84,7 @@ namespace Mapping_Tools.Classes.ToolHelpers
             string WineEnviron = string.Empty;
 
             string gosumemEXE = SettingsManager.GetGosumemPath();
-            for(int i=1; i<WineEnvironList.Count; i++)
+            for(int i=0; i<WineEnvironList.Count; i++)
                 WineEnviron += $" {WineEnvironList[i]}";
 
             gosumemory = new Process()
