@@ -333,9 +333,8 @@ namespace Mapping_Tools.Classes.SystemTools {
         {
             GosumemoryReader.Stop();
 
-            //string gosuLink32 = "https://github.com/l3lackShark/gosumemory/releases/latest/download/gosumemory_linux_386.zip";
-            string gosuLink64 = "https://github.com/l3lackShark/gosumemory/releases/latest/download/gosumemory_linux_amd64.zip";
-            string downloadPath = Program.configPath + "/gosumemory_linux_amd64.zip";
+            string gosuLink = "https://github.com/l3lackShark/gosumemory/releases/latest/download/gosumemory_windows_amd64.zip";
+            string downloadPath = Program.configPath + '/' + gosuLink.Split('/')[^1];
 
             var downloadGosuBox = MessageBoxManager.GetMessageBoxStandard("Gosumemory Setup",
                 $"Gosumemory will be downloaded and saved to\n{downloadPath}",
@@ -347,7 +346,7 @@ namespace Mapping_Tools.Classes.SystemTools {
                 var downloadingBox = new DownloadProgress($"Downloading... Please wait.", cts);
                 downloadingBox.Show();
 
-                bool downloaded = await DownloadManager.Download(gosuLink64, downloadPath, cts, downloadingBox.ViewModel());
+                bool downloaded = await DownloadManager.Download(gosuLink, downloadPath, cts, downloadingBox.ViewModel());
                 if(downloaded)
                 {
                     string extractPath = Program.configPath + "/gosumemory";
@@ -359,17 +358,17 @@ namespace Mapping_Tools.Classes.SystemTools {
                     if(extracted)
                     {
                         downloadingBox.ViewModel().UpdateInfo("Finalising.");
-                        Settings.GosumemoryPath = extractPath + "/gosumemory";
+                        Settings.GosumemoryPath = extractPath + "/gosumemory.exe";
                         File.Delete(downloadPath);
-                        downloadingBox.ViewModel().Progress = 95;
-                        try
-                        {
-                            Bash.RunCommandDirect("chmod", $"+x \"{Settings.GosumemoryPath}\"", true);
-                        }
-                        catch(Exception e)
-                        {
-                            e.Show();
-                        }
+                        // downloadingBox.ViewModel().Progress = 95;
+                        // try
+                        // {
+                        //     Bash.RunCommandDirect("chmod", $"+x \"{Settings.GosumemoryPath}\"", true);
+                        // }
+                        // catch(Exception e)
+                        // {
+                        //     e.Show();
+                        // }
                         downloadingBox.ViewModel().Progress = 100;
                         downloadingBox.ViewModel().UpdateInfo("Gosumemory setup complete");
                         downloadingBox.ViewModel().DownloadComplete = true;

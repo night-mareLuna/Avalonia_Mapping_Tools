@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.WebSockets;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Mapping_Tools.Classes.SystemTools;
 using MsBox.Avalonia;
@@ -13,8 +15,9 @@ namespace Mapping_Tools.Classes.ToolHelpers
     public class GosumemoryReader
     {
         private static Process? gosumemory;
+        private static bool waitingForOsu = false;
 
-        public static void StartGosumemory()
+        public static void StartGosumemoryNative()
         {
             if(gosumemory is not null) return;
             if(!SettingsManager.Settings.UseGosumemory || !SettingsManager.Settings.RunGosumemory) return;
@@ -35,6 +38,78 @@ namespace Mapping_Tools.Classes.ToolHelpers
             try
             {
 			    gosumemory.Start();
+            }
+            catch(Exception e)
+            {
+                e.Show();
+            }
+        }
+
+        public static void StartGosumemory()
+        {
+            if(gosumemory is not null) return;
+            if(!SettingsManager.Settings.UseGosumemory || !SettingsManager.Settings.RunGosumemory) return;
+            if(waitingForOsu) return;
+            if(string.IsNullOrWhiteSpace(Bash.RunCommandDirect("pgrep", "osu!.exe")))
+            {
+                waitingForOsu = true;
+                Console.WriteLine("Waiting for osu! to launch...");
+                Task.Run(() =>
+                {
+                    do
+                    {
+                        Thread.Sleep(2000);
+                    }while(string.IsNullOrWhiteSpace(Bash.RunCommandDirect("pgrep", "osu!.exe")));
+                    waitingForOsu = false;
+                    StartGosumemory();
+                });
+            }
+            else
+                StartGosumemoryWine();
+        }
+
+        private static void StartGosumemoryWine()
+        {
+            List<string> WineEnvironList = GetWineEnviron();
+            string Wine = "wine";
+            for(int i=0; i<WineEnvironList.Count; i++)
+            {
+                if(WineEnvironList[i].Contains("WINELOADER="))
+                {
+                    Wine = WineEnvironList[i].Replace("WINELOADER=", "");
+                    WineEnvironList.Remove(WineEnvironList[i]);
+                    break;
+                }
+            }
+            string WineEnviron = string.Empty;
+
+            string gosumemEXE = SettingsManager.GetGosumemPath();
+            for(int i=1; i<WineEnvironList.Count; i++)
+                WineEnviron += $" {WineEnvironList[i]}";
+
+            gosumemory = new Process()
+            {
+                StartInfo = new ProcessStartInfo()
+                {
+                    FileName = "bash",
+                    Arguments = $"-c \"{WineEnviron.Trim()} {Wine} {gosumemEXE}\""
+                }
+            };
+
+            Console.WriteLine($"Attempting to start {gosumemEXE}");
+            try
+            {
+			    gosumemory.Start();
+                Task.Run(() =>
+                {
+                    do
+                    {
+                        Thread.Sleep(2000);
+                    }while(!string.IsNullOrWhiteSpace(Bash.RunCommandDirect("pgrep", "osu!.exe")));
+                    Console.WriteLine("osu! is no longer detected.");
+                    Stop();
+                    StartGosumemory();
+                });
             }
             catch(Exception e)
             {
@@ -98,6 +173,24 @@ namespace Mapping_Tools.Classes.ToolHelpers
 
             // Unescape for rare issues with certain unicode characters like '&'
             return Regex.Unescape(fullPath);
+        }
+
+        private static List<string> GetWineEnviron()
+        {
+            List<string> WineEnviron = [];
+            string[] environ = Bash.RunCommand("cat /proc/`pgrep osu\\!.exe`/environ").Split('\0');
+            string[] envars = ["WINELOADER", "WINEARCH", "WINEPREFIX", "WINEESYNC", "WINEFSYNC"];
+
+            for(int i=0; i<environ.Length; i++)
+            {
+                for(int j=0; j<envars.Length; j++)
+                {
+                    if(environ[i].Contains($"{envars[j]}="))
+                        WineEnviron.Add(environ[i].Trim());
+                }
+            }
+
+            return WineEnviron;
         }
     }
 }
