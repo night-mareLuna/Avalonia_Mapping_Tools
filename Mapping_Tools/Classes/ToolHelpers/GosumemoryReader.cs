@@ -91,7 +91,7 @@ namespace Mapping_Tools.Classes.ToolHelpers
             {
                 StartInfo = new ProcessStartInfo()
                 {
-                    FileName = "bash",
+                    FileName = "sh",
                     Arguments = $"-c \"{WineEnviron.Trim()} {Wine} \'{gosumemEXE}\'\""
                 }
             };
