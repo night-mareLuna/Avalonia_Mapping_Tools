@@ -92,7 +92,7 @@ namespace Mapping_Tools.Classes.ToolHelpers
                 StartInfo = new ProcessStartInfo()
                 {
                     FileName = "bash",
-                    Arguments = $"-c \"{WineEnviron.Trim()} {Wine} {gosumemEXE}\""
+                    Arguments = $"-c \"{WineEnviron.Trim()} {Wine} \'{gosumemEXE}\'\""
                 }
             };
 
