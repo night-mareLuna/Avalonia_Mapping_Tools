@@ -1,9 +1,12 @@
-﻿using Avalonia_Mapping_Tools;
+﻿using Avalonia.Controls;
+using Avalonia_Mapping_Tools;
 using Avalonia_Mapping_Tools.ViewModels;
 using Avalonia_Mapping_Tools.Views;
 using Mapping_Tools.Classes.ToolHelpers;
 using MsBox.Avalonia;
+using MsBox.Avalonia.Dto;
 using MsBox.Avalonia.Enums;
+using MsBox.Avalonia.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -299,10 +302,22 @@ namespace Mapping_Tools.Classes.SystemTools {
 
         private static async Task SetupGosumemory()
         {
-            var useGosuBox = MessageBoxManager.GetMessageBoxStandard("Gosumemory Setup",
-                "Do you want to use Gosumemory to read currently selected beatmaps?",
-                ButtonEnum.YesNo);
-            bool useGosumemory = await useGosuBox.ShowAsync() == ButtonResult.Yes;
+            var useGosuBox = MessageBoxManager.GetMessageBoxCustom(
+                new MessageBoxCustomParams{
+                    ContentTitle = "Gosumemory Setup",
+                    ContentMessage = "Do you want to use Gosumemory to read currently selected beatmaps?",
+                    Topmost = true,
+                    WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                    ShowInCenter = true,
+                    ButtonDefinitions = new List<ButtonDefinition>
+                    {
+                        new() { Name = "Yes", },
+                        new() { Name = "No", },
+                    }
+                }
+            );
+
+            bool useGosumemory = await useGosuBox.ShowAsync() == "Yes";
             Settings.UseGosumemory = useGosumemory;
             Settings.GosumemoryPath = "none";
             MainWindowViewModel.ChangeUsingGosu(useGosumemory);
