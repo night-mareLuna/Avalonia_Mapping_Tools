@@ -258,7 +258,7 @@
 						Text="Preview Time"/>
 					<TextBox Margin="10 1"
 						Grid.Row="9" Grid.Column="1"
-						Text="{Binding PreviewTime}"/>
+						Text="{Binding PreviewTime, UpdateSourceTrigger=LostFocus}"/>
 
 					<!-- Colours -->
 

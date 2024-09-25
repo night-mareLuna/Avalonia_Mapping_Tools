@@ -155,7 +155,7 @@
 					<TextBox Grid.Row="3" 
 						Margin="5" 
 						Watermark="Temporal leniency"
-						Text="{Binding TemporalLeniency, Mode=TwoWay}"/>
+						Text="{Binding TemporalLeniency, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
 				</Grid>
 
 				<CheckBox Margin="5 5 5 -5"
