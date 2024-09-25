@@ -11,6 +11,7 @@ using Mapping_Tools.Classes.MathUtil;
 using Mapping_Tools.Classes.SystemTools;
 using Mapping_Tools.Classes.ToolHelpers;
 using Mapping_Tools.Views;
+using MsBox.Avalonia.Enums;
 
 namespace Avalonia_Mapping_Tools.Views;
 public partial class PropertyTransformerView : SingleRunMappingTool, ISavable<PropertyTransformerViewModel>
@@ -28,12 +29,14 @@ public partial class PropertyTransformerView : SingleRunMappingTool, ISavable<Pr
 	}
 
 	private async void Start_Click(object? obj, RoutedEventArgs args) {
-        // Backup
-        string[] filesToCopy = MainWindowViewModel.GetCurrentMaps();
-        await BackupManager.SaveMapBackup(filesToCopy);
+		if(await MainWindow.ShowSaveDialog() == ButtonResult.Ok)
+		{
+			string[] filesToCopy = MainWindowViewModel.GetCurrentMaps();
+			await BackupManager.SaveMapBackup(filesToCopy);
 
-        ((PropertyTransformerViewModel)DataContext!).ExportPaths = filesToCopy;
-        BackgroundWorker.RunWorkerAsync(DataContext);
+			((PropertyTransformerViewModel)DataContext!).ExportPaths = filesToCopy;
+			BackgroundWorker.RunWorkerAsync(DataContext);
+		}
     }
 
 	protected override void BackgroundWorker_DoWork(object? sender, DoWorkEventArgs e) {
