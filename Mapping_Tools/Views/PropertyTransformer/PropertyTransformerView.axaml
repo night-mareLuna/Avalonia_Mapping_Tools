@@ -287,8 +287,8 @@
 						Background="Transparent"
 						HorizontalAlignment="Right"
 						VerticalAlignment="Bottom"
-						ToolTip.Tip="Run Property Transformer">
-						<!-- Click="Start_Click" -->
+						ToolTip.Tip="Run Property Transformer"
+						Click="Start_Click">
 						<materialIcons:MaterialIcon
 							Kind="PlayCircle"
 							Width="100"
