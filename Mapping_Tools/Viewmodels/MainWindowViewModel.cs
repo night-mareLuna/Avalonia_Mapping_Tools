@@ -43,7 +43,8 @@ public partial class MainWindowViewModel : ViewModelBase
 			"Hitsound Studio",
 			"Rhythm Guide",
 			"Metadata Manager",
-			"Slider Merger"];
+			"Slider Merger",
+			"Property Transformer"];
 
 		object[] allTools = [.. defaultTools, /*separator,*/ .. mappingTools.OrderBy(d => d).ToArray()];
 		ToolsList = new ObservableCollection<object>(allTools);
@@ -117,6 +118,9 @@ public partial class MainWindowViewModel : ViewModelBase
 				break;
 			case "Slider Merger":
 				CurrentView = new SliderMergerViewModel();
+				break;
+			case "Property Transformer":
+				CurrentView = new PropertyTransformerViewModel();
 				break;
 		}
 	}
