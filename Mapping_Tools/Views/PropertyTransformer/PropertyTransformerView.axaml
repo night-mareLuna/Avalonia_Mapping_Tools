@@ -8,9 +8,293 @@
 		xmlns:domain="clr-namespace:Mapping_Tools.Components.Domain"
         x:DataType="vm:PropertyTransformerViewModel">
 
-	<TextBlock
-		HorizontalAlignment="Center" 
-		VerticalAlignment="Center"
-		Text="Whoa!"/>
+	<Grid RowDefinitions="Auto,*,20" Margin="5 5">
+
+		<!-- Title -->
+
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="0">
+			<TextBlock Margin="10 10"
+				FontSize="32"
+				FontWeight="Bold"
+				Text="Property Transformer"/>
+
+			<Button Margin="5 5"
+				Width="32" 
+				Height="32"
+				Background="Transparent"
+				ToolTip.Tip="Click Me!"
+				Cursor="Hand">
+				<materialIcons:MaterialIcon
+					Kind="HelpCircle"
+					Width="30"
+					Height="30"/>
+				<Button.Flyout>
+					<Flyout>
+						<TextBlock TextWrapping="Wrap"
+							Padding="5"
+							MaxWidth="400">
+							Multiply and add to properties of all the timingpoints, hitobjects, bookmarks and storyboarded samples of the current map.
+							<LineBreak/>
+							<LineBreak/>
+							The new value is the old value times the multiplier plus the offset. The multiplier is the left textbox and the offset is the right textbox. The multiplier gets done first.
+							<LineBreak/>
+							<LineBreak/>
+							Resulting values get rounded if they have to be integer.
+						</TextBlock>
+					</Flyout>
+				</Button.Flyout>
+			</Button>
+		</StackPanel>
+
+		<!-- Property Transformer Options -->
+		<ScrollViewer Grid.Row="1"
+			AllowAutoHide="true"
+			ScrollViewer.VerticalScrollBarVisibility="Auto" 
+			ScrollViewer.HorizontalScrollBarVisibility="Auto">
+
+			<StackPanel Margin="5" HorizontalAlignment="Stretch">
+				<Grid ColumnDefinitions="Auto,*">
+					<StackPanel Grid.Column="0" HorizontalAlignment="Left" MaxWidth="610">
+
+						<!-- Timing Points -->
+
+						<Border Margin="0 0 0 5"	
+							MaxWidth="600"
+							BorderBrush="#171717"
+							BorderThickness="3"
+							CornerRadius="5">
+							<StackPanel Margin="5">
+								<TextBlock Margin="2 5"
+									Text="Timing Points"/>
+
+								<Separator Margin="2 5"/>
+
+								<StackPanel Margin="2" Orientation="Horizontal">
+									<TextBlock VerticalAlignment="Center" Text="Offset" MinWidth="150"/>
+									<TextBlock VerticalAlignment="Center" Text="x "/>
+									<TextBox Name="TpOffsetMultiplierBox" MinWidth="120" MaxWidth="200"/>
+									<TextBlock VerticalAlignment="Center" Text=" + "/>
+									<TextBox Name="TpOffsetOffsetBox" MinWidth="120" MaxWidth="200"/>
+                        		</StackPanel>
+								<StackPanel Margin="2" Orientation="Horizontal">
+									<TextBlock VerticalAlignment="Center" Text="BPM" MinWidth="150"/>
+									<TextBlock VerticalAlignment="Center" Text="x "/>
+									<TextBox Name="TpbpmMultiplierBox" MinWidth="120" MaxWidth="200"/>
+									<TextBlock VerticalAlignment="Center" Text=" + "/>
+									<TextBox Name="TpbpmOffsetBox" MinWidth="120" MaxWidth="200"/>
+								</StackPanel>
+								<StackPanel Margin="2" Orientation="Horizontal">
+									<TextBlock VerticalAlignment="Center" Text="Slider Velocity" MinWidth="150"/>
+									<TextBlock VerticalAlignment="Center" Text="x "/>
+									<TextBox Name="TpsvMultiplierBox" MinWidth="120" MaxWidth="200"/>
+									<TextBlock VerticalAlignment="Center" Text=" + "/>
+									<TextBox Name="TpsvOffsetBox" MinWidth="120" MaxWidth="200"/>
+								</StackPanel>
+								<StackPanel Margin="2" Orientation="Horizontal">
+									<TextBlock VerticalAlignment="Center" Text="Custom index" MinWidth="150"/>
+									<TextBlock VerticalAlignment="Center" Text="x "/>
+									<TextBox Name="TpIndexMultiplierBox" MinWidth="120" MaxWidth="200"/>
+									<TextBlock VerticalAlignment="Center" Text=" + "/>
+									<TextBox Name="TpIndexOffsetBox" MinWidth="120" MaxWidth="200"/>
+								</StackPanel>
+								<StackPanel Margin="2" Orientation="Horizontal">
+									<TextBlock VerticalAlignment="Center" Text="Volume" MinWidth="150"/>
+									<TextBlock VerticalAlignment="Center" Text="x "/>
+									<TextBox Name="TpVolumeMultiplierBox" MinWidth="120" MaxWidth="200"/>
+									<TextBlock VerticalAlignment="Center" Text=" + "/>
+									<TextBox Name="TpVolumeOffsetBox" MinWidth="120" MaxWidth="200"/>
+								</StackPanel>
+							</StackPanel>
+						</Border>
+
+						<!-- Storyboard -->
+
+						<Border Margin="0 5"	
+							MaxWidth="600"
+							BorderBrush="#171717"
+							BorderThickness="3"
+							CornerRadius="5">
+							<StackPanel Margin="5">
+								<TextBlock Margin="2 5"
+									Text="Storyboard"/>
+
+								<Separator Margin="2 5"/>
+
+								<StackPanel Margin="2" Orientation="Horizontal">
+									<TextBlock VerticalAlignment="Center" Text="Event time" MinWidth="150"/>
+									<TextBlock VerticalAlignment="Center" Text="x "/>
+									<TextBox Name="SbEventTimeMultiplierBox" MinWidth="120" MaxWidth="200"/>
+									<TextBlock VerticalAlignment="Center" Text=" + "/>
+									<TextBox Name="SbEventTimeOffsetBox" MinWidth="120" MaxWidth="200"/>
+								</StackPanel>
+								<StackPanel Margin="2" Orientation="Horizontal">
+									<TextBlock VerticalAlignment="Center" Text="Sample time" MinWidth="150"/>
+									<TextBlock VerticalAlignment="Center" Text="x "/>
+									<TextBox Name="SbSampleTimeMultiplierBox" MinWidth="120" MaxWidth="200"/>
+									<TextBlock VerticalAlignment="Center" Text=" + "/>
+									<TextBox Name="SbSampleTimeOffsetBox" MinWidth="120" MaxWidth="200"/>
+								</StackPanel>
+								<StackPanel Margin="2" Orientation="Horizontal">
+									<TextBlock VerticalAlignment="Center" Text="Sample volume" MinWidth="150"/>
+									<TextBlock VerticalAlignment="Center" Text="x "/>
+									<TextBox Name="SbSampleVolumeMultiplierBox" MinWidth="120" MaxWidth="200"/>
+									<TextBlock VerticalAlignment="Center" Text=" + "/>
+									<TextBox Name="SbSampleVolumeOffsetBox" MinWidth="120" MaxWidth="200"/>
+								</StackPanel>
+							</StackPanel>
+						</Border>
+
+						<!-- Other -->
+
+						<Border Margin="0 5"	
+							MaxWidth="600"
+							BorderBrush="#171717"
+							BorderThickness="3"
+							CornerRadius="5">
+							<StackPanel Margin="5">
+								<TextBlock Margin="2 5"
+									Text="Other"/>
+
+								<Separator Margin="2 5"/>
+
+								<StackPanel Margin="2" Orientation="Horizontal">
+									<TextBlock VerticalAlignment="Center" Text="Hitobject time" MinWidth="150"/>
+									<TextBlock VerticalAlignment="Center" Text="x "/>
+									<TextBox Name="HoTimeMultiplierBox" MinWidth="120" MaxWidth="200"/>
+									<TextBlock VerticalAlignment="Center" Text=" + "/>
+									<TextBox Name="HoTimeOffsetBox" MinWidth="120" MaxWidth="200"/>
+								</StackPanel>
+								<StackPanel Margin="2" Orientation="Horizontal">
+									<TextBlock VerticalAlignment="Center" Text="Hitobject volume" MinWidth="150"/>
+									<TextBlock VerticalAlignment="Center" Text="x "/>
+									<TextBox Name="HoVolumeMultiplierBox" MinWidth="120" MaxWidth="200"/>
+									<TextBlock VerticalAlignment="Center" Text=" + "/>
+									<TextBox Name="HoVolumeOffsetBox" MinWidth="120" MaxWidth="200"/>
+								</StackPanel>
+								<StackPanel Margin="2" Orientation="Horizontal">
+									<TextBlock VerticalAlignment="Center" Text="Bookmark time" MinWidth="150"/>
+									<TextBlock VerticalAlignment="Center" Text="x "/>
+									<TextBox Name="BookTimeMultiplierBox" MinWidth="120" MaxWidth="200"/>
+									<TextBlock VerticalAlignment="Center" Text=" + "/>
+									<TextBox Name="BookTimeOffsetBox" MinWidth="120" MaxWidth="200"/>
+								</StackPanel>
+								<StackPanel Margin="2" Orientation="Horizontal">
+									<TextBlock VerticalAlignment="Center" Text="Break time" MinWidth="150"/>
+									<TextBlock VerticalAlignment="Center" Text="x "/>
+									<TextBox Name="BreakTimeMultiplierBox" MinWidth="120" MaxWidth="200"/>
+									<TextBlock VerticalAlignment="Center" Text=" + "/>
+									<TextBox Name="BreakTimeOffsetBox" MinWidth="120" MaxWidth="200"/>
+								</StackPanel>
+								<StackPanel Margin="2" Orientation="Horizontal">
+									<TextBlock VerticalAlignment="Center" Text="Video time" MinWidth="150"/>
+									<TextBlock VerticalAlignment="Center" Text="x "/>
+									<TextBox Name="VideoTimeMultiplierBox" MinWidth="120" MaxWidth="200"/>
+									<TextBlock VerticalAlignment="Center" Text=" + "/>
+									<TextBox Name="VideoTimeOffsetBox" MinWidth="120" MaxWidth="200"/>
+								</StackPanel>
+								<StackPanel Margin="2" Orientation="Horizontal">
+									<TextBlock VerticalAlignment="Center" Text="Preview time" MinWidth="150"/>
+									<TextBlock VerticalAlignment="Center" Text="x "/>
+									<TextBox Name="PreviewTimeMultiplierBox" MinWidth="120" MaxWidth="200"/>
+									<TextBlock VerticalAlignment="Center" Text=" + "/>
+									<TextBox Name="PreviewTimeOffsetBox" MinWidth="120" MaxWidth="200"/>
+								</StackPanel>
+							</StackPanel>
+						</Border>
+
+						<StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+							<ToggleSwitch Margin="5" HorizontalAlignment="Left"
+								OnContent="Synchronize time fields"
+								OffContent="Synchronize time fields"/>
+							
+							<Button Margin="200 0 0 0"
+								Background="Transparent"
+								HorizontalAlignment="Right">
+								<materialIcons:MaterialIcon 
+									Width="24" 
+									Height="24"
+									Kind="Rocket"/>
+							</Button>
+						</StackPanel>
+					</StackPanel>
+
+					<!-- Right Column -->
+
+					<StackPanel Grid.Column="1" Margin="20 10" HorizontalAlignment="Left">
+						<CheckBox Cursor="Hand" Margin="5 -5">
+							Clip Properties</CheckBox>
+						<CheckBox Cursor="Hand" Margin="5 -5">
+							Enable Filters</CheckBox>
+
+						<!-- Filters -->
+
+						<StackPanel Margin="5 10" MaxWidth="264">
+							<TextBox Watermark="Whitelist" Margin="0 5" UseFloatingWatermark="True"/>
+							<TextBox Watermark="Blacklist" UseFloatingWatermark="True"/>
+
+							<StackPanel Orientation="Horizontal" Margin="0 5">
+								<StackPanel>
+									<TextBlock Margin="0 0 0 5"
+										FontSize="12" 
+										Text="Start time"/>
+									<TextBox HorizontalAlignment="Stretch"
+										MaxWidth="120"
+										MinWidth="84"
+										Watermark="Start time"/>
+								</StackPanel>
+
+								<TextBlock Margin="5"
+									VerticalAlignment="Bottom"
+									Text="to"/>
+
+								<StackPanel>
+									<TextBlock Margin="0 0 0 5"
+										FontSize="12" 
+										Text="End time"/>
+									<TextBox HorizontalAlignment="Stretch"
+										MaxWidth="120"
+										MinWidth="84"
+										Watermark="End time"/>
+								</StackPanel>
+							</StackPanel>
+						</StackPanel>
+					</StackPanel>
+
+					<!-- Run -->
+
+					<Button Margin="10 10" Grid.Column="1"
+						Width="98"
+						Height="98"
+						Background="Transparent"
+						HorizontalAlignment="Right"
+						VerticalAlignment="Bottom"
+						ToolTip.Tip="Run Property Transformer">
+						<!-- Click="Start_Click" -->
+						<materialIcons:MaterialIcon
+							Kind="PlayCircle"
+							Width="100"
+							Height="100"/>
+					</Button>
+
+				</Grid>
+			</StackPanel>
+		</ScrollViewer>
+
+		<!-- Credit and progress -->
+
+		<Grid ColumnDefinitions="Auto,*" Grid.Row="2">
+			<TextBlock Grid.Column="0"
+				Text="Made by OliBomby"
+				FontWeight="Bold" 
+				Opacity="0.58"/>
+			<ProgressBar Grid.Column="1"
+				Background="Transparent"
+				Margin="20 0 20 0"
+				Height="20"
+				Value="100"/>
+				<!-- Value="{Binding Progress}" -->
+		</Grid>
+
+	</Grid>
 
 </UserControl>
