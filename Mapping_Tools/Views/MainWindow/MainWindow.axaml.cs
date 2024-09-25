@@ -220,7 +220,7 @@ public partial class MainWindow : Window
 			var box = MessageBoxManager.GetMessageBoxStandard("Caution!",
 				"Make sure your beatmap(s) is saved in the editor before running this tool.",
 				ButtonEnum.OkAbort);
-			return await box.ShowAsPopupAsync(Me!);
+			return await box.ShowWindowDialogAsync(Me!);
 		}
 		return ButtonResult.Ok;
 	}
