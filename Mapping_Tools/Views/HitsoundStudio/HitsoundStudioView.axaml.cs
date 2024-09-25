@@ -15,6 +15,7 @@ using Mapping_Tools.Classes.BeatmapHelper.Enums;
 using Mapping_Tools.Classes.HitsoundStuff;
 using Mapping_Tools.Classes.MathUtil;
 using Mapping_Tools.Classes.SystemTools;
+using Mapping_Tools.Classes.ToolHelpers;
 using Mapping_Tools.Views;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
@@ -90,6 +91,15 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
 				"Please select a base beatmap first.",
 				ButtonEnum.Ok);
 			await box.ShowAsync();
+            return;
+        }
+
+        if (settings.UsePreviousSampleSchema && settings.PreviousSampleSchema == null)
+        {
+            var box = MessageBoxManager.GetMessageBoxStandard("Error!",
+                "Can not use previous sample schema, because it has not been set by a previous run.\nPlease run the tool first without 'Use previous sample schema' enabled.",
+                ButtonEnum.Ok);
+            await box.ShowAsync();
             return;
         }
 
@@ -302,6 +312,30 @@ public partial class HitsoundStudioView : SingleRunMappingTool, ISavable<Hitsoun
 
             if (arg.ExportSamples) {
                 HitsoundExporter.ExportLoadedSamples(loadedSamples, arg.ExportFolder, sampleNames, arg.SingleSampleExportFormat, comparer);
+            }
+        } else if (arg.HitsoundExportModeSetting == HitsoundStudioViewModel.HitsoundExportMode.Midi) {
+            List<SamplePackage> samplePackages = HitsoundConverter.ZipLayers(arg.HitsoundLayers, arg.DefaultSample, 0, false);
+            var beatmap = EditorReaderStuff.GetNewestVersionOrNot(arg.BaseBeatmap).Beatmap;
+
+            if (arg.ShowResults) {
+                result = $"Number of notes: {samplePackages.SelectMany(o => o.Samples).Count()}, " +
+                        $"Number of volume changes: {(arg.AddGreenLineVolumeToMidi ? beatmap.BeatmapTiming.TimingPoints.Count : 0)}";
+            }
+
+            UpdateProgressBar(worker, 20);
+
+            if (arg.DeleteAllInExportFirst &&  arg.ExportMap) {
+                // Delete all files in the export folder before filling it again
+                DirectoryInfo di = new DirectoryInfo(arg.ExportFolder);
+                foreach (FileInfo file in di.GetFiles()) {
+                    file.Delete();
+                }
+            }
+
+            UpdateProgressBar(worker, 40);
+
+            if (arg.ExportMap) {
+                MidiExporter.ExportAsMidi(samplePackages, beatmap, Path.Combine(arg.ExportFolder, arg.HitsoundDiffName + ".mid"), arg.AddGreenLineVolumeToMidi);
             }
         }
 

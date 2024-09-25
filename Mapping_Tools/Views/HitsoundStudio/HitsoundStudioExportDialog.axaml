@@ -51,10 +51,12 @@
 			<CheckBox Margin="0 0 0 -10"
 				IsChecked="{Binding DeleteAllInExportFirst}">Delete all files in export folder</CheckBox>
 			<CheckBox Margin="0 0 0 -10"
-				IsChecked="{Binding UsePreviousSampleSchema}">Use previous sample schema</CheckBox>
+				IsChecked="{Binding UsePreviousSampleSchema}"
+				IsVisible="{Binding SampleExportSettingsVisibility}">Use previous sample schema</CheckBox>
 			<CheckBox Margin="0 0 0 5"
 				IsEnabled="{Binding UsePreviousSampleSchema}"
-				IsChecked="{Binding AllowGrowthPreviousSampleSchema}">Allow growth of previous sample schema</CheckBox>
+				IsChecked="{Binding AllowGrowthPreviousSampleSchema}"
+				IsVisible="{Binding SampleExportSettingsVisibility}">Allow growth of previous sample schema</CheckBox>
 
 			<TextBlock Margin="0 10 0 0"
 				FontSize="12" 
@@ -66,14 +68,17 @@
 
 			<TextBlock Margin="0 5 0 0"
 				FontSize="12" 
-				Text="Note grouping leniency"/>
+				Text="Note grouping leniency"
+				IsVisible="{Binding StandardExtraSettingsVisibility}"/>
 			<TextBox Margin="0 5 0 0"
 				Text="{Binding ZipLayersLeniency, Mode=TwoWay}"
-				HorizontalAlignment="Stretch"/>
+				HorizontalAlignment="Stretch"
+				IsVisible="{Binding StandardExtraSettingsVisibility}"/>
 
 			<TextBlock Margin="0 5 0 0"
 				FontSize="12" 
-				Text="First custom index"/>
+				Text="First custom index"
+				IsVisible="{Binding StandardExtraSettingsVisibility}"/>
 			<TextBox Margin="0 5 0 0"
 				IsVisible="{Binding StandardExtraSettingsVisibility}"
 				Text="{Binding FirstCustomIndex, Mode=TwoWay}"
@@ -82,30 +87,39 @@
 			<CheckBox Margin="0 5 0 0"
 				IsVisible="{Binding CoincidingExtraSettingsVisibility}"
 				IsChecked="{Binding AddCoincidingRegularHitsounds}">Add regular hitsounds</CheckBox>
+			<CheckBox Margin="0 5 0 0"
+				IsChecked="{Binding AddGreenLineVolumeToMidi}" 
+                IsVisible="{Binding MidiExtraSettingsVisibility}">Add green line volume</CheckBox>
 
 			<TextBlock Margin="0 5 0 0"
 				FontSize="12" 
-				Text="Export gamemode"/>
+				Text="Export gamemode"
+				IsVisible="{Binding SampleExportSettingsVisibility}"/>
 			<ComboBox Margin="0 5 0 0"
 				ItemsSource="{Binding HitsoundExportGameModes}"
 				SelectedItem="{Binding HitsoundExportGameMode}"
-				HorizontalAlignment="Stretch"/>
+				HorizontalAlignment="Stretch"
+				IsVisible="{Binding SampleExportSettingsVisibility}"/>
 
 			<TextBlock Margin="0 20 0 0"
 				FontSize="12" 
-				Text="Sample file format"/>
+				Text="Sample file format"
+				IsVisible="{Binding SampleExportSettingsVisibility}"/>
 			<ComboBox Margin="0 5 0 0"
 				ItemsSource="{Binding SampleExportFormatDisplayNames}"
 				SelectedItem="{Binding SingleSampleExportFormatDisplay}"
-				HorizontalAlignment="Stretch"/>
+				HorizontalAlignment="Stretch"
+				IsVisible="{Binding SampleExportSettingsVisibility}"/>
 
 			<TextBlock Margin="0 5 0 0"
 				FontSize="12" 
-				Text="Mixed sample file format"/>
+				Text="Mixed sample file format"
+				IsVisible="{Binding SampleExportSettingsVisibility}"/>
 			<ComboBox Margin="0 5 0 0"
 				ItemsSource="{Binding SampleExportFormatDisplayNames}"
 				SelectedItem="{Binding MixedSampleExportFormatDisplay}"
-				HorizontalAlignment="Stretch"/>
+				HorizontalAlignment="Stretch"
+				IsVisible="{Binding SampleExportSettingsVisibility}"/>
 
 			<StackPanel Orientation="Horizontal" Margin="0 10 0 0"
 				HorizontalAlignment="Center">

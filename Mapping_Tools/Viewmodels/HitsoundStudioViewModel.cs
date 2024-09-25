@@ -29,14 +29,17 @@ public partial class HitsoundStudioViewModel : ViewModelBase
 	[ObservableProperty] private bool _UsePreviousSampleSchema;
 	[ObservableProperty] private bool _AllowGrowthPreviousSampleSchema;
 	[ObservableProperty] private bool _AddCoincidingRegularHitsounds;
+	[ObservableProperty] private bool _AddGreenLineVolumeToMidi;
 	public SampleSchema? PreviousSampleSchema { get; set; }
 	[ObservableProperty] private HitsoundExportMode _HitsoundExportModeSetting;
-	[JsonIgnore] public bool StandardExtraSettingsVisibility =>
-		HitsoundExportModeSetting == HitsoundExportMode.Standard;
-	[JsonIgnore] public bool CoincidingExtraSettingsVisibility =>
-		HitsoundExportModeSetting == HitsoundExportMode.Coinciding;
-	[JsonIgnore] public bool StoryboardExtraSettingsVisibility =>
-		HitsoundExportModeSetting == HitsoundExportMode.Storyboard;
+
+	// Make sure view updates when changing export mode
+	[ObservableProperty] [property: JsonIgnore] private bool _StandardExtraSettingsVisibility;
+	[ObservableProperty] [property: JsonIgnore] private bool _CoincidingExtraSettingsVisibility;
+	[ObservableProperty] [property: JsonIgnore] private bool _StoryboardExtraSettingsVisibility;
+	[ObservableProperty] [property: JsonIgnore] private bool _MidiExtraSettingsVisibility;
+	[ObservableProperty] [property: JsonIgnore] private bool _SampleExportSettingsVisibility;
+
 	public IEnumerable<HitsoundExportMode> HitsoundExportModes => Enum.GetValues(typeof(HitsoundExportMode)).Cast<HitsoundExportMode>();
 	[ObservableProperty] private GameMode _HitsoundExportGameMode;
 	[JsonIgnore] public IEnumerable<GameMode> HitsoundExportGameModes => Enum.GetValues(typeof(GameMode)).Cast<GameMode>();
@@ -103,19 +106,27 @@ public partial class HitsoundStudioViewModel : ViewModelBase
         ExportSamples = true;
         DeleteAllInExportFirst = false;
         AddCoincidingRegularHitsounds = true;
+		AddGreenLineVolumeToMidi = true;
         HitsoundExportModeSetting = HitsoundExportMode.Standard;
         HitsoundExportGameMode = GameMode.Standard;
         ZipLayersLeniency = 15;
         FirstCustomIndex = 1;
         SingleSampleExportFormat = HitsoundExporter.SampleExportFormat.Default;
         MixedSampleExportFormat = HitsoundExporter.SampleExportFormat.Default;
+
+		StandardExtraSettingsVisibility = HitsoundExportModeSetting == HitsoundExportMode.Standard;
+		CoincidingExtraSettingsVisibility = false;
+		StoryboardExtraSettingsVisibility = false;
+		MidiExtraSettingsVisibility = false;
+		SampleExportSettingsVisibility = true;
 	}
 
 	public enum HitsoundExportMode
 	{
 		Standard,
 		Coinciding,
-		Storyboard
+		Storyboard,
+		Midi
 	}
 
     partial void OnSingleSampleExportFormatChanged(HitsoundExporter.SampleExportFormat value)
@@ -191,6 +202,15 @@ public partial class HitsoundStudioViewModel : ViewModelBase
     // {
     //     ((IWavePlayer)sender!).Dispose();
     // }
+
+	partial void OnHitsoundExportModeSettingChanged(HitsoundExportMode value)
+	{
+		StandardExtraSettingsVisibility = value == HitsoundExportMode.Standard;
+		CoincidingExtraSettingsVisibility = value == HitsoundExportMode.Coinciding;
+		StoryboardExtraSettingsVisibility = value == HitsoundExportMode.Storyboard;
+		MidiExtraSettingsVisibility = value == HitsoundExportMode.Midi;
+		SampleExportSettingsVisibility = value != HitsoundExportMode.Midi;
+	}
 
     public static void SetProgress(int prog) => Me!.Progress = prog;
 }
