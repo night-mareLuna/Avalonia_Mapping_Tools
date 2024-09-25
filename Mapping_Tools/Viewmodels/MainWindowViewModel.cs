@@ -27,15 +27,13 @@ public partial class MainWindowViewModel : ViewModelBase
 		DisplayCurrentMap();
 		UpdateView((CurrentItem as string)!);
 		string[] defaultTools = ["Preferences"];
-
-		/// CRASHES WHEN RUNNING A TOOL IDK PLEASE HELP
-		/// 
-        // ListBoxItem separator = new()
-        // {
-        //     Focusable = false,
-		// 	IsHitTestVisible = false,
-		// 	Content = new Separator()
-        // };
+		 
+        ListBoxItem separator = new()
+        {
+            Focusable = false,
+			IsHitTestVisible = false,
+		 	Content = new Separator()
+        };
 
         string[] mappingTools = ["Map Cleaner",
 			"Hitsound Copier",
@@ -46,7 +44,7 @@ public partial class MainWindowViewModel : ViewModelBase
 			"Slider Merger",
 			"Property Transformer"];
 
-		object[] allTools = [.. defaultTools, /*separator,*/ .. mappingTools.OrderBy(d => d).ToArray()];
+		object[] allTools = [.. defaultTools, separator, .. mappingTools.OrderBy(d => d).ToArray()];
 		ToolsList = new ObservableCollection<object>(allTools);
 		UseGosumemory = SettingsManager.Settings.UseGosumemory;
 	}
