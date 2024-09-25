@@ -1,3 +1,4 @@
+using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 
@@ -43,11 +44,14 @@ public partial class PropertyTransformerViewModel : ViewModelBase
 	[ObservableProperty] private double minTimeFilter;
 	[ObservableProperty] private double maxTimeFilter;
 	[ObservableProperty] private bool syncTimeFields;
-	[JsonIgnore] public string[] ExportPaths { get; set; }	
+	[ObservableProperty] [property: JsonIgnore] private int _Progress = 0;
+	[JsonIgnore] public string[] ExportPaths { get; set; }
+	private static PropertyTransformerViewModel? Me;
 
 	
 	public PropertyTransformerViewModel()
 	{
+		Me = this;
 		ResetMultipliersAndOffsets();
 		
 		SyncTimeFields = false;
@@ -142,5 +146,6 @@ public partial class PropertyTransformerViewModel : ViewModelBase
 	partial void OnBreakTimeOffsetChanged(double value) => SetAllTimeOffsets(value);
 	partial void OnVideoTimeOffsetChanged(double value) => SetAllTimeOffsets(value);
 	partial void OnPreviewTimeOffsetChanged(double value) => SetAllTimeOffsets(value);
-	
+
+    public static void SetProgress(int prog) => Me!.Progress = prog;
 }

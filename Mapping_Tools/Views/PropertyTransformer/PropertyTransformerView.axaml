@@ -310,8 +310,7 @@
 				Background="Transparent"
 				Margin="20 0 20 0"
 				Height="20"
-				Value="100"/>
-				<!-- Value="{Binding Progress}" -->
+				Value="{Binding Progress}"/>
 		</Grid>
 
 	</Grid>
