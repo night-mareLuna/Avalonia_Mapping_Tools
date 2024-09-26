@@ -11,6 +11,10 @@
         Icon="/Data/mt_icon.ico"
         Title="Avalonia Mapping Tools">
 
+	<Window.KeyBindings>
+    	<KeyBinding Gesture="Ctrl+Shift+V" Command="{Binding PasteItem}" />
+	</Window.KeyBindings>
+
     <Grid Name="MainGrid" RowDefinitions="32,*">
 
 		<!-- TOP BAR -->
@@ -32,6 +36,12 @@
 						Click="OpenBeatmap">
 						<MenuItem.Icon>
 							<materialIcons:MaterialIcon Kind="Folder"/>
+						</MenuItem.Icon>
+					</MenuItem>
+					<MenuItem Header="_Open Beatmap(s) From Clipboard"
+						Command="{Binding PasteItem}">
+						<MenuItem.Icon>
+							<materialIcons:MaterialIcon Kind="ContentPaste"/>
 						</MenuItem.Icon>
 					</MenuItem>
 					<MenuItem Header="_Open Current Beatmap"

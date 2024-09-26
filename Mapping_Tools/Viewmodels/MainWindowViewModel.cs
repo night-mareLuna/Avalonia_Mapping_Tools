@@ -1,7 +1,9 @@
 using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using Avalonia.Controls;
+using Avalonia_Mapping_Tools.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Mapping_Tools.Classes;
 using Mapping_Tools.Classes.SystemTools;
@@ -62,6 +64,23 @@ public partial class MainWindowViewModel : ViewModelBase
 		{
 			e.Show();
 		}
+	}
+
+	public async void PasteItem()
+	{
+		string? clipboard = await MainWindow.GetClipboard();
+		if(string.IsNullOrWhiteSpace(clipboard)) return;
+		string[] mapsFromClipboard = clipboard.Split('\n');
+
+		foreach(string map in mapsFromClipboard)
+		{
+			Console.WriteLine(map);
+			if(!Path.Exists(map)) return;
+			if(map.Split('.')[^1] != "osu") return;
+		}
+
+		SetCurrentMaps(mapsFromClipboard);
+		Console.WriteLine("PASTED!");
 	}
 
 	public static void SetCurrentMaps(string[] maps)

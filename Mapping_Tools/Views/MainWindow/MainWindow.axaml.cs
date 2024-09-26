@@ -174,6 +174,13 @@ public partial class MainWindow : Window
         OpenFolder(folder);
 	}
 
+	public static async Task<string?> GetClipboard()
+	{
+		if(Me!.Clipboard is not null)
+			return await Me!.Clipboard.GetTextAsync();
+		else return "";
+	}
+
 	public static async void OpenFolder(string folder)
 	{
         using Process fileExplorer = new Process
