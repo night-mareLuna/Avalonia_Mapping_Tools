@@ -15,6 +15,7 @@ All tool specific settings should function exactly the same as original Mapping 
 - Rhythm Guide by [OliBomby](https://github.com/OliBomby) 
 - Metadata Manager by [OliBomby](https://github.com/OliBomby) 
 - Slider Merger by [OliBomby](https://github.com/OliBomby)
+- Property Transformer by [OliBomby](https://github.com/OliBomby)
 
 
 ## Requirements
