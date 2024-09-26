@@ -74,13 +74,11 @@ public partial class MainWindowViewModel : ViewModelBase
 
 		foreach(string map in mapsFromClipboard)
 		{
-			Console.WriteLine(map);
 			if(!Path.Exists(map)) return;
 			if(map.Split('.')[^1] != "osu") return;
 		}
 
 		SetCurrentMaps(mapsFromClipboard);
-		Console.WriteLine("PASTED!");
 	}
 
 	public static void SetCurrentMaps(string[] maps)

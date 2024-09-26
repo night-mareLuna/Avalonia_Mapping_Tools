@@ -178,7 +178,7 @@ public partial class MainWindow : Window
 	{
 		if(Me!.Clipboard is not null)
 			return await Me!.Clipboard.GetTextAsync();
-		else return "";
+		else return null;
 	}
 
 	public static async void OpenFolder(string folder)
