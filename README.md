@@ -19,8 +19,8 @@ All tool specific settings should function exactly the same as original Mapping 
 
 
 ## Requirements
-- [.NET Runtime 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0), please follow instructions based on your distro for installation (There is a separate build for those who do not want to (or cannot) install .NET 8.0).
 - [Sox](https://github.com/chirlu/sox) to preview samples in Hitsound Studio.
+- [.NET Runtime 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) if you do not download the self-contained package or AppImage.
 
 ## Installing sox
 ### Arch
@@ -31,5 +31,19 @@ All tool specific settings should function exactly the same as original Mapping 
 `apt install sox libsox-fmt-all`
 
 ## Build Requirements
-- [.NET SDK 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0), please follow instructions based on your distro for installation.
+- [distrobox](https://github.com/89luca89/distrobox)
+The setup script will handle creating and installing build dependancies into a distrobox container.
+- [.NET SDK 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0), if you want to do more than just download source then build.
+
+### Building with distrobox
+Clone the repo, run ``setup.sh`` then run ``build.sh``.
+```
+git clone https://github.com/night-mareLuna/Avalonia_Mapping_Tools.git
+cd Avalonia_Mapping_Tools/Mapping_Tools
+chmod +x setup.sh
+./setup.sh
+chmod +x build.sh
+./build.sh
+```
+Setup might take a few minutes (you only need to do this once). You can remove the distrobox container by running ``setup.sh remove``.
 
