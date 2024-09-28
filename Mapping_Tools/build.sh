@@ -8,13 +8,6 @@ if [ "`basename $PWD`" != "Mapping_Tools" ]; then
     exit
 fi
 
-# check if dotnet sdk 8.0 is installed
-DOTNETSDK=`dotnet --list-sdks | grep 8.0`
-if [ "$DOTNETSDK" == "" ]; then 
-    echo -e ".NET SDK 8.0 is not installed\nExitting"
-    exit
-fi
-
 # check if distrobox is installed
 DISTROBOX=`command -v distrobox`
 if [ "$DISTROBOX" == "" ]; then
