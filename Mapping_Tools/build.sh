@@ -79,9 +79,8 @@ appimage_build ()
     cp $BUILDPATH/* $BUILDPATH/AppDir/usr/bin
     cp $PWD/Data/mt_logo_256.png $BUILDPATH/AppDir
 
-    wget "https://github.com/AppImage/AppImageKit/releases/latest/download/AppRun-x86_64" --directory-prefix $BUILDPATH/AppDir/
-    mv $BUILDPATH/AppDir/AppRun-x86_64 $BUILDPATH/AppDir/AppRun
-
+    wget -N "https://github.com/AppImage/AppImageKit/releases/latest/download/AppRun-x86_64" -P $PWD/bin/
+    ln -f $PWD/bin/AppRun-x86_64 $BUILDPATH/AppDir/AppRun
     chmod +x $BUILDPATH/AppDir/AppRun
 
     echo '[Desktop Entry]
@@ -92,10 +91,8 @@ Icon=mt_logo_256
 Exec=Mapping_Tools
 Categories=Utility;' > $BUILDPATH/AppDir/Mapping_Tools.desktop
 
-    if ! test -e $PWD/bin/appimagetool-x86_64.AppImage; then
-        wget "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage" --directory-prefix $PWD/bin/
-        chmod +x $PWD/bin/appimagetool-x86_64.AppImage
-    fi
+    wget -N "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage" -P $PWD/bin/
+    chmod +x $PWD/bin/appimagetool-x86_64.AppImage
 
     distrobox enter $DISTROBOX_NAME -- $PWD/bin/appimagetool-x86_64.AppImage $BUILDPATH/AppDir
     mv Avalonia_Mapping_Tools-x86_64.AppImage $BUILDPATH/Avalonia_Mapping_Tools-x86_64.AppImage
