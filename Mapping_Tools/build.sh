@@ -43,7 +43,7 @@ clean_buildpath ()
 {
     # prevent build from bugging out when old build files already exist for some reason
     if [ "$BUILDPATH" != "" ]; then
-        rm -rf $BUILDPATH/*
+        rm -f $BUILDPATH/*
     else
         echo -e "Exiting to prevent a catastrophic disaster."
         exit 1
