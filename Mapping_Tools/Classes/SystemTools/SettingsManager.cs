@@ -1,4 +1,4 @@
-﻿using Avalonia.Controls;
+using Avalonia.Controls;
 using Avalonia_Mapping_Tools;
 using Avalonia_Mapping_Tools.ViewModels;
 using Avalonia_Mapping_Tools.Views;
@@ -278,9 +278,19 @@ namespace Mapping_Tools.Classes.SystemTools {
 
 			do
 			{
-				var box = MessageBoxManager.GetMessageBoxStandard("",
-					"Please select your osu! folder",
-					ButtonEnum.Ok);
+                var box = MessageBoxManager.GetMessageBoxCustom(
+                    new MessageBoxCustomParams{
+                        ContentMessage = "Please select you osu! folder",
+                        Topmost = true,
+                        WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                        ShowInCenter = true,
+                        ButtonDefinitions = new List<ButtonDefinition>
+                        {
+                            new() { Name = "Ok" }
+                        }
+                    }
+                );
+
 				await box.ShowAsync();
 				string path = await IOHelper.FolderDialog("");
                 path = path[^1] == '/' ? path : path + '/';
