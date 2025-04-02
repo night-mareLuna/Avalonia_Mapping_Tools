@@ -1,4 +1,4 @@
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia_Mapping_Tools;
 using Avalonia_Mapping_Tools.ViewModels;
 using Avalonia_Mapping_Tools.Views;
@@ -140,7 +140,8 @@ namespace Mapping_Tools.Classes.SystemTools {
 				{
 					var box = MessageBoxManager.GetMessageBoxStandard("Error!",
 						"Please set the correct paths in the Preferences.");
-					box.ShowAsync();
+					await box.ShowAsync();
+                    return;
 				}
             }
 
@@ -291,8 +292,9 @@ namespace Mapping_Tools.Classes.SystemTools {
                     }
                 );
 
-				await box.ShowAsync();
-				string path = await IOHelper.FolderDialog("");
+                await box.ShowAsync();
+				string path = await IOHelper.FolderDialog();
+                if(string.IsNullOrEmpty(path)) return "";
                 path = path[^1] == '/' ? path : path + '/';
                 if(File.Exists(path + "osu!.exe"))
                     folder = path;
