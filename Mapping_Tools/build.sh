@@ -21,7 +21,7 @@ pre_checks ()
 
     # check if distrobox setup has been done
     DISTROBOX_NAME="avalonia_mapping_tools-bullseye"
-    DISTROBOX=`distrobox ls | grep "$DISTROBOX_NAME"`
+    DISTROBOX=`distrobox list | grep "$DISTROBOX_NAME"`
     if [ "$DISTROBOX" == "" ]; then
         echo -e "Distrobox has not been setup yet! Run setup.sh first.\nExitting"
         exit 2
