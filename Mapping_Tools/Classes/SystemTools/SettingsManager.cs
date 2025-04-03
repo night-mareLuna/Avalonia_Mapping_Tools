@@ -293,7 +293,7 @@ namespace Mapping_Tools.Classes.SystemTools {
                 );
 
                 await box.ShowAsync();
-				string path = await IOHelper.FolderDialog();
+				string path = await IOHelper.FolderDialog(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
                 if(string.IsNullOrEmpty(path)) return "";
                 path = path[^1] == '/' ? path : path + '/';
                 if(File.Exists(path + "osu!.exe"))
