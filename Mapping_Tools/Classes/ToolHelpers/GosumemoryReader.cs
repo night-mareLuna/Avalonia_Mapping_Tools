@@ -80,6 +80,12 @@ namespace Mapping_Tools.Classes.ToolHelpers
                     WineEnvironList.Remove(WineEnvironList[i]);
                     break;
                 }
+                else if(WineEnvironList[i].Contains("WINE="))
+                {
+                    Wine = WineEnvironList[i].Replace("WINE=", "");
+                    WineEnvironList.Remove(WineEnvironList[i]);
+                    break;
+                }
             }
             string WineEnviron = string.Empty;
 
@@ -179,7 +185,7 @@ namespace Mapping_Tools.Classes.ToolHelpers
         {
             List<string> WineEnviron = [];
             string[] environ = Bash.RunCommand("cat /proc/`pgrep osu\\!.exe`/environ").Split('\0');
-            string[] envars = ["WINELOADER", "WINEARCH", "WINEPREFIX", "WINEESYNC", "WINEFSYNC"];
+            string[] envars = ["WINELOADER", "WINE", "WINENTSYNC", "WINEARCH", "WINEPREFIX", "WINEESYNC", "WINEFSYNC"];
 
             for(int i=0; i<environ.Length; i++)
             {
