@@ -29,6 +29,8 @@ All tool specific settings should function exactly the same as original Mapping 
 `dnf install sox`
 ### Debian
 `apt install sox libsox-fmt-all`
+### openSUSE
+`zypper in sox`
 
 ## Build Requirements
 - [distrobox](https://github.com/89luca89/distrobox)
