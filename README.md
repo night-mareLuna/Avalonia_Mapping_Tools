@@ -1,3 +1,5 @@
+# Upstream [Mapping Tools](https://github.com/OliBomby/Mapping_Tools) has moved to avalonia and now has native linux support!
+
 # Avalonia Mapping Tools 
 
 A basic port of [Mapping Tools](https://github.com/OliBomby/Mapping_Tools) to [AvaloniaUI](https://www.avaloniaui.net/).
